@@ -37,6 +37,7 @@ Run the MECH Hybrid Pipeline:
 
 Bash
 python src/run_hybrid_model.py --mode train
+
 📊 Dataset (COED)
 The dataset is provided in the data/ directory. It includes:
 
@@ -45,7 +46,6 @@ train.csv, val.csv, test.csv: Expert-annotated classroom dialogues with Dialogue
 📝 Citation
 If you find our work or code useful, please cite our paper:
 
-代码段
 @inproceedings{li2026mech,
   title={MECH: A Cost-Effective Multi-Task Cascade Framework for Classroom Opinion Evolution Recognition},
   author={Li, Yancui and Zhou,xiaoyu and Miao, Guoyi and Kong, Fang },
