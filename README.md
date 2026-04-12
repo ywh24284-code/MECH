@@ -1,46 +1,54 @@
-﻿# Opinion Tracker (Open Source Release)
+MECH: A Cost-Effective Multi-Task Cascade Framework for Classroom Opinion Evolution Recognition
+This is the official implementation of the paper: "MECH: A Cost-Effective Multi-Task Cascade Framework for Classroom Opinion Evolution Recognition", accepted by ACL 2026.
 
-This package contains the code for the multi-task opinion tracking model and all baseline comparison experiments.
+🌟 Overview
+MECH is a hybrid cascade framework designed for classroom dialogue analysis. By integrating the Continuous Opinions and Discrete Actions (CODA) theory, it optimizes both recognition accuracy and API consumption.
 
-## Project Structure
+Key Features:
+Multi-task Cascade: Combines lightweight PLMs with LLMs using a smart routing mechanism.
 
-- `src/`: Main model training, inference, architecture, and error analysis
-- `baseline_experiments/`: PLM-based discriminative baselines
-- `llm_baselines/`: QLoRA fine-tuning baselines for LLMs
-- `prompting_baselines/`: Prompt-based baselines
+Cost-Efficient: Achieves state-of-the-art performance while significantly reducing LLM API costs.
 
-## Included Core Files
+Theory-Grounded: Built upon the CODA theoretical framework for classroom opinion evolution.
 
-- `src/train_multi_task_model.py`
-- `src/run_hybrid_model.py`
-- `src/multi_task_model.py`
-- `src/hybrid_opinion_classifier.py`
-- `src/error_analysis.py`
+📂 Project Structure
+src/: Core implementation of the MECH framework (architecture, routing, and inference).
 
-## Quick Start
+data/: The COED dataset (Classroom Opinion Evolution Dataset) used in our experiments.
 
-1. Create environment and install dependencies:
+llm_baselines/: Codes for QLoRA fine-tuning and diagnosis.
 
-```bash
+prompting_baselines/: Prompt engineering and Zero/Few-shot experiments.
+
+baseline_experiments/: Traditional discriminative baselines (RoBERTa, DeBERTa).
+
+🚀 Quick Start
+Installation
+Bash
+git clone https://github.com/ywh24284-code/MECH.git
+cd MECH
 pip install -r requirements.txt
-```
+Training & Inference
+Train the Multi-task Model (Internal Router):
 
-2. Train the multi-task model:
-
-```bash
+Bash
 python src/train_multi_task_model.py --task_type multi --model_type deberta
-```
+Run the MECH Hybrid Pipeline:
 
-3. Run hybrid pipeline:
-
-```bash
+Bash
 python src/run_hybrid_model.py --mode train
-```
+📊 Dataset (COED)
+The dataset is provided in the data/ directory. It includes:
 
-## Data
+train.csv, val.csv, test.csv: Expert-annotated classroom dialogues with Dialogue Act (DA) and Opinion Evolution (OE) labels.
 
-Dataset files are not included in this release. Place your dataset under your own data directory and pass paths through command-line arguments.
+📝 Citation
+If you find our work or code useful, please cite our paper:
 
-## License
-
-This project is released under the license in `LICENSE`.
+代码段
+@inproceedings{li2026mech,
+  title={MECH: A Cost-Effective Multi-Task Cascade Framework for Classroom Opinion Evolution Recognition},
+  author={Li, Yancui and Zhou,xiaoyu and Miao, Guoyi and Kong, Fang },
+  booktitle={Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (ACL)},
+  year={2026}
+}
