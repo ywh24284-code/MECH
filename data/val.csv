@@ -1,0 +1,1283 @@
+﻿index,Speaker,Sentence,class,opinion-tag,label,Act Tag,act_label
+0,T,All of you were Able to follow it? ,81,Irrelevant,0,2 - keeping everyone together,1
+1,R1,Amy tell me what she was saying.,81,Irrelevant,0,1 - none,7
+2,T,What?,81,Irrelevant,0,2 - keeping everyone together,1
+3,T,"With the towers, how this works for towers.",81,Irrelevant,0,1 - none,0
+4,T,"Like we had done it in one of the classes that we had in the sessions, and so we  could just kind of picture what it was like I mean Bobby was drawing...",81,Irrelevant,0,1 - none,0
+5,T,So so tell what I’m supposed to picture if now I’m not thinking of pizzas anymore here. ,81,Irrelevant,0,1 - none,0
+6,T,"I’m thinking of the same rows, can you tell what I am supposed to imagine  in my head with towers?",81,Irrelevant,0,8 - press for  accuracy,5
+7,Amy,Isn’t like so many high and then so...,81,Irrelevant,0,4 - making a claim,10
+8,T,Ok so tell me so this (pointing to a row in Pascal’s triangle) would be how high? ,81,New,1,8 - press for  accuracy,5
+9,Amy,That would be three high right? ,81,New,1,7 - context,0
+10,Amy,Yeah,81,Irrelevant,0,1 - none,7
+11,T,Three high,81,Adopted,4,4 - restating,3
+12,Amy,"Three high, and then its how many colors you have.",81,New,1,4 - making a claim,10
+13,T,remember we did it on the bottom.,81,Irrelevant,0,1 - none,0
+14,Amy,Yeah,81,Adopted,4,1 - none,7
+15,T,So,81,Irrelevant,0,1 - none,0
+16,T,If you had blue and red.,81,Irrelevant,0,8 - press for  accuracy,5
+17,Amy,If you have blue and red if you had two colors.,81,Strengthened,2,1 - none,7
+18,T,So what does the one represent? ,81,Irrelevant,0,8 - press for  accuracy,5
+19,Amy,"One of all, like say blue, like three high of all blue cubes.",81,Strengthened,2,4 - making a claim,10
+20,T,"Mhmm ok I could imagine that, and what does the three represent?",81,Irrelevant,0,8 - press for  accuracy,5
+21,Amy,"You could have, like um, three towers where you have like 2 blue and one red..  umm",81,Strengthened,2,4 - making a claim,10
+22,T,So now you have...,81,Irrelevant,0,8 - press for  accuracy,5
+23,Amy,two red and one blue.,81,Strengthened,2,4 - making a claim,10
+24,T,Which is it?,81,Irrelevant,0,8 - press for  accuracy,5
+25,T,Does it matter?,81,Irrelevant,0,2 - keeping everyone together,1
+26,T,"If your making this( pointing to the one in Pascal’s  triangle) all blue, and your making this...",81,Irrelevant,0,1 - none,0
+27,Stephanie,Oh that would probably be.,81,Irrelevant,0,1 - none,7
+28,Stephanie,"I think that would be one, the way that it would work  out it would be one blue (Amy and Shelly agree)and two reds and the next would  be two blue and one red.",81,Strengthened,2,5 - providing evidence/providing reasoning,11
+29,T,How many blues are here?,81,Irrelevant,0,8 - press for  accuracy,5
+30,SS,All,81,New,1,4 - making a claim,10
+31,Amy,Three,81,New,1,7 - context,0
+32,T,So this your going from three blue to one blue,81,Strengthened,2,5 - revoicing,4
+33,Stephanie,Oh I don't know,81,Irrelevant,0,3 - asking for more information,9
+34,Shelly,Three blues to two blues ,81,Strengthened,2,4 - making a claim,10
+35,SS,Too one blue to none,81,New,1,2 - relating to another student,8
+36,Shelly,"Or you could do it the other way around, with three reds",81,New,1,2 - relating to another student,8
+37,T,Ok.,81,Irrelevant,0,1 - none,0
+38,T,No reds to one red to two reds to three reds( all join here in saying three  reds.)comes in. ,81,Strengthened,2,1 - none,0
+39,T,"Ok, I could imagine that In my head. ",81,Irrelevant,0,1 - none,0
+40,T,Ok so let’s decide on one. ,81,Irrelevant,0,1 - none,0
+41,T,You said  the three blues so no reds one reds two reds three reds. ,81,Strengthened,2,1 - none,0
+42,T,So tell me where the 4  ,81,Irrelevant,0,8 - press for  accuracy,5
+43,Stephanie,Okay,81,Irrelevant,0,1 - none,7
+44,T,Well let Amy do it because I’m curious.,81,Irrelevant,0,2 - keeping everyone together,1
+45,T,Because she hasn’t played with it for a  long time right?,81,Irrelevant,0,2 - keeping everyone together,1
+46,Amy,Yeah I guess you could say that.,81,Irrelevant,0,1 - none,7
+47,T,"You too, Shelly, you haven’t played with this in a while so you can help me.",81,Irrelevant,0,2 - keeping everyone together,1
+48,Shelly,"That would be four, like four blue, three blue, two blue ,one blue, no blue. Or",81,New,1,5 - providing evidence/providing reasoning,11
+49,T,Okay or no red. ,81,Irrelevant,0,1 - none,0
+50,T,"No red, one red, two red, three red, four red. ",81,Strengthened,2,1 - none,0
+51,T,Ok I could imagine that. ,81,Irrelevant,0,1 - none,0
+52,T,"So why, why does one plus three give you four? ",81,Irrelevant,0,9 - press for reasoning,6
+53,T,You  have towers three tall now you have towers 4 tall.,81,New,1,1 - none,0
+54,T,How does the one plus three  give you the four?,81,New,1,8 - press for  accuracy,5
+55,Shelly,Because you're just adding the extra block on.,81,Strengthened,2,5 - providing evidence/providing reasoning,11
+56,T,"What are you adding on from here to here and here to here (pointing Pascal’s  triangle) when this is no reds, right? ",81,Irrelevant,0,2 - keeping everyone together,1
+57,T,"And this is three with one red, right? ",81,Strengthened,2,2 - keeping everyone together,1
+58,T,Could  you see in your heads the three with one red? ,81,Irrelevant,0,2 - keeping everyone together,1
+59,T,Can you imagine those? ,81,Irrelevant,0,2 - keeping everyone together,1
+60,T,"What do  they look like, the three with one red? ",81,Irrelevant,0,8 - press for  accuracy,5
+61,T,Can you see them?,81,Irrelevant,0,2 - keeping everyone together,1
+62,Stephanie,Mhmm,81,Adopted,4,1 - none,7
+63,T,You know there are exactly three? ,81,Irrelevant,0,2 - keeping everyone together,1
+64,T,What do you see I am curious? ,81,Irrelevant,0,8 - press for  accuracy,5
+65,T,What do you  see in your heads?,81,Irrelevant,0,8 - press for  accuracy,5
+66,Amy,Blocks,81,New,1,4 - making a claim,10
+67,T,How do you see the three of them with exactly one red?,81,Irrelevant,0,8 - press for  accuracy,5
+68,Stephanie,Umm one with a red at the top.,81,Strengthened,2,4 - making a claim,10
+69,Stephanie,One with the red in the middle(other join in  whispering) and one with a red at the bottom,81,Strengthened,2,4 - making a claim,10
+70,T,You all could imagine that?,81,Irrelevant,0,2 - keeping everyone together,1
+71,Robert,Mhmm,81,Adopted,4,1 - none,7
+72,T,"Very impressive, Ok. ",81,Irrelevant,0,1 - none,0
+73,T,So how do we now get these four with one red? ,81,Irrelevant,0,8 - press for  accuracy,5
+74,Stephanie,"Umm, wait I have to think. (pulls paper closer)",81,Irrelevant,0,1 - none,7
+75,T,Alright,81,Irrelevant,0,1 - none,0
+76,Stephanie,"These are all blue, Right? ",81,Irrelevant,0,4 - making a claim,10
+77,Stephanie,And these are one blue? ,81,Irrelevant,0,4 - making a claim,10
+78,Stephanie,Is that what we're saying?,81,Irrelevant,0,1 - none,7
+79,T,These are,81,Irrelevant,0,1 - none,0
+80,Shelly ,"No, red. ",81,Refuted,5,2 - relating to another student,8
+81,Stephanie,"So these are all blue, and these are one blue.",81,Refuted,5,2 - relating to another student,8
+82,Shelly,"Yeah, hehe, same thing",81,Adopted,4,2 - relating to another student,8
+83,T,I have to switch.,81,Irrelevant,0,1 - none,0
+84,T,"I’m not as fast as you are, Stephanie. ",81,Irrelevant,0,1 - none,0
+85,T,"You're much more expert  on these towers than I am, without having them in front of me. ",81,Irrelevant,0,1 - none,0
+86,Stephanie,"Oh these are all blue, these are two blue.",81,Irrelevant,0,4 - making a claim,10
+87,Stephanie,I’m sorry. ,81,Irrelevant,0,1 - none,7
+88,Stephanie,That was...,81,Irrelevant,0,1 - none,7
+89,T,"Right, or no red and one red.",81,Strengthened,2,1 - none,0
+90,Stephanie,"Ok, that was (inaudible). ",81,Irrelevant,0,1 - none,7
+91,Stephanie,Yes. ,81,Adopted,4,1 - none,7
+92,Stephanie,So here all you’re doing is adding one red.,81,Irrelevant,0,7 - context,0
+93,T,Ok. ,81,Irrelevant,0,1 - none,0
+94,T,So this has to be a one red,81,Strengthened,2,5 - revoicing,4
+95,Stephanie,"Yes, so you already have, um, three with one red, so here this becomes the fourth  one with one red, because here there is no reds. ",81,Strengthened,2,5 - providing evidence/providing reasoning,11
+96,Stephanie,And each of them get a block like  added to them how do I... ok,81,Irrelevant,0,5 - providing evidence/providing reasoning,11
+97,T,"I can see my little stack here and this little stack here there is only one of them  and its all blue no red, right? ",81,Weakened,3,2 - keeping everyone together,1
+98,Stephanie,"Yeah, where is your picture? ",81,Irrelevant,0,1 - none,7
+99,Stephanie,Do you have your picture to that (speaking to  Robert)? ,81,Irrelevant,0,1 - none,7
+100,Stephanie,No? ,81,Irrelevant,0,1 - none,7
+101,T,You’ll have to help me with this. ,81,Irrelevant,0,1 - none,0
+102,T,Why don’t you make a picture?,81,Irrelevant,0,8 - press for  accuracy,5
+103,Stephanie,Ok. ,81,Irrelevant,0,1 - none,7
+104,Stephanie,"So here is, you have the one  three high with all blue.",81,Irrelevant,0,5 - providing evidence/providing reasoning,11
+105,Stephanie,"Then you have the three with one red, so you have red,  blue, blue; blue, red, blue; blue, blue, red. ",81,Strengthened,2,5 - providing evidence/providing reasoning,11
+106,Stephanie,And then these two make... ,81,Strengthened,2,5 - providing evidence/providing reasoning,11
+107,Stephanie,This one is  four blues. ,81,Strengthened,2,5 - providing evidence/providing reasoning,11
+108,Stephanie,"Well, that was... ",81,Irrelevant,0,5 - providing evidence/providing reasoning,11
+109,Stephanie,"ok and these two together make, um,  the one with four, the four with one red. ",81,Strengthened,2,5 - providing evidence/providing reasoning,11
+110,Stephanie,"So this one gets a red added on because  its already got three blues, so it can't have any more blues. ",81,Strengthened,2,7 - context,0
+111,Stephanie,And then these three  all get a blue added on to it.,81,Strengthened,2,5 - providing evidence/providing reasoning,11
+112,T,Because they already have one red. ,81,Strengthened,2,5 - revoicing,4
+113,Stephanie,They already have one red. ,81,Strengthened,2,1 - none,7
+114,T,Does that make sense?,81,Irrelevant,0,2 - keeping everyone together,1
+115,Robert,Mhmm,81,Adopted,4,1 - none,7
+0,T,I was just wondering if they were thinking about it anyway.,82,Irrelevant,0,1 - None,0
+1,T,How many thinking  about the number lines?,82,Irrelevant,0,2 - Keeping Everyone Together,1
+2,SS,"Wow, that's very good.",82,Irrelevant,0,1 - None,7
+3,SS,"See,  Mrs. Phillips.",82,Irrelevant,0,1 - None,7
+4,T,Yeah.,82,Irrelevant,0,1 - None,0
+5,T,I am impressed.,82,Irrelevant,0,1 - None,0
+6,T,"Well, I was looking at your number lines, the ones some of you  did in class last time; Meredith said that we could share hers.",82,Irrelevant,0,1 - None,0
+7,T,[T puts Merediths work on overhead] She has several.,82,Irrelevant,0,1 - None,0
+8,T,Can you see that?,82,Irrelevant,0,1 - None,0
+9,T,"I had some questions about her number lines, and was wondering if you do too?",82,Irrelevant,0,3 - Getting Students to Relate,2
+10,T,And maybe she could explain to us a little bit about it.,82,Irrelevant,0,1 - None,0
+11,T,How about that Meredith?,82,Irrelevant,0,2 - Keeping Everyone Together,1
+12,T,Can you take a look at that line and see if you have any questions?,82,Irrelevant,0,3 - Getting Students to Relate,2
+13,T,Things you  want to ask Meredith?,82,Irrelevant,0,3 - Getting Students to Relate,2
+14,T,I know I have at least one question.,82,Irrelevant,0,1 - None,0
+15,T,I'm wondering if you  had any also.,82,Irrelevant,0,1 - None,0
+16,T,"OK, so we have Michael, who has a question.",82,Irrelevant,0,1 - None,0
+17,T,"So, we have another question.",82,Irrelevant,0,1 - None,0
+18,T,You may want to talk with each other for just a minute to see if you are sure that  the number line that Meredith made is clear.,82,Irrelevant,0,2 - Keeping Everyone Together,1
+19,T,Meredith will talk with you about it  until she talks with the whole class.,82,Irrelevant,0,1 - None,0
+20,T,Why don't you just talk with your partner  about the number line to see if it makes sense to you.,82,Irrelevant,0,2 - Keeping Everyone Together,1
+21,T,We have two people with questions.,82,Irrelevant,0,1 - None,0
+22,T,"I know Mark has a question, and Audra has   a question.",82,Irrelevant,0,1 - None,0
+23,T,Any more questions?,82,Irrelevant,0,2 - Keeping Everyone Together,1
+24,T,Anyone need more  time to talk?,82,Irrelevant,0,2 - Keeping Everyone Together,1
+25,T,"Oh, Amy, also.",82,Irrelevant,0,1 - None,0
+26,T,very good.,82,Irrelevant,0,1 - None,0
+27,T,"And, James and  Jacqueline, great.",82,Irrelevant,0,1 - None,0
+28,T,There are some more questions.,82,Irrelevant,0,1 - None,0
+29,T,"Graham, ok, Mark.",82,Irrelevant,0,1 - None,0
+30,T,I think Michael was first so we will let him go first.,82,Irrelevant,0,2 - Keeping Everyone Together,1
+31,Michael,"Why do you have, like you have for your half, you have one half and one half.",82,New,1,3 - Asking for More Information,9
+32,Michael,I  am not arguing that.,82,Irrelevant,0,1 - None,7
+33,Michael,"But, in your third number line you put two thirds as your  half and then two fourths, then three fifths.I see the half but it is not exactly the  half way, then, I think the three fifths are either too small or too big.",82,Weakened,3,3 - Asking for More Information,9
+34,Michael,The two  fourths are fine.,82,Strengthened,2,3 - Asking for More Information,9
+35,Michael,The halves are fine.,82,Strengthened,2,3 - Asking for More Information,9
+36,Michael,It is the two thirds and three fifths.,82,Weakened,3,3 - Asking for More Information,9
+37,Michael,"Why  are you calling two thirds, one half?",82,Weakened,3,3 - Asking for More Information,9
+38,Michael,"Because, it is not half.",82,Weakened,3,3 - Asking for More Information,9
+39,Michael,"It is bigger than one  half, two thirds is bigger than one half.",82,Strengthened,2,3 - Asking for More Information,9
+40,Michael,We did that once.,82,Irrelevant,0,1 - None,7
+41,Meredith,I know it.,82,Adopted,4,1 - None,7
+42,Meredith,I just didn't know where to put it.,82,Irrelevant,0,1 - None,7
+43,Meredith,"Well, this is what the bottom is.",82,Irrelevant,0,5 - Providing Evidence / Explaining Reasoning,11
+44,Meredith,This is one third.,82,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+45,Meredith,This is two thirds.,82,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+46,Meredith,This area right here is one third.,82,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+47,Meredith,This area right here is two thirds.,82,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+48,Meredith,This area is three thirds.,82,Irrelevant,0,5 - Providing Evidence / Explaining Reasoning,11
+49,Michael,"You have one third, two thirds and then three thirds.",82,Strengthened,2,2 - Relating to Another Student,8
+50,Meredith,"One third, two thirds, three thirds.",82,Strengthened,2,2 - Relating to Another Student,8
+51,Meredith,This is the area in the middle.,82,Irrelevant,0,4 - Making a Claim,10
+52,Erik,"But, two thirds is not the area in the middle because two thirds is not equal to  half.",82,Refuted,5,5 - Providing Evidence / Explaining Reasoning,11
+53,Meredith,This is two thirds.,82,New,1,4 - Making a Claim,10
+54,Erik,"Then, why did you put it there?",82,Irrelevant,0,3 - Asking for More Information,9
+55,Meredith,I have.,82,Irrelevant,0,1 - None,7
+56,Erik,Why did you put it right under the half?,82,Weakened,3,3 - Asking for More Information,9
+57,Meredith,"See, this is the one third area, so I put it there.this is the two thirds area  so put it there.",82,Strengthened,2,4 - Making a Claim,10
+58,Erik,"No, Meredith, what you did, where you think is the one thirds area and you put it  under the line and in the one thirds area.",82,Refuted,5,2 - Relating to Another Student,8
+59,Erik,It does not make sense.,82,Refuted,5,3 - Asking for More Information,9
+60,Erik,Which one is it?,82,Irrelevant,0,3 - Asking for More Information,9
+61,Meredith,It is the bottom one.,82,New,1,4 - Making a Claim,10
+62,Erik,Then why did you put it in the area?,82,Refuted,5,3 - Asking for More Information,9
+63,Meredith,"Because, I wanted to show the one thirds, two thirds and three thirds area.",82,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+64,Erik,"Yeah, but they are in the wrong space.",82,Refuted,5,5 - Providing Evidence / Explaining Reasoning,11
+65,Erik,If you wanted to do that you should put it  in the exact space or at least approximate.,82,Refuted,5,5 - Providing Evidence / Explaining Reasoning,11
+66,T,"Well, I think her spaces are, here, Erik.",82,Adopted,4,1 - None,0
+67,Meredith,Yeah.,82,Adopted,4,1 - None,7
+68,Erik,"I know, but …..",82,Refuted,5,1 - None,7
+69,T,What I am hearing her say is pretend you don't see these… ,82,New,1,1 - None,0
+70,Michael,"Oh, I get it.",82,Adopted,4,1 - None,7
+71,Michael,"She is just labeling the spaces like one third of a space, and that is  two thirds and three thirds.",82,Strengthened,2,2 - Relating to Another Student,8
+72,T,"Well, why are you laughing?",82,Irrelevant,0,1 - None,0
+73,T,"What do you think, Amy?",82,Irrelevant,0,3 - Getting Students to Relate,2
+74,Amy,Ohm.,82,Irrelevant,0,1 - None,7
+75,T,What was your question?,82,Irrelevant,0,2 - Keeping Everyone Together,1
+76,T,"Thank you, Meredith.",82,Irrelevant,0,1 - None,0
+77,T,[Meredith sits down],82,Irrelevant,0,1 - None,0
+78,Amy,"My question was, why didn't she just make one big one and not make like five?",82,New,1,3 - Asking for More Information,9
+79,S," It just doesn't make sense, because you do not need  to have  them there and a lot of people will think that they are the numbers and it is  confusing.",82,Weakened,3,3 - Asking for More Information,9
+80,T,"Okay, for a moment lets us pretend the numbers are not on the top, for a moment.",82,Irrelevant,0,1 - None,0
+81,T,Can you pretend these space numbers are not there?,82,Irrelevant,0,2 - Keeping Everyone Together,1
+82,T,Can you all do that for a  minute and look at Meredith's first number line?,82,Irrelevant,0,1 - None,0
+83,T,Do you have any trouble   with that?,82,Irrelevant,0,2 - Keeping Everyone Together,1
+84,SS,No.,82,Irrelevant,0,7 - Context,0
+85,T,No.,82,Irrelevant,0,4 - Restating,3
+86,T,That's fine.,82,Irrelevant,0,1 - None,0
+87,T,"I think what Meredith was trying to do, is giving us.",82,Irrelevant,0,1 - None,0
+88,T,Remember  what Alan did?,82,Irrelevant,0,2 - Keeping Everyone Together,1
+89,T,When Alan magnified a piece of the number line?,82,Irrelevant,0,2 - Keeping Everyone Together,1
+90,T,Do you  remember that?,82,Irrelevant,0,2 - Keeping Everyone Together,1
+91,T,Did you see what Alan did here?,82,Irrelevant,0,2 - Keeping Everyone Together,1
+92,T,Remember?,82,Irrelevant,0,2 - Keeping Everyone Together,1
+93,T,How many of you remember what Alan did?,82,Irrelevant,0,2 - Keeping Everyone Together,1
+94,T,[Four students on  camera raise their hands.],82,Irrelevant,0,1 - None,0
+95,T,Right?,82,Irrelevant,0,1 - None,0
+96,T,"Now I'm sort of thinking, when I saw this, I was thinking that Meredith  maybe was doing some variation of what Alan did; but, what she did rather than  magnify a piece of the number line, she showed you particular sections of the  number line by making them over again, that is what I think.",82,New,1,1 - None,0
+97,T,It that what you did Meredith?,82,Irrelevant,0,2 - Keeping Everyone Together,1
+98,Meredith,Yes.,82,Adopted,4,1 - None,7
+99,T,That is what I imagined you did.,82,Adopted,4,1 - None,0
+100,S,She is making smaller parts of it.,82,Strengthened,2,7 - Context,0
+101,T,"Yeah, she is making smaller parts of it.",82,Strengthened,2,5 - Revoicing,4
+102,T,Why do you think she is doing that?,82,New,1,9 - Press for Reasoning,6
+103,Jessica,It is just easier to see when making the whole number line  over.,82,New,1,4 - Making a Claim,10
+104,Jessica,It is just easier to see.,82,Strengthened,2,4 - Making a Claim,10
+105,T,"Yeah, it gets kind of crowded sometimes doesn't it?",82,Strengthened,2,2 - Keeping Everyone Together,1
+106,T,So I think that is why she  did it.,82,Strengthened,2,1 - None,0
+107,T,That was not my question.,82,Irrelevant,0,1 - None,0
+108,T,"You asked a different question, Erik asked a  different question and Michael.",82,Irrelevant,0,1 - None,0
+109,T,"That was not my question, but I still have a  different question.",82,Irrelevant,0,1 - None,0
+110,T,That did not bother me.,82,Irrelevant,0,1 - None,0
+111,T,I kind of thought that was neat to  show me all the different pieces of the line.,82,Irrelevant,0,1 - None,0
+112,T,"Also, on that first number line Meredith also kind of showed me she knew where to put those numbers, right?",82,Strengthened,2,2 - Keeping Everyone Together,1
+113,T,That first number line tells me Meredith knew where to put them.,82,Strengthened,2,1 - None,0
+114,T,Can you see  that?,82,Irrelevant,0,2 - Keeping Everyone Together,1
+115,SS,Yes.,82,Adopted,4,1 - None,7
+116,T,"So maybe they, were you worried about lining them all up carefully?",82,Irrelevant,0,2 - Keeping Everyone Together,1
+117,T,"Is that what  you did, Meredith?",82,Irrelevant,0,2 - Keeping Everyone Together,1
+118,T,I got the feeling that the second one you were showing halves and the third  number line what were you trying to show?,82,New,1,8 - Press for Accuracy,5
+119,Meredith,Thirds.,82,New,1,4 - Making a Claim,10
+120,T,"And, the fourth one?",82,Irrelevant,0,8 - Press for Accuracy,5
+121,SS,Fourths.,82,Strengthened,2,4 - Making a Claim,10
+122,T,The fifth one?,82,Irrelevant,0,8 - Press for Accuracy,5
+123,SS,Fifths.,82,Strengthened,2,4 - Making a Claim,10
+124,T,She was focusing on showing different pieces of it,82,Irrelevant,0,1 - None,0
+0,T,"Okay, let's see.",83,Irrelevant,0,1 - None,0
+1,T,We're calling the orange rod  the number name “fifty.” ,83,New,1,1 - None,0
+2,T,How about the yellow rod?,83,Irrelevant,0,8 - Press for Accuracy,5
+3,T,What number name will we give  it?,83,Irrelevant,0,8 - Press for Accuracy,5
+4,T,I would love to hear from somebody that  I have not had a chance to hear from.,83,Irrelevant,0,2 - Keeping Everyone Together,1
+5,T,"Okay,  let's see here, is there anybody here I haven't  had a chance to hear from?",83,Irrelevant,0,2 - Keeping Everyone Together,1
+6,T,Michael.,83,Irrelevant,0,2 - Keeping Everyone Together,1
+7,Michael,"Well, I think I would call the yellow “twenty  five” because twenty five plus twenty five  equals fifty.",83,New,1,5 - Providing Evidence / Explaining Reasoning,11
+8,T,"That sounds, that sounds interesting.",83,Adopted,4,1 - None,0
+9,T,"Okay,  so what is twenty five and twenty five, what  made you decide on using twenty five?",83,Irrelevant,0,9 - Press for Reasoning,6
+10,T,"Umm, why didn't you say ten plus ten plus  ten plus ten plus ten equals fifty?",83,Weakened,3,9 - Press for Reasoning,6
+11,Michael,Because it takes two yellow rods to equal one  orange rod.,83,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+12,T,"Oh, okay.",83,Adopted,4,1 - None,0
+13,T,Does anyone want to add to that?,83,Irrelevant,0,3 - Getting Students to Relate,2
+14,T,...   That's very nice.,83,Irrelevant,0,1 - None,0
+15,T,"I want to hear, I heard  people say it slightly differently, but that's  the, that's really a very important idea.",83,Irrelevant,0,1 - None,0
+16,T,Beth.,83,Irrelevant,0,2 - Keeping Everyone Together,1
+17,Beth,"Umm, me and Sarah thought, first we  thought it'd be umm twenty and thirty, but  we knew we couldn't do that because they were exactly the same size, the  yellows.",83,New,1,5 - Providing Evidence / Explaining Reasoning,11
+18,Beth,So then we started thinking in cents  and we thought of two quarters equal umm  fifty and so one twenty five and twenty five  equals fifty.,83,New,1,5 - Providing Evidence / Explaining Reasoning,11
+19,T,Interesting.,83,Irrelevant,0,1 - None,0
+20,T,Did anyone think about it like  that in terms of money?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+21,T,I heard some people  say that where they thought about it like two  quarters being like fifty cents.,83,Strengthened,2,1 - None,0
+22,T,"Jackie, you  thought about it that way.",83,Irrelevant,0,1 - None,0
+23,T,Anyone else think  about it that way?,83,Irrelevant,0,3 - Getting Students to Relate,2
+24,T,That's very nice.,83,Irrelevant,0,1 - None,0
+25,T,"Oh, I  thought I was going to stump you with that  one.",83,Irrelevant,0,1 - None,0
+26,T,"Okay, let me ask you another question.",83,Irrelevant,0,1 - None,0
+27,T,Let's keep the name fifty [for the orange] for  a minute.,83,Irrelevant,0,1 - None,0
+28,T,The number name “fifty” for this.,83,Irrelevant,0,1 - None,0
+29,T,"Okay, now this is going to be a little  tougher.",83,Irrelevant,0,1 - None,0
+30,T,What number would I give to one  white rod if we're still calling the orange the  number name “fifty?”,83,New,1,8 - Press for Accuracy,5
+31,Sarah,"Five, ten, fifteen, twenty …   Oh!",83,New,1,4 - Making a Claim,10
+32,T,"Okay, I want to hear, now take a little time,  think about it and talk to your partners.",83,Irrelevant,0,2 - Keeping Everyone Together,1
+33,Sarah,"We would call these little ones five,  ten, fifteen, twenty, twenty five, thirty, thirty  five, forty and then fifty.",83,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+34,Sarah,And you get fifty out of ten.,83,Irrelevant,0,5 - Providing Evidence / Explaining Reasoning,11
+35,T,That's interesting.,83,Irrelevant,0,1 - None,0
+36,T,How did you come up  with it so quickly?,83,Irrelevant,0,8 - Press for Accuracy,5
+37,Sarah,I did ,83,Irrelevant,0,1 - None,7
+38,T,You just thought of it?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+39,T,What made you think  of five's?,83,Irrelevant,0,8 - Press for Accuracy,5
+40,T,Why didn't you start counting by  two's or ten's?,83,Weakened,3,9 - Press for Reasoning,6
+41,Sarah,Because.,83,Irrelevant,0,1 - None,7
+42,Sarah,"Ten's, because ten's would only  need five.",83,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+43,Sarah,"So it would be ten, twenty, thirty,  forty, fifty.",83,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+44,Sarah,So for ten's it would be five.,83,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+45,Sarah,"And  then for two's,  two, four, six, eight, ten, and it  would go on and be more than ten.",83,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+46,T,And five just popped into your head as being  the right one?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+47,Sarah,Yeah,83,Adopted,4,1 - None,7
+48,T,Very nice.,83,Irrelevant,0,1 - None,0
+49,T,That was nicely done.,83,Strengthened,2,1 - None,0
+50,T,Let me hear  what some other people are saying.,83,Irrelevant,0,8 - Press for Accuracy,5
+51,Meredith,"I think it is five because, cause five times ten  equals fifty.",83,New,1,5 - Providing Evidence / Explaining Reasoning,11
+52,T,What do you think?,83,Irrelevant,0,8 - Press for Accuracy,5
+53,David,I think that it's five too.,83,Adopted,4,2 - Relating to Another Student,8
+54,T,You think five works?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+55,Meredith,Yes.,83,Adopted,4,1 - None,7
+56,T,You all thought of that so quickly.,83,Irrelevant,0,1 - None,0
+57,T,How did  you think of it so quickly?,83,Irrelevant,0,8 - Press for Accuracy,5
+58,T,That's what I'm  wondering.,83,Irrelevant,0,1 - None,0
+59,Meredith,"We know our, we know our division?",83,Irrelevant,0,4 - Making a Claim,10
+60,Meredith,"Ha ha,  we know out multiplication  tables.",83,Irrelevant,0,4 - Making a Claim,10
+61,T,Do you fell that is pretty convincing?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+62,T,Do you  really feel you could convince people that we  would be calling the white rod the number  name “five?”,83,Weakened,3,2 - Keeping Everyone Together,1
+63,Meredith,Uh huh.,83,Adopted,4,1 - None,7
+64,T,"Okay, I'm going to hear from some other  folks.",83,Irrelevant,0,1 - None,0
+65,T,Let me go over here first and then I'll  come back to you Brian.,83,Irrelevant,0,1 - None,0
+66,T,Laura and Jessica  always get to see me last.,83,Irrelevant,0,1 - None,0
+67,T,"Here, let me come  over and see then next.",83,Irrelevant,0,1 - None,0
+68,Laura,Five.,83,New,1,4 - Making a Claim,10
+69,Laura,You count by fives.,83,Irrelevant,0,4 - Making a Claim,10
+70,Laura,"Five, ten fifteen,  twenty, twenty five, thirty, thirty five, forty,  forty five, fifty.",83,Strengthened,2,4 - Making a Claim,10
+71,T,"Ok, that's interesting.",83,Irrelevant,0,1 - None,0
+72,T,What made you think  of five so quickly?,83,Irrelevant,0,8 - Press for Accuracy,5
+73,T,I'm asking people that  around here.,83,Irrelevant,0,1 - None,0
+74,Jessica,"Well we tried, like, we just though, umm,  like… well, we tried umm two's, and that  didn't work.",83,Weakened,3,4 - Making a Claim,10
+75,Jessica,So then we just thought five,83,Strengthened,2,4 - Making a Claim,10
+76,T,And it worked?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+77,Jessica,Yeah.,83,Adopted,4,1 - None,7
+78,T,Very nice.,83,Strengthened,2,1 - None,0
+79,T,"Brian, let's hear what you have  here.",83,Irrelevant,0,8 - Press for Accuracy,5
+80,Brian,"I got the answer, but I don't know how to say  it… explain it really.",83,Irrelevant,0,1 - None,7
+81,T,Well do you want to try?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+82,T,It's a good chance  to practice talking to me.,83,Irrelevant,0,1 - None,0
+83,Brian,"Well, I just found out, five, I don't know, I  can't find out why.",83,New,1,5 - Providing Evidence / Explaining Reasoning,11
+84,Brian,"I think, well, five times  ten equals fifty, so …",83,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+85,T,Does that have something to do with it?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+86,T,Why  times ten?,83,Weakened,3,9 - Press for Reasoning,6
+87,T,Why are you telling me five times  ten?,83,Irrelevant,0,9 - Press for Reasoning,6
+88,T,That's interesting.,83,Irrelevant,0,1 - None,0
+89,Brian,"Well, well because there are ten of them here and… hm, I'm not sure, I'm not  sure.",83,Weakened,3,5 - Providing Evidence / Explaining Reasoning,11
+90,Brian,"Before I said one fiftieth, but I think,  Dave explained something to me and I  thought, I guess I just thought it was right.",83,Adopted,4,5 - Providing Evidence / Explaining Reasoning,11
+91,Brian,"But, I guess I'll just go with one fiftieth.",83,Adopted,4,5 - Providing Evidence / Explaining Reasoning,11
+92,T,You're going to go with that?,83,Weakened,3,8 - Press for Accuracy,5
+93,Brian,"Yeah, one fiftieth.",83,Adopted,4,4 - Making a Claim,10
+94,T,One fiftieth?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+95,Brian,"Yeah, but I'm not that sure.",83,Refuted,5,1 - None,7
+96,T,Ok.,83,Irrelevant,0,1 - None,0
+97,T,It just seems like a good name to call it  because you're calling this fifty?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+98,Brian,Yeah,83,Adopted,4,1 - None,7
+99,T,Is that what you're thinking?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+100,Brian,"Yeah, and if there are fifty of them in there, I  guess I just call it one fiftieth.",83,Adopted,4,5 - Providing Evidence / Explaining Reasoning,11
+101,T,Are fifty of what in there?,83,Irrelevant,0,8 - Press for Accuracy,5
+102,T,Fifty of what kind  of what?,83,Irrelevant,0,8 - Press for Accuracy,5
+103,Brian,Um….Fifty…,83,Irrelevant,0,4 - Making a Claim,10
+104,T,Fifty of these here [white rods]?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+105,Brian,"Well no, but, but if we're calling this fifty, and there are each one in there,  then it's pretty much called a  fiftieth, I guess.",83,Refuted,5,5 - Providing Evidence / Explaining Reasoning,11
+106,T,"Hmm, ok so that's the number name you've  given it.",83,Irrelevant,0,1 - None,0
+107,Brian,Yeah.,83,Adopted,4,1 - None,7
+108,T,Ok.  I got to hear a lot of interesting  arguments.,83,Irrelevant,0,1 - None,0
+109,T,Is this a good time for me to ask  people what they came up with or are there  still a lot of people working here?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+110,T,People  pretty much look like they've thought about  it some.,83,Irrelevant,0,1 - None,0
+111,T,I'd like to hear some of your ideas.,83,Irrelevant,0,1 - None,0
+112,T,Ok for the number name of this.,83,Irrelevant,0,1 - None,0
+113,T,"Remember  this is called fifty, the orange.",83,Irrelevant,0,1 - None,0
+114,T,"Ok, let's see,  um, Sarah.",83,Irrelevant,0,2 - Keeping Everyone Together,1
+115,T,"Beth, you come up with her?",83,Irrelevant,0,2 - Keeping Everyone Together,1
+116,T,"Please everybody listen to this and see if this  is an argument that's like yours, because if  yours is different, you know, I'd like to hear  it.",83,Irrelevant,0,3 - Getting Students to Relate,2
+117,Sarah,"If we call the white cube five, then it would  equal up to fifty.",83,New,1,7 - Context,0
+118,T,"Ok, so you're going to call the white the  number name five.",83,Irrelevant,0,5 - Revoicing,4
+119,T,How many people called  it five?,83,Irrelevant,0,3 - Getting Students to Relate,2
+120,T,Interesting.,83,Irrelevant,0,1 - None,0
+121,T,"Ok, it looks like a lot of  people did.",83,Irrelevant,0,1 - None,0
+122,T,Did anybody call it something  different?,83,Irrelevant,0,3 - Getting Students to Relate,2
+123,T,Ok let's hear their argument  maybe this will convince us one way or  another that this works.,83,Adopted,4,1 - None,0
+124,Beth,"If you count by fives to fifty, you'll have ten;  you'll count, you'll have ten, you have to have  five ten times to get to fifty.",83,New,1,5 - Providing Evidence / Explaining Reasoning,11
+125,Beth,And then…um…,83,Irrelevant,0,1 - None,7
+126,T,Is there anything else you want to say about  that?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+127,T,Or does that basically say it?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+128,T,… What do  you think?,83,Irrelevant,0,2 - Keeping Everyone Together,1
+129,T,Would anybody like to add to  that?,83,Irrelevant,0,3 - Getting Students to Relate,2
+130,T,They said they counted by fives to get  up to fifty.,83,Irrelevant,0,1 - None,0
+131,T,Ok. And that it worked.,83,Strengthened,2,1 - None,0
+132,T,"That it  brought them up to fifty, when they counted  each of those as a five, those white ones.",83,Strengthened,2,1 - None,0
+133,Meredith,"Well, I did it sort of equivalent.",83,Adopted,4,5 - Providing Evidence / Explaining Reasoning,11
+134,Meredith,I did five  times ten equals fifty.,83,Strengthened,2,7 - Context,0
+135,T,"Five times‐ ok, Meredith said she did five    times ten equals fifty.",83,Adopted,4,5 - Revoicing,4
+136,T,"Ok, why did you, why  did you decide to do that, to use a  multiplication problem to help you?",83,Irrelevant,0,9 - Press for Reasoning,6
+137,Meredith,Because this is a ten rod,83,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+138,Meredith,It  has ten ones.,83,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+139,Meredith,Ten times five equals fifty.,83,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+140,Meredith,So I  said ten times what gives you fifty?,83,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+141,Meredith,"And five,  gives you ten times five equals fifty.",83,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+142,T,Interesting.,83,Irrelevant,0,1 - None,0
+0,T,"Um, okay, now there was really a sort of neat thing that happened
+last time... oh what were we working on? ",84,Irrelevant,0,8 - press for  accuracy,5
+1,T,"Remember, we were
+doing equations that were box times box minus something times
+box plus something equals zero.",84,Irrelevant,0,1 - none,0
+2,T, What were we taught to do? ,84,Irrelevant,0,8 - press for  accuracy,5
+3,T,"Do you remember what you were trying to find some numbers what
+did those numbers do?",84,Irrelevant,0,8 - press for  accuracy,5
+4,Michelle I,The numbers replaced like the empty boxes or triangles.,84,New,1,4 - making a claim,10
+5,T,"And they made a true statement didn’t they... when you did it...
+said it was equal to zero and that was true. ",84,Strengthened,2,1 - none,0
+6,T,"Okay, and we did quite
+a few of those and you got to be quite good at that I think.",84,Irrelevant,0,1 - none,0
+7,T," And various people found the secret and I guess by now everybody
+knows what it and we didn’t quite agree whether it’s was one or
+two secrets, most people say it’s two, but I think some people here
+like you persuaded us it’s one. ",84,Strengthened,2,1 - none,0
+8,T,"Um, what’s the secret to that?",84,Irrelevant,0,8 - press for  accuracy,5
+9,Milin,It’s one big secret.,84,Irrelevant,0,1 - none,7
+10,T,It’s one big secret? ,84,Irrelevant,0,2 - keeping everyone together,1
+11,T,Matt.,84,Irrelevant,0,2 - keeping everyone together,1
+12,Matt,"That the... the two multiple... the two num the numbers have to
+like when you add them up it has to equal... it has to equal the
+number to the, to the left and be multiples of the number to the
+right.",84,New,1,5 - providing evidence/providing reasoning,11
+13,T,"Well you might not really mean multiples, when you multiply them...",84,Refuted,5,8 - press for  accuracy,5
+14,Matt,"Yeah, be able to multiply them...",84,Adopted,4,7 - context,0
+15,T,"Yeah, yeah right when you multiply them they give you the
+number on the right and that’s certainly right. ",84,Adopted,4,5 - revoicing,4
+16,T,Okay and I think that everybody was good at that. ,84,Irrelevant,0,1 - none,0
+17,T,"And then we started working on, well maybe before I leave that... uh those two equations on the bottom
+came up because uh, uh, Milin actually proposed one of them and then somebody proposed the other one. ",84,Irrelevant,0,1 - none,0
+18,T,"Jeff, what was special about them.",84,Irrelevant,0,8 - press for  accuracy,5
+19,Jeff,"Cause, there were two prime numbers in it so it was like impossible...",84,New,1,5 - providing evidence/providing reasoning,11
+20,S,No,84,Refuted,5,2 - relating to another student,8
+21,Jeff,...or you had to go into decimals or whatever.,84,Weakened,3,4 - making a claim,10
+22,T,"OK, we left that hanging a little bit and I think I’m going to leave it
+hanging again today, but it’s a very interesting problem and it
+certainly looks like it might be impossible doesn’t it? ",84,Irrelevant,0,2 - keeping everyone together,1
+23,T,"And we might have to use some other kinds of numbers or something.
+",84,New,1,1 - none,0
+24,T,"OK... um now then we started working on the sort of thing that’s
+on the top up there. ",84,Irrelevant,0,1 - none,0
+25,T,"Um, we started with that equation box times
+two plus one equals triangle.",84,New,1,1 - none,0
+26,T," Right, and what did we do then, Stephanie what did we do?",84,Irrelevant,0,8 - press for  accuracy,5
+27,Stephanie,"Well, we had to put a number in the box and a number in the triangle so that the equation was true.",84,Irrelevant,0,5 - providing evidence/providing reasoning,11
+28,T,"Exactly what we were doing, and when we did that if we put zero in that box what number did we put in the triangle?",84,Irrelevant,0,8 - press for  accuracy,5
+29,Stephanie,One,84,Strengthened,2,7 - context,0
+30,T,One.,84,Strengthened,2,4 - restating,3
+31,T,"And we made that table there, right.",84,Irrelevant,0,1 - none,0
+32,T,"Okay, and now then we, in fact actually um Michelle where...yeah um I’m sorry ...
+Michelle R. ",84,Irrelevant,0,2 - keeping everyone together,1
+33,T,"Uh, you remember what you wrote on your paper.",84,Irrelevant,0,8 - press for  accuracy,5
+34,Michelle R,No,84,Irrelevant,0,1 - none,7
+35,T,"You want to take it and maybe write it here so that everybody can
+see it. ",84,Irrelevant,0,1 - none,0
+36,T,"Here, just stand there.",84,Irrelevant,0,1 - none,0
+37,T, Well a couple of them anyhow.,84,Irrelevant,0,1 - none,0
+38,T,"Well, you suppose you can get it if you wrote small do you
+suppose you could get it up by the table the way you did it on your
+paper?",84,Irrelevant,0,1 - none,0
+39,Michelle R,Up here?,84,Irrelevant,0,1 - none,7
+40,T,"Yeah, cause that was sort of neat the way you did that.",84,Irrelevant,0,1 - none,0
+41,T,And you left out one parenthesis; do you see where you left it out?,84,Irrelevant,0,2 - keeping everyone together,1
+42,Michelle R,oh. ,84,Irrelevant,0,1 - none,7
+43,Michelle R,Should I do more?,84,Irrelevant,0,1 - none,7
+44,T,"Well that’s probably enough, but she went down and did that, and you agree that that’s what we were doing?",84,Irrelevant,0,3 - getting students to relate,2
+45,S,Yeah,84,Adopted,4,1 - none,7
+46,T,"Now, what did we do then? ",84,Irrelevant,0,8 - press for  accuracy,5
+47,T,"We, then we turned the problem around and did something different. ",84,New,1,1 - none,0
+48,T,Michael what’d we do then?,84,Irrelevant,0,8 - press for  accuracy,5
+49,T,Michelle?,84,Irrelevant,0,2 - keeping everyone together,1
+50,Michelle I,We tried to find a secret to it with a pattern like how the numbers...,84,New,1,4 - making a claim,10
+51,T,"Okay, and some of you did find a very interesting secret and it might be an appropriate one to share, um no, Ankur says that we shouldn’t do that.",84,Refuted,5,1 - none,0
+52,Jeff,"Yes, we should. ",84,Refuted,5,1 - none,7
+53,T,"Well, okay, well we won’t we won’t do it just now we will sooner
+or later.",84,Adopted,4,1 - none,0
+54,T," We will sooner or later okay, uh, but we started, we started
+turning the problem around didn’t we and for the other problems I
+gave you the table. ",84,Irrelevant,0,1 - none,0
+55,T,"Here, here I gave you the equation and we
+made the table, right, but now in the other problems, I gave you the
+table and what are you supposed to do?",84,Irrelevant,0,8 - press for  accuracy,5
+56,Romina,Find the equation,84,New,1,7 - context,0
+57,T,"Yeah, find the equation. ",84,Adopted,4,5 - revoicing,4
+58,T,"Uh, and now for the second problem, let me pass this back to you.",84,Irrelevant,0,1 - none,0
+0,T,"OK, so what if I gave you eighty-four for X?",85,New,1,8 - Press for Accuracy,5
+1,James,Huh?,85,Irrelevant,0,1 - None,7
+2,T,What if I gave you eighty-four for X?,85,Strengthened,2,8 - Press for Accuracy,5
+3,Ariel,Let's see.,85,Irrelevant,0,1 - None,7
+4,Ariel,[pointing his finger to T] I got that on lock down.,85,Irrelevant,0,1 - None,7
+5,Ariel,[Ariel starts extending the table writing 26 in the X column and then  stops.],85,Irrelevant,0,1 - None,7
+6,Ariel,Wait a minute.,85,Irrelevant,0,1 - None,7
+7,Ariel,"You said eighty-four, right?",85,Irrelevant,0,1 - None,7
+8,Ariel,That's easy.,85,Irrelevant,0,1 - None,7
+9,Ariel,[James writes in his paper:      84      ×3      252  + 1 = 253],85,New,1,1 - None,7
+10,Ariel,Two fifty three.,85,New,1,4 - Making a Claim,10
+11,T,[to James] What do you think?,85,Irrelevant,0,3 - Getting Students to Relate,2
+12,James,Two fifty three for what?,85,Irrelevant,0,3 - Asking for More Information,9
+13,Ariel,I used my rule.,85,Strengthened,2,4 - Making a Claim,10
+14,James,Eighty-four?,85,Irrelevant,0,4 - Making a Claim,10
+15,Ariel,I just used my rule.,85,Strengthened,2,4 - Making a Claim,10
+16,Ariel,Eighty-four times three is two hundred and fifty-two  plus one is two hundred and fifty-three.,85,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+17,T,[to James] What do you think?,85,Irrelevant,0,3 - Getting Students to Relate,2
+18,James,[turning his head towards T] Eighty-four?,85,Irrelevant,0,1 - None,7
+19,James,Why eighty-four?,85,Irrelevant,0,3 - Asking for More Information,9
+20,T,I don't know.,85,Irrelevant,0,1 - None,0
+21,T,I picked up any number.,85,Irrelevant,0,1 - None,0
+22,James,Stop giving us these big numbers.,85,Irrelevant,0,1 - None,7
+23,Ariel,[laughs],85,Irrelevant,0,1 - None,7
+24,James,What if I give a thousand two hundred and fifty?,85,New,1,4 - Making a Claim,10
+25,T,A thousand two hundred and fifty?,85,Irrelevant,0,2 - Keeping Everyone Together,1
+26,James,[shaking his head] I don't.,85,Irrelevant,0,1 - None,7
+27,James,I don't want to do that.,85,Irrelevant,0,1 - None,7
+28,James,I don't want to do  that.,85,Irrelevant,0,1 - None,7
+29,Ariel,"[starts writing in his paper and mumbles]      [Ariel has written in his paper:     1,250      ×    3     3,750  + 1     3,751]",85,Irrelevant,0,1 - None,7
+30,Ariel,Three thousand seven hundred and fifty-one.,85,New,1,4 - Making a Claim,10
+31,T,"My goodness, what do you think about this James?",85,Irrelevant,0,3 - Getting Students to Relate,2
+32,James,What?,85,Irrelevant,0,1 - None,7
+33,Ariel,One two fifty times three is three seven fifty plus one is three seven fifty  one.,85,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+34,Ariel,[pointing something in his paper to T who is coming around to his  side] I know that there is some pattern… between this one and this one.,85,New,1,5 - Providing Evidence / Explaining Reasoning,11
+35,Ariel,I  don't know how to say it.,85,Irrelevant,0,1 - None,7
+36,T,Between which one and which one?,85,Irrelevant,0,8 - Press for Accuracy,5
+37,Ariel,"I know twenty-five times three is seventy-five, there is something out  there, I just don't know how to explain it.",85,Strengthened,2,4 - Making a Claim,10
+38,T,What about twenty-five?,85,Weakened,3,8 - Press for Accuracy,5
+39,Ariel,It is seventy-six.,85,New,1,4 - Making a Claim,10
+40,Ariel,I forgot to write down.,85,Irrelevant,0,1 - None,7
+41,Ariel,[writes something in the paper],85,Irrelevant,0,1 - None,7
+42,T,"Alright, so what are you noticing with the numbers?",85,Irrelevant,0,8 - Press for Accuracy,5
+43,Ariel,Huh?,85,Irrelevant,0,1 - None,7
+44,T,What are you noticing with the numbers?,85,Irrelevant,0,8 - Press for Accuracy,5
+45,Ariel,I just noticed that twenty-five times three is seventy-five that's how I  solved this real quick.,85,New,1,5 - Providing Evidence / Explaining Reasoning,11
+46,T,Do you think there is anything that is same with what you are doing and  what James came up with?,85,Irrelevant,0,3 - Getting Students to Relate,2
+47,Ariel,"Uh, uh, ahhh, I don't know.",85,Irrelevant,0,1 - None,7
+48,Ariel,"Oh, wait a minute.",85,Irrelevant,0,1 - None,7
+49,Ariel,"Uh, hmm, maybe.",85,Irrelevant,0,1 - None,7
+50,Ariel,I don't  know.,85,Irrelevant,0,1 - None,7
+51,Ariel,"Because I'm adding three, that's an odd number, he is adding odd  numbers, so might be the same.",85,Strengthened,2,7 - Context,0
+52,Ariel,[shrugs],85,Irrelevant,0,1 - None,7
+53,T,So might be the same.,85,Adopted,4,4 - Restating,3
+54,Ariel,"I'm doing odd and he is doing odds, so … [shrugs again] same thing.",85,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+55,T,So odd numbers are the common [stops talking and steps back and  waves to someone in the background],85,Strengthened,2,1 - None,0
+56,Ariel,[to T] Have you guys got more problems?,85,Irrelevant,0,1 - None,7
+57,T,I think you should make up your own.,85,Irrelevant,0,1 - None,0
+58,T,[bending a little towards Ariel] would you like to make up your own so  that maybe we could give it to the rest of the class?,85,Irrelevant,0,8 - Press for Accuracy,5
+0,T,Do you remember that?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+1,T,Can you read that statement?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+2,T,"What does  that say, Michael?",86,Irrelevant,0,2 - Keeping Everyone Together,1
+3,T,Task 1 is 1/5 = 2/10?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+4,Michael,"It says, is one fifth equal to two tenths?",86,Irrelevant,0,1 - None,7
+5,T,How many of you agree that is what that says?,86,Irrelevant,0,3 - Getting Students to Relate,2
+6,T,That’s my question.,86,Irrelevant,0,1 - None,0
+7,T,Is one fifth equal to two tenths?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+8,T,[quiet in the room],86,Irrelevant,0,1 - None,0
+9,T,Do you remember talking about any of those ideas at all?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+10,T,"What do  you remember about that, Meredith?",86,Irrelevant,0,8 - Press for Accuracy,5
+11,Meredith,Um?,86,Irrelevant,0,1 - None,7
+12,T,You want to tell us?,86,Irrelevant,0,8 - Press for Accuracy,5
+13,Meredith,We had used our Cuisenaire Rods.,86,New,1,1 - None,7
+14,T,Come up and show us what the issue is.,86,Irrelevant,0,8 - Press for Accuracy,5
+15,T,I have some of this up here.,86,Irrelevant,0,1 - None,0
+16,T,"Because, Dr. Davis also wasn’t here.",86,Irrelevant,0,1 - None,0
+17,Meredith,Say this is called one.,86,Irrelevant,0,5 - Providing Evidence / Explaining Reasoning,11
+18,Meredith,Then you … took this ….,86,Irrelevant,0,5 - Providing Evidence / Explaining Reasoning,11
+19,Meredith,This would be half of  the orange rod [pointing at one yellow rod] … and this would be um  ….,86,Irrelevant,0,5 - Providing Evidence / Explaining Reasoning,11
+20,Meredith,called the one [pointing at the orange rod]  and these would be  one [pointing at the orange rod] and these would be called the two  halves [pointing at the yellow rods],86,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+21,T,"Ok, so what name would you give the yellow rod?",86,Irrelevant,0,8 - Press for Accuracy,5
+22,Meredith,A half,86,Adopted,4,7 - Context,0
+23,T,One half.,86,Adopted,4,5 - Revoicing,4
+24,T,Ok.,86,Irrelevant,0,1 - None,0
+25,Meredith,"And, this would be called one [pointing at the orange rod]",86,Strengthened,2,7 - Context,0
+26,T,And that would be called one.,86,Adopted,4,5 - Revoicing,4
+27,T,Can you tell me what that has to do  with my question?,86,Irrelevant,0,8 - Press for Accuracy,5
+28,T,Is one fifth equal to two tenths?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+29,Meredith,Um.,86,Irrelevant,0,1 - None,7
+30,Meredith,Two tenths.,86,Irrelevant,0,4 - Making a Claim,10
+31,Meredith,You call this two tenth.,86,Irrelevant,0,4 - Making a Claim,10
+32,Meredith,This is usually a tenth  [she places two yellow rods on the projector] and then you put this  up and you call this two tenth  and then you take this and you put it  up to them [she places five red rods near the yellow rods]  and it’s  five- they equal up to it.,86,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+33,T,Can you say that so the class hears you and see what they think?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+34,T,I  am not- did you all hear what Meredith said?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+35,T,I am not- I didn’t hear  either.,86,Irrelevant,0,1 - None,0
+36,T,"But maybe if you can tell the class what your thinking, let’s  see what they think.",86,Irrelevant,0,1 - None,0
+37,Meredith,"Well if you have the orange rod and you put it up to the yellow rod,  the yellow rods, it’s two halves and that would be called two tenths.",86,Irrelevant,0,5 - Providing Evidence / Explaining Reasoning,11
+38,Meredith,"Uh, yeah.",86,Adopted,4,1 - None,7
+39,Meredith,Two tenths… wait two tenths would be …….,86,Weakened,3,5 - Providing Evidence / Explaining Reasoning,11
+40,Meredith,"two ones …  [she places 2 white rods on the screen] That is what two tenths  would be, ‘because these ones are tenths [pointing at the white rods  and looking at Teacher].",86,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+41,T,Why don’t you tell the class and-,86,Irrelevant,0,2 - Keeping Everyone Together,1
+42,Meredith,These ones are tenths [pointing at the white rods] ‘cause this orange  rod is one and when you put the ones up to it there’s ten of them and  two of them would equal two tenths.,86,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+43,Meredith,And this [she moves the red  rods directly above the orange rod] is one fifth to the orange rod.,86,New,1,5 - Providing Evidence / Explaining Reasoning,11
+44,Meredith,And if you take one of them [she moves one red rod above the two  white rods] it’s equal to two tenths.,86,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+45,T,"So what is your conclusion if I ask you the question, is two tenths  equal to one fifth?",86,Irrelevant,0,2 - Keeping Everyone Together,1
+46,Meredith,Yes.,86,Adopted,4,7 - Context,0
+47,T,You think it is.,86,Adopted,4,5 - Revoicing,4
+48,T,"Ok, let’s have some discussion; Thank you,  Meredith.",86,Irrelevant,0,1 - None,0
+49,T,Let’s see what other people think.,86,Irrelevant,0,1 - None,0
+50,T,Do we have some other  discussion about that?,86,Irrelevant,0,3 - Getting Students to Relate,2
+51,T,Brian?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+52,T,"By the way, how many of you agree with what Meredith said?",86,Irrelevant,0,3 - Getting Students to Relate,2
+53,T,How  many aren’t sure?,86,Irrelevant,0,3 - Getting Students to Relate,2
+54,T,How many of you disagree?,86,Irrelevant,0,3 - Getting Students to Relate,2
+55,T,"Ok, so we have  some not sures and agree, so let’s see Brian which category are you  in?",86,Irrelevant,0,3 - Getting Students to Relate,2
+56,T,Do you agree or are you not sure?,86,Irrelevant,0,3 - Getting Students to Relate,2
+57,Brian,I agree.,86,Adopted,4,2 - Relating to Another Student,8
+58,T,"Ok, you want to explain why you agree?",86,Irrelevant,0,3 - Getting Students to Relate,2
+59,Brian,"Well, I agree because it’s just like having one of these reds being a  whole and one of these [a white rod] being a half.",86,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+60,Brian,"So it’s just like  saying, it’s just like saying, two halves equal a whole.",86,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+61,Brian,It’s the same  as being two tenths equal one fifth.,86,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+62,T,What do you think?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+63,T,Erik is making a face.,86,Irrelevant,0,1 - None,0
+64,T,"Erik do you want to, do  you want to say what you think out to Brian?",86,Irrelevant,0,8 - Press for Accuracy,5
+65,Erik,"Well, I kind of agree with Meredith, because if you take the orange  rod, it takes ten of the white rods to equal up to the orange and five  of the red ones.",86,Adopted,4,5 - Providing Evidence / Explaining Reasoning,11
+66,Erik,Then if you take two of these [points to white rods]  which is two tenths and this [red rod] is one fifth.,86,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+67,Erik,"Because, well, it’s,  it takes five of them to equal up to the orange rod and, and if you put  two tenths next to it they equal up to each other and you’ll have one  fifth and one tenth- and two tenths together and they both equal up to  the same amount.",86,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+68,Brian,[whispering] Like what I said kind of.,86,Adopted,4,2 - Relating to Another Student,8
+69,T,"Ok, anybody else?",86,Irrelevant,0,2 - Keeping Everyone Together,1
+70,T,Any other discussion?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+71,T,Thank you gentlemen.,86,Irrelevant,0,1 - None,0
+72,T,Any other discussion?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+73,T,Anybody else have something to say about  that?,86,Irrelevant,0,3 - Getting Students to Relate,2
+74,T,[No response] How many of you believe that one tenth- two  tenths and one fifth represent the same length?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+75,T,Do you think it would  be okay to give them the same number name?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+76,T,How many of you  think it would be ok?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+77,T,We can call this two tenths or we can call this  one fifth.,86,Strengthened,2,1 - None,0
+78,T,How many of you agree with that?,86,Irrelevant,0,3 - Getting Students to Relate,2
+79,T,[several hands go up]  Yeah.,86,Irrelevant,0,1 - None,0
+80,T,Makes sense doesn’t it?,86,Irrelevant,0,2 - Keeping Everyone Together,1
+0,T,to share their thinking.,87,Irrelevant,0,1 - none,0
+1,T,"Charlotte, come on down for this first one.",87,Irrelevant,0,2 - keeping everyone together,1
+2,T,It seems like Charlotte wants a coach.,87,Irrelevant,0,1 - none,0
+3,T,Who wants to coach her?,87,Irrelevant,0,2 - keeping everyone together,1
+4,T,Charlotte [unintelligible 00:00:24].,87,Irrelevant,0,2 - keeping everyone together,1
+5, Charlotte ,"it means you look at what you have to put in group cells, how many groups you put it in and then you put one and one in your group.",87,Irrelevant,0,5 - providing evidence/providing reasoning,11
+6,T,I'm going to pause you.,87,Irrelevant,0,1 - none,0
+7,T,We've got a fraction here of 1/2.,87,Irrelevant,0,1 - none,0
+8,T,"What part of that fractions, boys and girls, the numerator or the denominator do we use to put it in groups to know how many groups?",87,New,1,8 - press for  accuracy,5
+9,T,"On the count of three,SSyou're going to tell me.",87,Irrelevant,0,1 - none,0
+10,T,"One, two, three.",87,Irrelevant,0,2 - keeping everyone together,1
+11,SS,Denominator.,87,New,1,4 - making a claim,10
+12,T,"Charlotte, what's the denominator?",87,New,1,8 - press for  accuracy,5
+13, Charlotte ,Two.,87,New,1,4 - making a claim,10
+14,T,"Class, what's the denominator?",87,Strengthened,2,8 - press for  accuracy,5
+15,T,"Thank you for the active listening, thumbs.",87,Irrelevant,0,1 - none,0
+16,T,What's the denominator?,87,Strengthened,2,8 - press for  accuracy,5
+17,T,The bottom number.,87,Strengthened,2,1 - none,0
+18,T,What number is the bottom number?,87,Irrelevant,0,8 - press for  accuracy,5
+19, Charlotte ,The two.,87,Adopted,4,7 - context,0
+20,T,So circle that two for me.,87,Strengthened,2,5 - revoicing,4
+21,T,"All right, Skylar, continue.",87,Irrelevant,0,2 - keeping everyone together,1
+22,T,Tell her what she needs to do.,87,Irrelevant,0,3 - gettingSSto relate,2
+23, Skylar ,Put the six in two groups.,87,New,1,7 - context,0
+24,T,You need six exits.,87,Irrelevant,0,5 - revoicing,4
+25, Charlotte ,You circle one,87,Irrelevant,0,4 - making a claim,10
+26,T,Talk to your partner.,87,Irrelevant,0,2 - keeping everyone together,1
+27,T,Why is Charlotte only circling one group?,87,Irrelevant,0,3 - gettingSSto relate,2
+28,T,"Actually before you talk, ET, high five.",87,Irrelevant,0,1 - none,0
+29,T,I want to make sure everybody has a partner.,87,Irrelevant,0,1 - none,0
+30,T,.,87,Irrelevant,0,1 - none,0
+31,T,Go ahead.,87,Irrelevant,0,2 - keeping everyone together,1
+32,T,Talk to your partners.,87,Irrelevant,0,2 - keeping everyone together,1
+33,T,"All right, five, four, three, two and one.",87,Irrelevant,0,1 - none,0
+34,T,"Why did she only circle one group, Jonas?",87,Irrelevant,0,9 - press for reasoning,6
+35, Jonas ,Because-,87,Irrelevant,0,1 - none,7
+36,T,Charlotte circled one group because-,87,Irrelevant,0,3 - gettingSSto relate,2
+37, Jonas ,Charlotte circled one group because the denominator is telling us all these two groups and,87,New,1,7 - context,0
+38,T,One half means one out of two.,87,Strengthened,2,5 - revoicing,4
+39,T,Partner with the longest tiar repeat what I just said.,87,Irrelevant,0,1 - none,0
+40,T,Go.,87,Irrelevant,0,2 - keeping everyone together,1
+41,SS,One half means one out of two.,87,Adopted,4,1 - none,7
+42,T, ,87,Irrelevant,0,8 - press for  accuracy,5
+43, Charlotte ,Three.,87,New,1,4 - making a claim,10
+44,T,Go ahead and write that up there.,87,Irrelevant,0,1 - none,0
+45,T,Great.,87,Irrelevant,0,1 - none,0
+46,T,"Evelyn, come on down.",87,Irrelevant,0,2 - keeping everyone together,1
+47,T,.,87,Irrelevant,0,1 - none,0
+48, Evelyn ,I  and then I circle one group and,87,Irrelevant,0,4 - making a claim,10
+49,T,"All right, Emma, some active listening comes and I see, next one.",87,Irrelevant,0,1 - none,0
+50,T,Aaron.,87,Irrelevant,0,2 - keeping everyone together,1
+51,T,.,87,Irrelevant,0,1 - none,0
+52, Aaron ,I looked at the denominator and I knew it was three.,87,Strengthened,2,7 - context,0
+53,T,"Aaron, when you said you knew it was three.",87,Irrelevant,0,5 - revoicing,4
+54,T,What was it?,87,Irrelevant,0,8 - press for  accuracy,5
+55, Aaron ,The denominator.,87,Strengthened,2,4 - making a claim,10
+56,T,What did that tell you needed three?,87,Irrelevant,0,8 - press for  accuracy,5
+57, Aaron ,Three groups.,87,New,1,4 - making a claim,10
+58,T,Can you say that in a complete sentence?,87,Irrelevant,0,2 - keeping everyone together,1
+59,T,The denominator told me-,87,Strengthened,2,8 - press for  accuracy,5
+60, Aaron ,The denominator told me that there was three groups.,87,Strengthened,2,4 - making a claim,10
+61,T,"All right, great active listening.",87,Irrelevant,0,1 - none,0
+62,T,"Thumbs, I see a disagreement though and now an agreement, are you sure?",87,Irrelevant,0,2 - keeping everyone together,1
+63,T,"Carey, do you have a question?",87,Irrelevant,0,2 - keeping everyone together,1
+64,T,"All right, last one.",87,Irrelevant,0,1 - none,0
+65,T,½ of 9.,87,New,1,1 - none,0
+66,T,I'll take a volunteer for this one.,87,Irrelevant,0,1 - none,0
+67,T,Taylor.,87,Irrelevant,0,2 - keeping everyone together,1
+68,T,.,87,Irrelevant,0,1 - none,0
+69, Taylor ,I saw the denominator was two.,87,Irrelevant,0,5 - providing evidence/providing reasoning,11
+70, Taylor ,"I needed to make two, so I needed to make two groups of nine and then there was one extra.",87,New,1,4 - restating,3
+71, Taylor ,I split that in that half and I circled one group and I got a 4 and one 1/2.,87,Strengthened,2,5 - providing evidence/providing reasoning,11
+72,T,Any questions for Taylor?,87,Irrelevant,0,3 - gettingSSto relate,2
+73,T,"Can you write your final answer up there for me, please?",87,Irrelevant,0,1 - none,0
+74,T,When he was counting he could only make two equal groups of eight leaving one left over.,87,Irrelevant,0,5 - revoicing,4
+75,T,"He had to split that one in two so that happened.All right, thank you very much.",87,Irrelevant,0,1 - none,0
+76,T,"While I am changing the board, why do you guys, since we had a lovely refresher and someSSwho came up with a great job showing you what and how to do these, let's do 1/5 of 15, 1/5 of 15 and be ready to share with your partner how you did it.",87,Irrelevant,0,1 - none,0
+77,T,Make sure you're writing that final answer.,87,Irrelevant,0,1 - none,0
+78,T,I see a lot of people with work but no answers.,87,Irrelevant,0,1 - none,0
+79,T,Your work looks right but you still need to write the final answer.,87,Irrelevant,0,1 - none,0
+80,T,"All right, share with your partner.",87,Irrelevant,0,2 - keeping everyone together,1
+81,T,How did you figure that out?,87,Irrelevant,0,8 - press for  accuracy,5
+82,T,"Show me your answers, please and 1/5 of 15 should be 3 and that's what I'm seeing from pretty much everybody.",87,Irrelevant,0,1 - none,0
+83,T,Great job.,87,Irrelevant,0,1 - none,0
+84,T,"Can you please read, Nate, our target up there?",87,Irrelevant,0,2 - keeping everyone together,1
+85,T,We're going to be moving on today from fractions into decimals but those two things are actually both related.,87,Irrelevant,0,1 - none,0
+86,T,How do you think a fraction and a decimal is related?,87,New,1,9 - press for reasoning,6
+87,T,"First, let's break that down.",87,Irrelevant,0,1 - none,0
+88,T,What is a fraction?,87,Irrelevant,0,8 - press for  accuracy,5
+89,T,"When we are talking about fractions, like a fraction of a pizza, a fraction of cupcake, what does that mean?",87,New,1,8 - press for  accuracy,5
+90,T,Go.,87,Irrelevant,0,2 - keeping everyone together,1
+91,T,"What is a fraction, Violet?",87,Strengthened,2,8 - press for  accuracy,5
+92,T,It's what  my active listening forms I saw Aaron.,87,Irrelevant,0,1 - none,0
+93,T,Thank you.,87,Irrelevant,0,1 - none,0
+94,T,What do you think a fraction is Skylar?,87,Strengthened,2,8 - press for  accuracy,5
+95, Skylar ,I think a fraction is when you have like a whole number and split it into groups.,87,New,1,7 - context,0
+96,T,When you have a whole number and you split it into groups.,87,Irrelevant,0,5 - revoicing,4
+97,T,Okay.,87,Irrelevant,0,1 - none,0
+98,T,Jessica?,87,Irrelevant,0,2 - keeping everyone together,1
+99, Jessica ,I think that,87,Adopted,4,1 - none,7
+100,T,Good.,87,Irrelevant,0,1 - none,0
+101,T,A fraction is when you split a whole into smaller equal parts.,87,Adopted,4,1 - none,0
+102,T,Nice.,87,Irrelevant,0,1 - none,0
+103,T,"Now, what do we know about decimals?",87,Irrelevant,0,8 - press for  accuracy,5
+104,T,That's an example of a decimal up there on the board.,87,Strengthened,2,1 - none,0
+105,T,You can take a look at that.,87,Irrelevant,0,1 - none,0
+106,T,What's a decimal?,87,New,1,8 - press for  accuracy,5
+107,T,Think for a moment what's a decimal.,87,Irrelevant,0,1 - none,0
+108,T,Share with your partner what you think a decimal is.,87,Irrelevant,0,8 - press for  accuracy,5
+109,T,Partner with a shorter characters go first.,87,Irrelevant,0,2 - keeping everyone together,1
+110,T,"Five, four, three, two, and one, what do you think a decimal is Clara?",87,Irrelevant,0,8 - press for  accuracy,5
+111, Clara ,I think a decimal is definitely,87,New,1,1 - none,7
+112,T,What do you think Shoshanna?,87,Irrelevant,0,8 - press for  accuracy,5
+113,T,What's a decimal?,87,Irrelevant,0,8 - press for  accuracy,5
+114, Shoshanna ,I think a decimal is,87,New,1,1 - none,7
+115,T,"We are right with our place value of decimals with our tens, hundreds, and thousands but that doesn't really answer the question of what is a decimal.",87,Weakened,3,1 - none,0
+116,T,Let's take when do we see decimals in real life?,87,Irrelevant,0,8 - press for  accuracy,5
+117,T,When have you seen a decimal in real life?,87,New,1,8 - press for  accuracy,5
+118,T,Think first.,87,Irrelevant,0,1 - none,0
+119,T,Go ahead and share with your partner.,87,Irrelevant,0,2 - keeping everyone together,1
+120,T,Whoever went first last time exhibit.,87,Irrelevant,0,1 - none,0
+121,T,Let's go.,87,Irrelevant,0,2 - keeping everyone together,1
+122,T,"Five, four, three, two, and one.",87,Irrelevant,0,1 - none,0
+123,T,"Byron, when did you see decimals in the real world?",87,Irrelevant,0,8 - press for  accuracy,5
+124, Byron ,Store.,87,New,1,4 - making a claim,10
+125,T,Where at the store?,87,Strengthened,2,8 - press for  accuracy,5
+126,T,Can you be more specific than that for me?,87,Irrelevant,0,8 - press for  accuracy,5
+127,T,Say that again.,87,Irrelevant,0,2 - keeping everyone together,1
+128, Byron ,Food aisle.,87,New,1,4 - making a claim,10
+129,T,Where in the food aisle?,87,Irrelevant,0,8 - press for  accuracy,5
+130,T,"What do you think, Leo?",87,Irrelevant,0,8 - press for  accuracy,5
+131,T,Where do you see a decimal?,87,Irrelevant,0,8 - press for  accuracy,5
+132, Leo ,In math.,87,New,1,4 - making a claim,10
+133,T,In the real world outside of this classroom in math class.,87,Irrelevant,0,8 - press for  accuracy,5
+134,T,I agree we see them in math but we do things in math to help you out in the real world outside of our classroom.,87,Strengthened,2,1 - none,0
+135,T,What do you think Delilah?,87,Irrelevant,0,8 - press for  accuracy,5
+136,T,Let's remember our complete sentences.,87,Irrelevant,0,1 - none,0
+137,T,Our both friends are speaking in phrases.,87,Irrelevant,0,1 - none,0
+138,T,We need to speak in complete sentences.,87,Irrelevant,0,1 - none,0
+139, Delilah ,I probably would  Where it shows how much it costs.,87,New,1,4 - making a claim,10
+140,T,How many of you-- Thank you for the thumbs up Josie and Taylor.,87,Irrelevant,0,1 - none,0
+141,T,How many of you talked about money with your partner?,87,Irrelevant,0,2 - keeping everyone together,1
+142,T,Except for Josie and Taylor.,87,Irrelevant,0,1 - none,0
+143,T,"Money is probably the most common place- We're going to put our pencil down please Josie -that you see decimals in the real world, money.",87,Strengthened,2,1 - none,0
+144,T,Let's think about what's money.,87,Irrelevant,0,1 - none,0
+145,T,"When I have 25 cents, what do I have?",87,New,1,8 - press for  accuracy,5
+146,T,It is a quarter.,87,Strengthened,2,1 - none,0
+147,T,Let's think first before we speak out.,87,Irrelevant,0,1 - none,0
+148,T,You're on the right track.,87,Irrelevant,0,1 - none,0
+149,T,"When I have a 25 cents or a quarter, what does that mean?",87,Strengthened,2,8 - press for  accuracy,5
+150,T,What do I have?,87,Irrelevant,0,8 - press for  accuracy,5
+151,T,Go ahead and talk about it.,87,Irrelevant,0,1 - none,0
+152,T,"Five, four, three, two, one.",87,Irrelevant,0,1 - none,0
+153,T,"Josie, what do I have when I have a quarter?",87,Irrelevant,0,8 - press for  accuracy,5
+154, Josie ,You have one-fourth of a dollar.,87,New,1,7 - context,0
+155,T,I have one-fourth of a dollar.,87,Adopted,4,5 - revoicing,4
+156,T,"I like how you converted 25 into a fraction because remember, my very original question was what fractions and decimals have in common.",87,Strengthened,2,1 - none,0
+157,T,"If a quarter is one-fourth of a dollar and a fraction is pieces of a whole, what's a decimal also?",87,New,1,8 - press for  accuracy,5
+158,T,What do you think?,87,Irrelevant,0,8 - press for  accuracy,5
+159,T,Let's think about what I just said.,87,Irrelevant,0,1 - none,0
+160,T,I'm going to give you a little more think time before we answer.,87,Irrelevant,0,1 - none,0
+161,T,"Josie told us-- Don't worry, we're going to cap our marker, please Blackstar and put it down in front of us because right now we're thinking about what I'm talking about.",87,Irrelevant,0,1 - none,0
+162,T,Josie said that 25 cents is one-fourth of a dollar.,87,Strengthened,2,1 - none,0
+163,T,"and you guys all told me so nicely that fractions are equal parts of a whole, equals pieces of something.",87,Strengthened,2,1 - none,0
+164,T,"If 25 cents and one fourth are the same thing, that would lead us to think what?",87,Strengthened,2,8 - press for  accuracy,5
+165,T,Think about what I said before you raise your hand to volunteer.,87,Irrelevant,0,1 - none,0
+166,T,Share your thinking with your partner.,87,Irrelevant,0,2 - keeping everyone together,1
+167,T,Go.,87,Irrelevant,0,2 - keeping everyone together,1
+168,T,"Five, four, three, two, and one, Bailey.",87,Irrelevant,0,2 - keeping everyone together,1
+169, Bailey ,I think a decimal is a,87,New,1,1 - none,7
+170,T,Exactly.,87,Adopted,4,1 - none,0
+171,T,This is for Ella.,87,Irrelevant,0,1 - none,0
+172,T,I love how she turned and looked at Bailey.,87,Irrelevant,0,1 - none,0
+173,T,"If 25 cents is the same thing as a fourth, that means a decimal is the same thing as a fraction.",87,Strengthened,2,1 - none,0
+174,T,"If a fraction is part of a whole, equal parts of a whole, that must mean decimals are also what?",87,Strengthened,2,8 - press for  accuracy,5
+175,T,Part of a whole.,87,Strengthened,2,1 - none,0
+176,T,Go ahead and share that with your partner what we just said.,87,Irrelevant,0,2 - keeping everyone together,1
+177,T,A decimal is part of a whole.,87,Strengthened,2,1 - none,0
+178,T,Share that with your partner.,87,Irrelevant,0,2 - keeping everyone together,1
+179,T,Today we're going to be working with decimals.,87,Irrelevant,0,1 - none,0
+180,T,"Can you please read our first success criteria, Brooke.",87,Irrelevant,0,2 - keeping everyone together,1
+181,T,"Okay, Julia, the next one.",87,Irrelevant,0,1 - none,0
+182, Julia ,Change the decimal into a fraction or the fraction to a decimal.,87,Irrelevant,0,4 - making a claim,10
+183,T,"Way back at the beginning when we started our lesson, Audrey was telling us that decimals are the place value tenths, hundredths, and thousandths.",87,Strengthened,2,1 - none,0
+184,T,"Today we're going to be working on writing decimals all the way up to the thousands, Nate and then we've also just talked about and Bailey told us on how they are-- Fractions and decimals are really the same thing.",87,New,1,1 - none,0
+185,T,"If they're the same thing, that means we can do what Josie did and convert a decimal to a fraction.",87,Strengthened,2,1 - none,0
+186,T,That's going to be our focus today.,87,Irrelevant,0,1 - none,0
+187,T,I'm going to read a number to you right now and you're going to write it on your [unintelligible 00:19:43],87,Irrelevant,0,1 - none,0
+188,T,Listen carefully.,87,Irrelevant,0,1 - none,0
+189,T,"37,000,124, 37,124.",87,Irrelevant,0,1 - none,0
+190,T,37124,87,Irrelevant,0,1 - none,0
+191,T,"On a count of three, you are going to show it to your partner.",87,Irrelevant,0,1 - none,0
+192,T,"If you guys agree, do a high five.",87,Irrelevant,0,3 - gettingSSto relate,2
+193,T,"If you disagree, talk it out.",87,Irrelevant,0,3 - gettingSSto relate,2
+194,T,See who's correct.,87,Irrelevant,0,3 - gettingSSto relate,2
+195,T,Go.,87,Irrelevant,0,2 - keeping everyone together,1
+196,T,"On the count of three, friends.",87,Irrelevant,0,1 - none,0
+197,T,"I said, go, that was confusing.",87,Irrelevant,0,1 - none,0
+198,T,Confused me too.,87,Irrelevant,0,1 - none,0
+199,T,[giggles] Get ready.,87,Irrelevant,0,1 - none,0
+200,T,"One, two, three.",87,Irrelevant,0,1 - none,0
+201,SS,.,87,Irrelevant,0,1 - none,7
+202,T,Okay.,87,Irrelevant,0,1 - none,0
+203,T,"Five, four, three, two, and one.",87,Irrelevant,0,1 - none,0
+204,T,"Gael, can I see your board?",87,Irrelevant,0,1 - none,0
+205,T,This is what you should have written down.,87,Irrelevant,0,1 - none,0
+206,T,"37,000, the word thousand is a clue.",87,Irrelevant,0,1 - none,0
+207,T,"Oops, I need a comma.",87,Irrelevant,0,1 - none,0
+208,T,124,87,Irrelevant,0,1 - none,0
+209,T,"If you have this, great job.",87,Irrelevant,0,1 - none,0
+210,T,I noticed some of you were trying to make decimals.,87,Irrelevant,0,1 - none,0
+211,T,We'll get there.,87,Irrelevant,0,1 - none,0
+212,T,There's a special word that hints decimals.,87,New,1,1 - none,0
+213,T,"If you think back to second, third grade, fourth grade, you might remember that special word or special part of a word.",87,New,1,1 - none,0
+214,T,All right.,87,Irrelevant,0,1 - none,0
+215,T,"Now on that number, I want you to circle the thousands place.",87,New,1,1 - none,0
+216,T,Circle the thousands place.,87,Irrelevant,0,1 - none,0
+217,T,"On the count of three, you're going to tell me what number you circled.",87,Irrelevant,0,8 - press for  accuracy,5
+218,T,"One, two, three.",87,Irrelevant,0,2 - keeping everyone together,1
+219,SS,Seven.,87,New,1,4 - making a claim,10
+220,T,All right.,87,Adopted,4,1 - none,0
+221,T,Let's do another one a little bit harder.,87,Irrelevant,0,1 - none,0
+222,T,Listen carefully.,87,Irrelevant,0,1 - none,0
+223,T,630726,87,Irrelevant,0,1 - none,0
+224,T,630726,87,Irrelevant,0,1 - none,0
+225,T,You don't need that first one anymore.,87,Irrelevant,0,1 - none,0
+226,T,630726,87,Irrelevant,0,1 - none,0
+227,T,630726,87,Irrelevant,0,1 - none,0
+228,T,"On the count of three, you're going to show your partner.",87,Irrelevant,0,1 - none,0
+229,T,"If you agree, I want to see those high fives, friends.",87,Irrelevant,0,3 - gettingSSto relate,2
+230,T,I didn't just say that for fun.,87,Irrelevant,0,1 - none,0
+231,T,"If you did, yes.",87,Irrelevant,0,1 - none,0
+232,T,A lot of people did.,87,Irrelevant,0,1 - none,0
+233,T,Get ready.,87,Irrelevant,0,1 - none,0
+234,T,"One, two, three.",87,Irrelevant,0,2 - keeping everyone together,1
+235,T,"If you disagree, talk it out.",87,Irrelevant,0,3 - gettingSSto relate,2
+236,T,Let's see here.,87,Irrelevant,0,1 - none,0
+237,T,Look here.,87,Irrelevant,0,1 - none,0
+238,T,Can I see yours?,87,Irrelevant,0,1 - none,0
+239,T,Looking around there's one thing pretty much everybody has but here's our correct answer.,87,Irrelevant,0,1 - none,0
+240,T,Now I'd like you to circle the ten thousands digit.,87,New,1,1 - none,0
+241,T,Underline the tens digit.,87,New,1,1 - none,0
+242,T,Circle the ten thousands.,87,Irrelevant,0,1 - none,0
+243,T,Underline the tens.,87,Irrelevant,0,1 - none,0
+244,T,Circle the ten thousands.,87,Irrelevant,0,1 - none,0
+245,T,Underline the tens.,87,Irrelevant,0,1 - none,0
+246,T,What number did you underline?,87,Irrelevant,0,8 - press for  accuracy,5
+247,T,"One, two, three.",87,Irrelevant,0,2 - keeping everyone together,1
+248,SS,Two.,87,New,1,4 - making a claim,10
+249,T,Yes.,87,Adopted,4,1 - none,0
+250,T,What number did you circle?,87,Irrelevant,0,8 - press for  accuracy,5
+251,T,"One, two, three.",87,Irrelevant,0,2 - keeping everyone together,1
+252,SS,Three.,87,New,1,4 - making a claim,10
+253,T,Good.,87,Adopted,4,1 - none,0
+254,T,All right.,87,Irrelevant,0,1 - none,0
+255,T,"Now, final one.",87,Irrelevant,0,1 - none,0
+256,T,23 and 46 hundredths.,87,Irrelevant,0,1 - none,0
+257,T,23 and 46 hundredths.,87,Irrelevant,0,1 - none,0
+258,T,This is what we're doing today.,87,Irrelevant,0,1 - none,0
+259,T,This is going to give me an idea of what you guys already know.,87,Irrelevant,0,1 - none,0
+260,T,"I know you can't see that picture very well, but that's on purpose.",87,Irrelevant,0,1 - none,0
+261,T,"I'll say the number again, 23 and 46 hundredths.",87,Irrelevant,0,1 - none,0
+262,T,"This time, on the count of three, you're just going to show me.",87,Irrelevant,0,1 - none,0
+263,T,"One, two, three.",87,Irrelevant,0,1 - none,0
+264,T,All right.,87,Irrelevant,0,1 - none,0
+265,T,"I see a variety of answers, which means that you're going to be learning a lot today, but I also see something to celebrate with a lot of students.",87,Irrelevant,0,1 - none,0
+266,T,A lot ofSSremembered that the word 'and' meant decimal point.,87,Strengthened,2,1 - none,0
+267,T,"Whenever you see a word written or you hear something written, or a number written, and you hear that word 'and,' the 'and' means decimal point.",87,Strengthened,2,1 - none,0
+268,T,Paraphrase that with your partner.,87,Irrelevant,0,2 - keeping everyone together,1
+269,T,Go.,87,Irrelevant,0,2 - keeping everyone together,1
+270,SS,.,87,Irrelevant,0,1 - none,7
+271,T,All right.,87,Irrelevant,0,1 - none,0
+272,T,I'm going to be handing these out.,87,Irrelevant,0,1 - none,0
+273,T,"Take one, pass it around.",87,Irrelevant,0,1 - none,0
+274,T,"Everybody has one, Jackson, grab this stack, Owen, grab this stack and pass it around.",87,Irrelevant,0,1 - none,0
+275,T,Let's take no more than 20 seconds for everybody to have it.,87,Irrelevant,0,1 - none,0
+276,T,Any extras coming back to me?,87,Irrelevant,0,1 - none,0
+277,T,Right.,87,Irrelevant,0,1 - none,0
+278,T,Everybody have one?,87,Irrelevant,0,2 - keeping everyone together,1
+279,S,Yes.,87,Irrelevant,0,1 - none,0
+280,T,You've got a stack coming around still.,87,Irrelevant,0,1 - none,0
+281,T,We've .,87,Irrelevant,0,1 - none,0
+282,T,Is this working?,87,Irrelevant,0,1 - none,0
+283,S,No.,87,Irrelevant,0,1 - none,7
+284,T,I know.,87,Irrelevant,0,1 - none,0
+285,T,That's fine.,87,Irrelevant,0,1 - none,0
+286,T,That's why you're sitting up here.,87,Irrelevant,0,1 - none,0
+287,T,All right.,87,Irrelevant,0,1 - none,0
+288,T,Thank you.,87,Irrelevant,0,1 - none,0
+289,T,This square here represents one.,87,Irrelevant,0,1 - none,0
+290,T,What does the square represent boys and girls?,87,Irrelevant,0,8 - press for  accuracy,5
+291,SS,One.,87,Strengthened,2,4 - making a claim,10
+292,T,"If this square here represents one, what's does the strip represent?",87,New,1,8 - press for  accuracy,5
+293,T,"I want you to think, think, think, think.",87,Irrelevant,0,1 - none,0
+294,T,Don't tell me.,87,Irrelevant,0,1 - none,0
+295,T,Just think.,87,Irrelevant,0,1 - none,0
+296,T,I don't remember where we were with our partners.,87,Irrelevant,0,1 - none,0
+297,T,Let's just say partner with the shorter hair go first.,87,Irrelevant,0,2 - keeping everyone together,1
+298,T,What does this strip represent?,87,Irrelevant,0,8 - press for  accuracy,5
+299,T,"Remember other partner, you are going to paraphrase.",87,Irrelevant,0,1 - none,0
+300,T,I agree.,87,Irrelevant,0,1 - none,0
+301,T,"I think it means whatever, add to or disagree and explain what you think it means.",87,Irrelevant,0,8 - press for  accuracy,5
+302,T,Go.,87,Irrelevant,0,2 - keeping everyone together,1
+303,SS,.,87,Irrelevant,0,1 - none,7
+304,T,"Five, four, three, two, one.",87,Irrelevant,0,1 - none,0
+305,T,"Savannah, what do you think the strip represents if the square is one?",87,Irrelevant,0,8 - press for  accuracy,5
+306,T,sentence.,87,Irrelevant,0,1 - none,0
+307, Savannah ,.,87,Irrelevant,0,1 - none,7
+308,T,Why do you think that?,87,Irrelevant,0,9 - press for reasoning,6
+309, Savannah ,Because .,87,Irrelevant,0,1 - none,7
+310,T,How many of these little squares would fit in the  All right.,87,Irrelevant,0,8 - press for  accuracy,5
+311,T,I am missing lots of active listening to one's friend.,87,Irrelevant,0,1 - none,0
+312,T,Remember we went over that this morning so it should be fresh in our minds that we need to show our thinking.,87,Irrelevant,0,1 - none,0
+313,T,"All right, so I agree.",87,Irrelevant,0,1 - none,0
+314,T,This one represents one.,87,Irrelevant,0,1 - none,0
+315,T,This one would be 10.,87,Irrelevant,0,1 - none,0
+316,T,Then think don't talk what does the big square represent?,87,Irrelevant,0,8 - press for  accuracy,5
+317,T,Long hair partner share first and go.,87,Irrelevant,0,2 - keeping everyone together,1
+318,T,"Okay, five, four, three, two and one.",87,Irrelevant,0,1 - none,0
+319,T,"Audrey, what do you think?",87,Irrelevant,0,8 - press for  accuracy,5
+320, Audrey ,Square C represents a hundred because if we were to draw a line across other digits on  then you'd get ten strips and ten squares,87,New,1,5 - providing evidence/providing reasoning,11
+321,T,"All right, I see lots of active listening thumbs, some that I saw early on.",87,Irrelevant,0,1 - none,0
+322,T,"All right, so this square would represent one hundredth.",87,Strengthened,2,1 - none,0
+323,T,Now are these numbers whole numbers or are they decimals?,87,New,1,8 - press for  accuracy,5
+324,T,"1, 10, 100.",87,Irrelevant,0,1 - none,0
+325,T,You're going to show me your thinking.,87,Irrelevant,0,1 - none,0
+326,T,"If they're a whole number, put your arms up big whole.",87,Irrelevant,0,2 - keeping everyone together,1
+327,T,"If they're decimals, put your arms little because decimals are part of a whole.",87,Irrelevant,0,2 - keeping everyone together,1
+328,T,So when I say go show me your thinking.,87,Irrelevant,0,1 - none,0
+329,T,"Is 1, 10 and 100 are they whole numbers or decimals?",87,Irrelevant,0,8 - press for  accuracy,5
+330,T,Go.,87,Irrelevant,0,2 - keeping everyone together,1
+331,T,I see a mixture but I mostly see whole numbers.,87,Irrelevant,0,1 - none,0
+332,T,"Lennox, explain your thinking.",87,Irrelevant,0,8 - press for  accuracy,5
+333,T,Why do you think it's a whole first?,87,Strengthened,2,9 - press for reasoning,6
+334, Lennox ,I thin it's a whole mainly because,87,Strengthened,2,1 - none,7
+335,T,"So the question was one, 10 and 100.",87,Irrelevant,0,1 - none,0
+336,T,Are they whole numbers or decimals?,87,Irrelevant,0,8 - press for  accuracy,5
+337,T,You say whole numbers so why.,87,Irrelevant,0,9 - press for reasoning,6
+338, Lennox ,Because there is no decimal.,87,Strengthened,2,5 - providing evidence/providing reasoning,11
+339,T,"Okay, do we see decimal points?",87,Irrelevant,0,2 - keeping everyone together,1
+340, Lennox ,No.,87,Refuted,5,7 - context,0
+341,T,"No, that's a good clue.",87,Adopted,4,5 - revoicing,4
+342,T,That was a decimal it probably would need that decimal point.,87,Weakened,3,1 - none,0
+343,T,What did we say a decimal was?,87,Irrelevant,0,8 - press for  accuracy,5
+344,T,Remember what Bailey said?,87,Irrelevant,0,2 - keeping everyone together,1
+345,T,Julissa.,87,Irrelevant,0,2 - keeping everyone together,1
+346,T,That's true but let's think about what Bailey said.,87,Weakened,3,1 - none,0
+347,T,Dylan.,87,Irrelevant,0,1 - none,0
+348, Dylan ,It's a quarter of a dollar?,87,New,1,4 - making a claim,10
+349,T,That's what Josie said.,87,Refuted,5,1 - none,0
+350,T,Remember boys and girls at the beginning of the lesson when we had a fourth is a fraction and 25 cents is a decimal and I asked how are they the same?,87,Irrelevant,0,8 - press for  accuracy,5
+351,T,Talk with your neighbors.,87,Irrelevant,0,2 - keeping everyone together,1
+352,T,See if you can review together what we talked about at the beginning of the lesson.,87,Irrelevant,0,1 - none,0
+353,T,What did we say?,87,Irrelevant,0,8 - press for  accuracy,5
+354,T,We repeated it to each other.,87,Irrelevant,0,1 - none,0
+0,T,"Um, OK, I guess I’d like to one on the board so that everybody  gets to see one. ",88,Irrelevant,0,1 - none,0
+1,T,"OK, could we get everybody to think about one  problem,  the same problem for a minute, and let’s do one of the  
+first five I think that’s what people feel the happiest about. ",88,Irrelevant,0,1 - none,0
+2,T,Who is going to come and explain one?,88,Irrelevant,0,8 - press for  accuracy,5
+3,T,Who has not had a chance to talk to the camera? ,88,Irrelevant,0,2 - keeping everyone together,1
+4,T,"Yeah Mike, why don’t you come up and explain one right up here and explain it.",88,Irrelevant,0,8 - press for  accuracy,5
+5,Mike,What number?,88,Irrelevant,0,1 - none,7
+6,T,"It’s your choice, not one, but two or three or four or five.",88,Irrelevant,0,1 - none,0
+7,Mike,I’ll do number two. ,88,Irrelevant,0,1 - none,7
+8,T," Uh, OK, you see where the… ",88,Irrelevant,0,1 - none,0
+9,Mike,"For, whenever you have a number under the triangle there has to  
+be a pattern, see five and seven, the difference is two. ",88,New,1,5 - providing evidence/providing reasoning,11
+10,Mike,Five plus two is seven. ,88,Strengthened,2,5 - providing evidence/providing reasoning,11
+11,Mike,"Seven plus two is nine, nine plus two is eleven, apparently it’s two, you see here.",88,Strengthened,2,5 - providing evidence/providing reasoning,11
+12,Mike," OK, since two, and of the first number, which is going to be box times two equals, no, plus something… ",88,New,1,5 - providing evidence/providing reasoning,11
+13,Mike,"Zero can go into five, five times, ",88,Weakened,3,5 - providing evidence/providing reasoning,11
+14,T,Well,88,Irrelevant,0,1 - none,0
+15,Mike,"Yeah whatever, so we leave that one out. ",88,Irrelevant,0,5 - providing evidence/providing reasoning,11
+16,Mike,"One goes into seven,  seven times, leave that one out. ",88,Irrelevant,0,5 - providing evidence/providing reasoning,11
+17,Mike,"The two does not go into nine, so   take one out to make it eight, so we’re going to have to have plus  
+one.",88,New,1,5 - providing evidence/providing reasoning,11
+18,Mike, So this two goes into eight. ,88,Strengthened,2,5 - providing evidence/providing reasoning,11
+19,Mike,"Two times four is eight, plus one is nine, so that’s nine.",88,Strengthened,2,5 - providing evidence/providing reasoning,11
+20,Mike," The eleven, take one away and it’s ten, but it doesn’t go into ten.",88,Strengthened,2,5 - providing evidence/providing reasoning,11
+21,Mike," So you take one away so you’re going to have to take one away from eight, so it’s going to be seven",88,Strengthened,2,5 - providing evidence/providing reasoning,11
+22,T," Well, I think some people have an idea that’s a lot easier than that.  ",88,Irrelevant,0,1 - none,0
+23,T,"Uh, could everybody hear what Mike was saying? ",88,Irrelevant,0,2 - keeping everyone together,1
+24,T,"He said he’s  going to start with box times two and I take it everybody agrees  
+with that, isn’t that right? ",88,Irrelevant,0,3 - getting students to relate,2
+25,T,You saw where he got the two? ,88,Irrelevant,0,3 - getting students to relate,2
+26,T,"So, now you want to say where you get the five from",88,Irrelevant,0,8 - press for  accuracy,5
+27,T,"Well, now you want to say where you got the five from. ",88,Irrelevant,0,8 - press for  accuracy,5
+28,T,"Um, now  he has a sort of complicated thing he’s doing here, but I’m  
+wondering if there might not be something easier. ",88,Irrelevant,0,1 - none,0
+29,T,Matt,88,Irrelevant,0,2 - keeping everyone together,1
+30,Matt,"It is box times two, but it is plus five.  ",88,New,1,4 - making a claim,10
+31,Matt,What’s the first number on  the right?,88,Irrelevant,0,3 - asking for more information,9
+32,T,So he says,88,Irrelevant,0,1 - none,0
+33,Matt," Box times two would be fine, but then you add five",88,Strengthened,2,4 - making a claim,10
+34,T,"Yeah Matt, you see where he says he’s getting the five from the  pair zero five, he says that’s the number you want to take. ",88,Adopted,4,1 - none,0
+35,T,You want to write that? ,88,Irrelevant,0,1 - none,0
+36,Mike,So plus five. ,88,Strengthened,2,4 - making a claim,10
+37,Mike,It’ll work. ,88,Strengthened,2,7 - context,0
+38,T, It’ll work.,88,Strengthened,2,4 - restating,3
+39,T,"OK, is everybody happy with that? ",88,Irrelevant,0,3 - getting students to relate,2
+40,T,You all know that?  ,88,Irrelevant,0,2 - keeping everyone together,1
+41,Students,Yeah.,88,Adopted,4,1 - none,7
+42,T,You know that’s a very important set of ideas in mathematics.,88,Irrelevant,0,1 - none,0
+0,T,"Now, you remember when we said if we’re calling the dark green  one, what number name were we giving to red?",89,Irrelevant,0,8 - Press for Accuracy,5
+1,T,Michael?,89,Irrelevant,0,2 - Keeping Everyone Together,1
+2,Michael,One third.,89,New,1,7 - Context,0
+3,T,One third.,89,Adopted,4,4 - Restating,3
+4,T,"Okay and, why, Michael, one more time?",89,Irrelevant,0,9 - Press for Reasoning,6
+5,Michael,"Because, it would take three of the red ones to make, um, one of  the green ones.",89,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+6,T,"Okay, I heard someone say in the back of the room, I was listening,  someone asked a question, someone said, look, we have three red  ones making the green one, why can't we call the red one, one?",89,Weakened,3,9 - Press for Reasoning,6
+7,T,"I  heard someone say that, somebody was very confused by that.",89,Irrelevant,0,1 - None,0
+8,T,"And  we said that, you told me this is a third, is that possible or is it not  possible, can you try to convince me that it’s not possible for the  red one to have the number name one?",89,Strengthened,2,8 - Press for Accuracy,5
+9,Erik,"Oh, I can convince you that it’s possible.",89,Strengthened,2,1 - None,7
+10,T,Michael.,89,Irrelevant,0,2 - Keeping Everyone Together,1
+11,Michael,"It’s possible because there’s white, and two whites equal one red.",89,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+12,T,That wasn't the question.,89,Refuted,5,1 - None,0
+13,T,"I said if you called the dark green one,  what number name do we give the red.",89,Irrelevant,0,1 - None,0
+14,T,You told me one third.,89,Irrelevant,0,1 - None,0
+15,Michael,Yeah.,89,Adopted,4,1 - None,7
+16,T,"And everybody agreed, okay.",89,Irrelevant,0,1 - None,0
+17,T,"Now I'm asking you, if I called the  dark green one, and I called red one third, could red now be one?",89,Weakened,3,2 - Keeping Everyone Together,1
+18,T,I  am calling the dark green one.,89,Irrelevant,0,1 - None,0
+19,Erik,No.,89,Refuted,5,1 - None,7
+20,Erik,Not now.,89,Refuted,5,1 - None,7
+21,T,What is the difference Erik?,89,Irrelevant,0,8 - Press for Accuracy,5
+22,Erik,Not if the dark green is one.,89,Refuted,5,5 - Providing Evidence / Explaining Reasoning,11
+23,Erik,Because if you're comparing the red to  dark green it can't be one.,89,Refuted,5,5 - Providing Evidence / Explaining Reasoning,11
+24,Erik,"But if you're comparing the red to  something else it can be a one, it can be a whole.",89,Weakened,3,5 - Providing Evidence / Explaining Reasoning,11
+25,Erik,"But, if you are  comparing it to something bigger though…",89,Strengthened,2,1 - None,7
+26,T,"Michael, what do you think?",89,Irrelevant,0,8 - Press for Accuracy,5
+27,Michael,"Well, red can’t be a whole, red can’t be one, because the green is  bigger and it takes three of the reds to make one green.",89,Refuted,5,5 - Providing Evidence / Explaining Reasoning,11
+28,T,"Okay, suppose I said I wanted the red to be one, what would that  tell you about the dark green?",89,New,1,8 - Press for Accuracy,5
+29,T,"If I wanted to make it so the red  were one, what would I have to make the dark green to make the  red one?",89,New,1,8 - Press for Accuracy,5
+30,T,"Gregory, is that a hand up, or maybe you’re thinking?",89,Irrelevant,0,2 - Keeping Everyone Together,1
+31,T,Do  you understand my question?,89,Irrelevant,0,2 - Keeping Everyone Together,1
+32,T,"Suppose I wanted to change the  problem, and I wanted now red to be one.",89,Strengthened,2,1 - None,0
+33,T,"Okay, that’s a different  problem, a brand new problem.",89,Irrelevant,0,1 - None,0
+34,T,"Okay, we’re starting again, what  number name would I have to give to green if I wanted red to be  one?",89,Irrelevant,0,8 - Press for Accuracy,5
+35,T,You want to talk about it with your partner for a minute?,89,Irrelevant,0,2 - Keeping Everyone Together,1
+36,Erik,[To Alan] Three wholes?,89,Irrelevant,0,4 - Making a Claim,10
+37,Alan,"Can’t give it a name because it can’t be put into, into two.",89,Weakened,3,4 - Making a Claim,10
+38,Alan,"Because  look, [Alan points to the dark green rod, which is part of a staircase  on his desk.]",89,Irrelevant,0,1 - None,7
+39,Erik,But the dark green is bigger then that.,89,Weakened,3,4 - Making a Claim,10
+40,T,"Okay, suppose I want the red to be one, what number name would I  have to give dark green for red to be one?",89,New,1,8 - Press for Accuracy,5
+41,Erik,"[To Alan] Three wh, three wholes.",89,New,1,4 - Making a Claim,10
+42,Erik,Because if this is a one [He holds  up a red rod],89,Strengthened,2,4 - Making a Claim,10
+43,T,"Hi, Erik.",89,Irrelevant,0,1 - None,0
+44,T,What Erik?,89,Irrelevant,0,2 - Keeping Everyone Together,1
+45,Erik,[Still to Alan] It would be three wholes.,89,Adopted,4,5 - Providing Evidence / Explaining Reasoning,11
+46,Erik,Because if this is a one [He  is holding up a red rod.],89,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+47,T,Right.,89,Adopted,4,2 - Keeping Everyone Together,1
+48,Erik,It takes three to figure this out.,89,Irrelevant,0,4 - Making a Claim,10
+49,Erik,And if all the reds are one.,89,Strengthened,2,4 - Making a Claim,10
+50,T,So dark green would have to be three.,89,Strengthened,2,1 - None,0
+51,Erik,"And there are three, that’ll be three wholes.",89,Strengthened,2,4 - Making a Claim,10
+52,T,"Do you agree, Alan?",89,Irrelevant,0,3 - Getting Students to Relate,2
+53,Alan,[Nodding]  Umm.,89,Adopted,4,1 - None,7
+54,T,"Does that make sense, Alan?",89,Irrelevant,0,2 - Keeping Everyone Together,1
+55,Alan,"Umm, yes, I guess so.",89,Adopted,4,1 - None,7
+56,T,Okay.,89,Irrelevant,0,1 - None,0
+57,Alan,Three wholes [Alan nods to Erik.],89,Strengthened,2,4 - Making a Claim,10
+58,T,"Okay, are you ready to argue that, Erik?",89,Irrelevant,0,2 - Keeping Everyone Together,1
+59,Erik,Yeah.,89,Irrelevant,0,1 - None,7
+60,T,"[to the class]  Okay, I'm hearing two answers.",89,Irrelevant,0,1 - None,0
+61,T,I’ve heard two  answers as I walk around the room.,89,Irrelevant,0,1 - None,0
+62,T,"Okay, let me, let’s, let’s hear, I  have heard two different answers, I’d like to hear both answers.",89,Irrelevant,0,1 - None,0
+63,T,"Ah, let’s see, who wants to give me an answer?",89,Irrelevant,0,8 - Press for Accuracy,5
+64,T,"[Erik and Alan raise  their hands]  I heard, I heard a couple of different answers.",89,Irrelevant,0,1 - None,0
+65,T,Only  this table wants to give me an answer?,89,Irrelevant,0,8 - Press for Accuracy,5
+66,T,I’ve heard a different one.,89,Irrelevant,0,1 - None,0
+67,T,"Okay, Alan?",89,Irrelevant,0,2 - Keeping Everyone Together,1
+68,Alan,Three wholes.,89,Strengthened,2,4 - Making a Claim,10
+69,T,"Nice and loud, Alan.",89,Irrelevant,0,2 - Keeping Everyone Together,1
+70,Alan,Three wholes.,89,Strengthened,2,4 - Making a Claim,10
+71,T,Do you want to tell me why you think so?,89,Irrelevant,0,9 - Press for Reasoning,6
+72,T,Are you all hearing what  Alan says?,89,Irrelevant,0,2 - Keeping Everyone Together,1
+73,Erik,I know.,89,Irrelevant,0,1 - None,7
+74,Erik,I know why.,89,Irrelevant,0,1 - None,7
+75,Alan,"Okay, because the, the…",89,Irrelevant,0,1 - None,7
+76,T,"Ah, you need to talk much louder.",89,Irrelevant,0,2 - Keeping Everyone Together,1
+77,Alan,"Okay, if the red one is considered one [He points to the red rod in  Erik’s model] then the green one is a lot bigger.",89,New,1,5 - Providing Evidence / Explaining Reasoning,11
+78,Alan,"So it would have to  be, it would take three whole ones to make another green, so it  should be considered three wholes.",89,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+79,Erik,"Well, I think, well, if you, if you say that this would be one [He holds  up towards the T one red rod].",89,Irrelevant,0,5 - Providing Evidence / Explaining Reasoning,11
+80,Erik,"This is one, and it takes three  of the one, the one wholes to equal up one of these [He points to a  dark green rod on his desk].",89,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+81,Erik,"And it that’s one whole, umm, one  whole plus one whole plus one whole would equal three wholes.",89,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+82,Erik,So  the green would have to be three wholes.,89,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+83,T,Does that make any sense?,89,Irrelevant,0,2 - Keeping Everyone Together,1
+84,T,Do you understand what Erik is saying?,89,Irrelevant,0,2 - Keeping Everyone Together,1
+85,T,"What do you think, David?",89,Irrelevant,0,3 - Getting Students to Relate,2
+86,David,"Well, I thought the same thing, because the dark green, wait.",89,Adopted,4,5 - Providing Evidence / Explaining Reasoning,11
+87,David,"If red  is one, that would be one whole.",89,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+88,David,"Then the green would have to be,  ah, two more wholes so that would be three wholes.",89,Strengthened,2,5 - Providing Evidence / Explaining Reasoning,11
+89,T,Does anybody think anything else?,89,Irrelevant,0,3 - Getting Students to Relate,2
+90,T,"What I'm hearing David say, and  Alan and Erik, is that if red is one, green is three.",89,Strengthened,2,1 - None,0
+91,T,"How many of you  agree with that, if red is one, green is three?",89,Irrelevant,0,3 - Getting Students to Relate,2
+92,T,How many of you  aren’t sure?,89,Irrelevant,0,3 - Getting Students to Relate,2
+93,T,How many of you aren’t sure?,89,Irrelevant,0,3 - Getting Students to Relate,2
+94,T,How many of you  disagree?,89,Irrelevant,0,3 - Getting Students to Relate,2
+95,T,"Well, we'll see if you understand.",89,Irrelevant,0,1 - None,0
+96,T,"I'll give you another  one, okay?",89,Irrelevant,0,2 - Keeping Everyone Together,1
+0,T,"Okay well, I’ve got some of these that I made up that I am wondering if I can get any of them cause they’re so hard that none of you can do them.'",90,Irrelevant,0,1 - none,0
+1,Jeff,How about if we make something and have it like be impossible?,90,New,1,4 - making a claim,10
+2,T,"Not even Michelle, not anybody, not Ankur not Milin no one not anybody.",90,Irrelevant,0,1 - none,0
+3,Jeff,Like ninety times ninety minus three hundred sixty minus forty-two plus eighteen equals nine.,90,Strengthened,2,5 - providing evidence/providing reasoning,11
+4,Milin,"If it’s impossible, forget it. ",90,Refuted,5,2 - relating to another student,8
+5,Milin,The first one is easy. ,90,Irrelevant,0,2 - relating to another student,8
+6,Milin,It’s right up there.,90,Irrelevant,0,2 - relating to another student,8
+7,S,Do we write both of them?,90,Irrelevant,0,1 - none,7
+8,T,Okay.,90,Irrelevant,0,1 - none,0
+9,T,What? ,90,Irrelevant,0,2 - keeping everyone together,1
+10,T,Yeah.,90,Irrelevant,0,1 - none,0
+11,T,"Would you, yeah write both of the numbers, would you? ",90,Irrelevant,0,1 - none,0
+12,T,"Yeah, put both of the numbers in.",90,Irrelevant,0,1 - none,0
+13,T,"Instead of putting them in the boxes which is going to get messy, why don’t you make the brackets notation and so the first one is certainly 2 and 3.",90,New,1,1 - none,0
+14,T,Isn’t it?,90,Irrelevant,0,2 - keeping everyone together,1
+15,T,Okay.,90,Irrelevant,0,1 - none,0
+16,Milin,Should we go onto the next one?,90,Irrelevant,0,1 - none,7
+17,T,You may as well.,90,Irrelevant,0,1 - none,0
+18,Jeff,Didn’t we do this one already?,90,Irrelevant,0,1 - none,7
+19,T,Yeah talk with one another about it if you want to but it doesn’t sound to me like you probably need to.,90,Irrelevant,0,1 - none,0
+20,Jeff,"Oh, it has to be minus fifty-five has got to be our answer. ",90,New,1,4 - making a claim,10
+21,Romina,Yeah but sixty-one.,90,New,1,2 - relating to another student,8
+22,Jeff,Oh wait! ,90,Irrelevant,0,1 - none,7
+23,Jeff,Maybe this will work. ,90,Irrelevant,0,1 - none,7
+24,Jeff,It has to be something that will end up in a five. ,90,New,1,2 - relating to another student,8
+25,Jeff,Four times [inaudible] equals five.,90,Strengthened,2,5 - providing evidence/providing reasoning,11
+26,Jeff,What times six could possibly equal five?,90,New,1,3 - asking for more information,9
+27,S,Five times five equals twenty-five.,90,Strengthened,2,5 - providing evidence/providing reasoning,11
+28,S,It’s minus fifty-two. ,90,Refuted,5,2 - relating to another student,8
+29,Michelle I,We are three off. ,90,Irrelevant,0,2 - relating to another student,8
+30,Michelle I,What a shame.,90,Irrelevant,0,1 - none,7
+31,Romina,"Okay, Bobby you can [inaudible]",90,Irrelevant,0,1 - none,7
+32,Jeff,"Well, maybe if we add more we will still be. ",90,Irrelevant,0,2 - relating to another student,8
+33,Jeff,"See my question, are you listening to me?",90,Irrelevant,0,2 - relating to another student,8
+34,Michelle I,Yes.,90,Irrelevant,0,2 - relating to another student,8
+35,Jeff,It’s got to equal minus fifty-five. ,90,Strengthened,2,2 - relating to another student,8
+36,Jeff,"What times six in the one space, would equal five?",90,Irrelevant,0,3 - asking for more information,9
+37,Michelle I,It’s got to equal zero.,90,Refuted,5,2 - relating to another student,8
+38,Jeff,Yeah but it has to equal minus fifty-five plus fifty-five equals zero so what times six would equal five in the one spot?,90,Adopted,4,3 - asking for more information,9
+39,Romina,Five times five is twenty-five. ,90,Irrelevant,0,5 - providing evidence/providing reasoning,11
+40,Romina,"Eighty, that’s minus eighty plus fifty-five equals zero.",90,New,1,5 - providing evidence/providing reasoning,11
+41,Jeff,No.,90,Refuted,5,2 - relating to another student,8
+42,S,I got to tell.,90,Irrelevant,0,1 - none,7
+43,S,What?,90,Irrelevant,0,1 - none,7
+44,Jeff,Try nine.,90,New,1,2 - relating to another student,8
+45,Jeff,Try nine.,90,Strengthened,2,2 - relating to another student,8
+46,S,That is.,90,Adopted,4,2 - relating to another student,8
+47,Stephanie,For number two.,90,Irrelevant,0,2 - relating to another student,8
+48,S,It would be four in the one spot.,90,New,1,2 - relating to another student,8
+49,Michelle I,Is one table allowed to work together or is it just? ,90,Irrelevant,0,1 - none,7
+50,Michelle I,Why don’t you try it.,90,Irrelevant,0,2 - relating to another student,8
+51,Stephanie,Okay.,90,Irrelevant,0,1 - none,7
+52,Ankur,I was thinking something else.,90,Irrelevant,0,2 - relating to another student,8
+53,Stephanie,Go ahead Ankur do what you want?,90,Irrelevant,0,3 - asking for more information,9
+54,Jeff,Try three.,90,New,1,2 - relating to another student,8
+55,Jeff,Try three.,90,New,1,2 - relating to another student,8
+56,T,How about the second problem? ,90,Irrelevant,0,8 - press for  accuracy,5
+57,T,"Hum, would you put up your hand if you have that one figured out?",90,Irrelevant,0,2 - keeping everyone together,1
+58,S,It’s five.,90,New,1,4 - making a claim,10
+59,T,"Amy Lynn, what did you get?",90,Irrelevant,0,8 - press for  accuracy,5
+60,AmyLynn,Five.,90,Adopted,4,7 - context,0
+61,T,Five. ,90,Adopted,4,4 - restating,3
+62,T,How about that? ,90,Irrelevant,0,8 - press for  accuracy,5
+63,T,Does five work for the second problem?,90,Irrelevant,0,2 - keeping everyone together,1
+64,Stephanie,Yes.,90,Adopted,4,1 - none,7
+65,S,Yes it does.,90,Adopted,4,2 - relating to another student,8
+66,Jeff,Does three work?,90,New,1,1 - none,7
+67,T,"Okay, various people say that works. ",90,Adopted,4,1 - none,0
+68,T,I guess that’s true.,90,Adopted,4,1 - none,0
+69,T,So let’s keep track of that.,90,Irrelevant,0,1 - none,0
+70,Jeff,Three works right?,90,Adopted,4,4 - making a claim,10
+71,T,For the second one then I’ll write the truth sets here.,90,Irrelevant,0,1 - none,0
+72,T,I won’t try and copy over the equations.,90,Irrelevant,0,1 - none,0
+73,S,Five.,90,Adopted,4,4 - making a claim,10
+74,T,"T I guess, maybe I will.",90,Irrelevant,0,1 - none,0
+75,S,I think I might have number three.,90,Irrelevant,0,4 - making a claim,10
+76,Stephanie,Really?,90,Irrelevant,0,2 - relating to another student,8
+77,S,What do you have?,90,Irrelevant,0,3 - asking for more information,9
+78,S,Seven.,90,New,1,2 - relating to another student,8
+79,Milin,I got the next one too.,90,Irrelevant,0,2 - relating to another student,8
+80,Stephanie,"[Inaudible] forty-nine, ten times seven is seventy.",90,New,1,5 - providing evidence/providing reasoning,11
+81,T,"Now, uh you told me what number works for the second problem.",90,Irrelevant,0,1 - none,0
+82,Stephanie,It works.,90,Adopted,4,4 - making a claim,10
+83,T,Five?,90,Irrelevant,0,2 - keeping everyone together,1
+84,T,Is that the only number that works?,90,New,1,2 - keeping everyone together,1
+85,Michelle I,I got number three.,90,Irrelevant,0,4 - making a claim,10
+86,Milin,Is there another number?,90,New,1,2 - relating to another student,8
+87,Michelle I,Get away from me.,90,Irrelevant,0,1 - none,7
+88,Michael,Seven isn’t it?,90,New,1,2 - relating to another student,8
+89,Michelle I,It’s not.,90,Refuted,5,2 - relating to another student,8
+90,Michael,Yes it is.,90,Adopted,4,2 - relating to another student,8
+91,S,I got three.,90,New,1,2 - relating to another student,8
+92,Milin,Is there another number?,90,Irrelevant,0,2 - relating to another student,8
+93,Michelle I,"That times [inaudible] would be thirty and that’s minus twenty-one plus twenty-one is, it’s three.",90,Adopted,4,5 - providing evidence/providing reasoning,11
+94,Matt,I got number three.,90,Irrelevant,0,2 - relating to another student,8
+95,Milin,I got number three already.,90,Irrelevant,0,2 - relating to another student,8
+96,Milin,Number three is seven. ,90,New,1,2 - relating to another student,8
+97,Milin,Three. ,90,New,1,2 - relating to another student,8
+98,Jeff,I got number three.,90,Irrelevant,0,2 - relating to another student,8
+99,Jeff,I got number three.,90,Irrelevant,0,2 - relating to another student,8
+100,Michelle I,I got number three.,90,Irrelevant,0,2 - relating to another student,8
+101,Jeff,I got number three.,90,Irrelevant,0,2 - relating to another student,8
+102,Milin,I got another number for number three.,90,New,1,2 - relating to another student,8
+103,Stephanie,Hey. ,90,Irrelevant,0,1 - none,7
+104,Stephanie,You got two numbers?,90,Irrelevant,0,2 - relating to another student,8
+105,Milin,Yeah.,90,Adopted,4,2 - relating to another student,8
+106,Michelle I,You can’t take the answers from us.,90,Irrelevant,0,1 - none,7
+107,Jeff,You people cheat man.,90,Irrelevant,0,1 - none,7
+108,Stephanie,Dur.,90,Irrelevant,0,1 - none,7
+109,Stephanie,"Oh duh that makes it a whole much better now, doesn’t it?",90,Irrelevant,0,1 - none,7
+110,Stephanie, We didn’t get it from you. ,90,Irrelevant,0,1 - none,7
+111,Stephanie,We got it from Bobby.,90,Irrelevant,0,1 - none,7
+112,Michelle I,We are all working together.,90,Irrelevant,0,1 - none,7
+113,Stephanie,I’m not sure that makes it better.,90,Irrelevant,0,1 - none,7
+114,Jeff,I can’t believe it wasn’t working before.,90,Irrelevant,0,1 - none,7
+115,Michelle I,Let’s see what is fifteen minus sixteen.,90,Irrelevant,0,3 - asking for more information,9
+116,Milin,Hey you. ,90,Irrelevant,0,1 - none,7
+117,Milin,I said that first.,90,Irrelevant,0,1 - none,7
+118,Michael,Nine minus.,90,Irrelevant,0,2 - relating to another student,8
+119,Stephanie,Would you people mind and want to act like civilized human beings.,90,Irrelevant,0,1 - none,7
+120,Jeff,Why don’t you?,90,Irrelevant,0,1 - none,7
+121,Romina,There is three pages.,90,Irrelevant,0,1 - none,7
+122,Stephanie,Milin can you keep your hands straight in the air or do you have to go like this?,90,Irrelevant,0,1 - none,7
+123,T,Okay.,90,Irrelevant,0,1 - none,0
+124,T,Did everybody agree with this for that third problem?,90,Irrelevant,0,3 - getting students to relate,2
+125,T,Seven works.,90,New,1,1 - none,0
+126,T,Is that right?,90,Irrelevant,0,2 - keeping everyone together,1
+127,Milin,"Yeah, I got another one.",90,New,1,2 - relating to another student,8
+128,Jeff,Did anyone try six yet? ,90,New,1,3 - asking for more information,9
+129,Jeff,Try eleven. ,90,New,1,2 - relating to another student,8
+130,Jeff,Try eleven. ,90,Strengthened,2,2 - relating to another student,8
+131,Jeff,Start with eleven. ,90,Irrelevant,0,2 - relating to another student,8
+132,Jeff,"You do twelve, you do thirteen.",90,Irrelevant,0,2 - relating to another student,8
+133,S,I’m eleven.,90,Irrelevant,0,2 - relating to another student,8
+134,Jeff,I’ve got eleven. ,90,Adopted,4,2 - relating to another student,8
+135,Jeff,You do twelve.,90,Irrelevant,0,2 - relating to another student,8
+136,Stephanie,Are we working together?,90,Irrelevant,0,1 - none,7
+137,Matt,Yes we are.,90,Irrelevant,0,1 - none,7
+138,Stephanie,"Okay, well six doesn’t work for the next problem it’s too low so it’s not enough so I’m gonna try seven.",90,New,1,2 - relating to another student,8
+139,Matt,I’ll try eight.,90,New,1,2 - relating to another student,8
+140,Michael,Nine times thirty.,90,Irrelevant,0,2 - relating to another student,8
+141,Michael,Nine times thirty.,90,Irrelevant,0,2 - relating to another student,8
+142,Stephanie,Try forty-nine.,90,New,1,2 - relating to another student,8
+143,Michael,Hold on.,90,Irrelevant,0,1 - none,7
+144,T,Okay. ,90,Irrelevant,0,1 - none,0
+145,T,I don’t know if you can hear what Milin said.,90,Irrelevant,0,1 - none,0
+146,S,"This has to be more than ten or else it’s gonna be eleven, eleven minus ten.",90,New,1,4 - making a claim,10
+147,Jeff,"Yo, I’ll do ten. ",90,Irrelevant,0,2 - relating to another student,8
+148,Jeff,You do eleven. ,90,Irrelevant,0,2 - relating to another student,8
+149,Jeff,You do three.,90,Irrelevant,0,2 - relating to another student,8
+150,Jeff,I mean thirteen.,90,Irrelevant,0,2 - relating to another student,8
+151,Michelle I,Nine minus thirty.,90,Irrelevant,0,2 - relating to another student,8
+152,Stephanie,"No dur, I made a mistake. ",90,Irrelevant,0,1 - none,7
+153,Stephanie,Just wait a minute. ,90,Irrelevant,0,1 - none,7
+154,Stephanie,Six might work.,90,New,1,2 - relating to another student,8
+155,S,Fifteen.,90,New,1,2 - relating to another student,8
+156,Michael,Nine minus thirty is a negative number.,90,New,1,2 - relating to another student,8
+157,Michelle I,It is suppose to be a negative number.,90,Adopted,4,2 - relating to another student,8
+158,S,No it doesn’t work.,90,Refuted,5,2 - relating to another student,8
+159,Stephanie,"No it’s not thirty six because when you add them together, when you subtract them you get a four here and it has to be a two here.",90,New,1,5 - providing evidence/providing reasoning,11
+160,Stephanie, I didn’t finish it yet because I made a mistake on number six and I did six.,90,Irrelevant,0,5 - providing evidence/providing reasoning,11
+161,Stephanie, So I’ll do seven. ,90,Irrelevant,0,5 - providing evidence/providing reasoning,11
+162,Stephanie,"Okay, you do seven. ",90,Irrelevant,0,2 - relating to another student,8
+163,Stephanie,I’ll do eight.,90,Irrelevant,0,2 - relating to another student,8
+164,Michelle I,It’s three. ,90,New,1,2 - relating to another student,8
+165,Michelle I,I told you it’s three.,90,Strengthened,2,2 - relating to another student,8
+166,Jeff,Where did you get more than ten? ,90,Irrelevant,0,3 - asking for more information,9
+167,Jeff,It’s three but I think it’s more than ten.,90,Weakened,3,2 - relating to another student,8
+168,Michael,It’s not more than ten or else it would be not a negative number.,90,Refuted,5,5 - providing evidence/providing reasoning,11
+169,Michelle I,Yes it’s got to be negative.,90,Adopted,4,2 - relating to another student,8
+170,Jeff,Let’s look at the next page.,90,Irrelevant,0,1 - none,7
