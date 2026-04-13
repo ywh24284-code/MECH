@@ -6,7 +6,7 @@ PLM基线模型训练脚本 (Group A)
 - BERT-base
 - RoBERTa-large
 
-使用与混合模型相同的Prompt-tuning式输入 ([TEACHER], [CURRENT] 等)
+使用与混合模型相同的Prompt-tuning式输入
 全量Fine-tuning，单任务观点演化分类
 """
 
@@ -29,23 +29,12 @@ import sys
 
 warnings.filterwarnings('ignore')
 
-# 设置中文显示
 plt.rcParams['font.sans-serif'] = ['SimHei', 'Arial Unicode MS', 'DejaVu Sans']
 plt.rcParams['axes.unicode_minus'] = False
 
-# 添加父目录到路径以导入数据集类
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-
-# =============================================================================
-# 1. 数据集（复用多任务数据集，但只使用OE标签）
-# =============================================================================
-
 class OpinionEvolutionDataset(Dataset):
-    """
-    观点演化数据集 (单任务版本)
-    使用与混合模型相同的Prompt-tuning输入格式
-    """
     
     def __init__(
         self,
@@ -62,14 +51,11 @@ class OpinionEvolutionDataset(Dataset):
         self.context_window = context_window
         self.use_turn_indicators = use_turn_indicators
         
-        # 教师名字集合
         self.teacher_names = {'T', 'Teacher', 'Ms. G', 'Mrs. G'}
-        
-        # 读取数据
+    
         print(f"正在加载数据: {csv_file} ...")
         df = pd.read_csv(csv_file)
         
-        # 检查必要的列
         required_cols = ['Sentence', 'Speaker', 'label']
         missing_cols = [col for col in required_cols if col not in df.columns]
         if missing_cols:
@@ -106,7 +92,6 @@ class OpinionEvolutionDataset(Dataset):
         
         print(f"加载完成。有效样本数: {len(self.samples)}")
         
-        # 统计标签分布
         print(f"\n观点演化标签分布:")
         unique_labels, counts = np.unique(self.all_opinion_labels, return_counts=True)
         for label, count in zip(unique_labels, counts):
@@ -171,11 +156,6 @@ class OpinionEvolutionDataset(Dataset):
             'label': torch.tensor(sample['opinion_label'], dtype=torch.long),
         }
 
-
-# =============================================================================
-# 2. PLM基线模型
-# =============================================================================
-
 class PLMClassifier(nn.Module):
     """
     PLM基线分类器
@@ -201,24 +181,15 @@ class PLMClassifier(nn.Module):
     def forward(self, input_ids, attention_mask):
         outputs = self.encoder(input_ids=input_ids, attention_mask=attention_mask)
         
-        # 兼容不同模型的输出格式
-        # BERT/RoBERTa有pooler_output，DeBERTa没有
         if hasattr(outputs, 'pooler_output') and outputs.pooler_output is not None:
             pooled_output = outputs.pooler_output
         else:
-            # DeBERTa等模型：使用[CLS] token (第一个token)
             pooled_output = outputs.last_hidden_state[:, 0, :]
         
         logits = self.classifier(pooled_output)
         return logits
 
-
-# =============================================================================
-# 3. 训练和评估函数
-# =============================================================================
-
 def train_epoch(model, dataloader, optimizer, scheduler, device, criterion):
-    """训练一个epoch"""
     model.train()
     total_loss = 0
     all_preds = []
@@ -291,11 +262,6 @@ def evaluate(model, dataloader, device, criterion):
         'labels': all_labels
     }
 
-
-# =============================================================================
-# 4. 早停
-# =============================================================================
-
 class EarlyStopping:
     def __init__(self, patience=5, min_delta=0.001):
         self.patience = patience
@@ -318,11 +284,6 @@ class EarlyStopping:
             if self.counter >= self.patience:
                 return True
             return False
-
-
-# =============================================================================
-# 5. 主训练流程
-# =============================================================================
 
 def main():
     parser = argparse.ArgumentParser(description='PLM基线模型训练')
