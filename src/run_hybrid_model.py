@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 """
 混合模型快速启动脚本
-
-用法:
-  python3 run_hybrid_model.py --mode train          # 训练判别模型
-  python3 run_hybrid_model.py --mode test           # 测试混合模型(单句)
-  python3 run_hybrid_model.py --mode batch          # 批量处理CSV
-  python3 run_hybrid_model.py --mode eval           # 评估性能
 """
 
 import argparse
@@ -19,10 +13,8 @@ import seaborn as sns
 from pathlib import Path
 from transformers import AutoTokenizer, AutoModel, AutoConfig
 
-# 添加当前目录到路径
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-# 设置中文显示
 plt.rcParams['font.sans-serif'] = ['SimHei', 'Arial Unicode MS', 'DejaVu Sans']
 plt.rcParams['axes.unicode_minus'] = False
 
@@ -33,13 +25,11 @@ def train_discriminative_model(data_dir='dataset_split_result_v4'):
     print("Step 1: 训练判别模型")
     print("=" * 80)
 
-    # 检查数据是否存在
     if not os.path.exists(data_dir):
         print(f"[错误] 数据目录不存在: {data_dir}")
         print("请确保数据已准备好")
         return False
 
-    # 运行训练脚本
     import discriminative_model_training
     try:
         discriminative_model_training.main()
@@ -55,14 +45,12 @@ def train_discriminative_model(data_dir='dataset_split_result_v4'):
 
 
 def test_single_prediction():
-    """测试单句预测"""
     print("=" * 80)
     print("Step 2: 测试混合模型 (单句预测)")
     print("=" * 80)
 
     from hybrid_opinion_classifier import HybridOpinionClassifier
 
-    # 检查模型是否存在
     model_dir = "../discriminative_model_outputs_v4_fix"
     model_file = os.path.join(model_dir, 'best_model.pth')
     config_file = os.path.join(model_dir, 'config.json')
@@ -77,17 +65,16 @@ def test_single_prediction():
         print("请先运行: python3 run_hybrid_model.py --mode train")
         return False
 
-    # 初始化分类器
     print("\n正在加载模型...")
     classifier = HybridOpinionClassifier(
         discriminative_model_dir=model_dir,
         use_generative=True,
         generative_model="deepseek-v3",
-        cascade_threshold=0.85,  # 一般类别的高置信度阈值
-        cascade_threshold_irrelevant=0.75,  # Irrelevant专用阈值（更低，节省成本！）
-        decision_threshold=0.7,  # 慢速通道的联合决策阈值
-        topk_threshold=0.2,  # Top-K阈值（更容易采纳生成模型）
-        prefer_generative=True,  # 优先采纳生成模型（因为判别模型Acc=67.91%较低）
+        cascade_threshold=0.85,
+        cascade_threshold_irrelevant=0.75,  
+        decision_threshold=0.7,  
+        topk_threshold=0.2, 
+        prefer_generative=True,  
         context_window=5
     )
 
@@ -117,7 +104,6 @@ def test_single_prediction():
         print(f"\n【示例 {i}】")
         print(f"输入: [{example['speaker']}] {example['sentence']}")
 
-        # 确定previous_speaker
         prev_speaker = example['context'][-1]['speaker'] if example['context'] else None
 
         result = classifier.classify_single(
@@ -148,19 +134,16 @@ def test_single_prediction():
 
 
 def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir=None, enable_risk_routing='auto'):
-    """批量处理CSV文件"""
     print("=" * 80)
     print("Step 3: 批量处理CSV文件")
     print("=" * 80)
 
     from hybrid_opinion_classifier import HybridOpinionClassifier
 
-    # 配置
     if model_dir is None:
-        model_dir = "../discriminative_model_outputs_v4_fix"  # 默认路径
+        model_dir = "../discriminative_model_outputs_v4_fix" 
     input_csv = f"{data_dir}/test.csv"
 
-    # 根据模型目录生成输出文件名
     if output_dir:
         os.makedirs(output_dir, exist_ok=True)
         output_csv = f"{output_dir}/hybrid_predictions.csv"
@@ -169,7 +152,6 @@ def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir
     else:
         output_csv = "../hybrid_predictions.csv"
 
-    # 检查文件
     if not os.path.exists(input_csv):
         print(f"[错误] 输入文件不存在: {input_csv}")
         return False
@@ -187,23 +169,20 @@ def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir
         print("请先运行: python3 run_hybrid_model.py --mode train")
         return False
 
-    # 读取数据，分析课堂分布
     df = pd.read_csv(input_csv)
 
-    use_generative = True  # 默认值
+    use_generative = True 
 
     if 'class' in df.columns:
         classes = df['class'].unique()
         print(f"\n数据集包含 {len(classes)} 堂课")
         print(f"总样本数: {len(df)}")
 
-        # 显示每堂课的样本数
         class_counts = df['class'].value_counts().sort_index()
         print(f"\n前10堂课的样本分布:")
         for cls, count in class_counts.head(10).items():
             print(f"  课堂 {cls}: {count} 条")
 
-        # 询问处理范围
         print("\n" + "=" * 80)
         print("选择处理模式:")
         print("  1. 测试单堂课（快速测试，低成本）")
@@ -215,7 +194,6 @@ def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir
         choice = input("\n请选择模式 (1/2/3/4): ").strip()
 
         if choice == '1':
-            # 测试单堂课
             class_id = input(f"请输入要测试的课堂ID (例如 {classes[0]}): ").strip()
             try:
                 class_id = int(class_id)
@@ -231,7 +209,6 @@ def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir
                 return False
 
         elif choice == '2':
-            # 测试前N堂课
             n = input("请输入要测试的课堂数量 (例如 3): ").strip()
             try:
                 n = int(n)
@@ -246,7 +223,6 @@ def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir
                 return False
 
         elif choice == '3':
-            # 全部数据
             df_subset = df.copy()
             use_generative = True
             confirm = input(f"\n⚠️  将处理全部 {len(df)} 条样本，可能产生较高API费用。确认? (yes/no): ").strip().lower()
@@ -255,7 +231,6 @@ def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir
                 return False
 
         elif choice == '4':
-            # 仅判别模型
             df_subset = df.copy()
             use_generative = False
             print(f"\n将使用仅判别模型处理全部 {len(df)} 条样本（免费）")
@@ -264,19 +239,15 @@ def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir
             print("[错误] 无效的选择")
             return False
     else:
-        # 没有class列，处理全部
         df_subset = df.copy()
-        use_generative = False  # 默认不开生成模型以免费钱，除非你确信要开
+        use_generative = False 
         print(f"\n数据集无class列，将处理全部 {len(df)} 条样本")
         use_gen_input = input("是否启用生成模型? (y/n): ").strip().lower()
         if use_gen_input == 'y':
             use_generative = True
 
-    # =========================================================
-    # 【新增】配置模式选择 (注意：这里的缩进必须和上面的 if/else 同级)
-    # =========================================================
-    use_knn_icl = False  # 默认不启用 kNN-ICL
-    knn_datastore_path = "师哥的实验/knn_datastore.npz"
+    use_knn_icl = False
+    knn_datastore_path = "./knn_datastore.npz"
     knn_k = 3
 
     if use_generative:
@@ -289,16 +260,13 @@ def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir
         mode_choice = input("请选择 (1/2/3) [默认1]: ").strip()
 
         if mode_choice == '2':
-            # 强制全量调用 LLM：把级联阈值设得无限高
             c_thresh = 2.0
             c_thresh_irr = 2.0
             print("\n>> 已启用【强制全量模式】：将对所有样本调用 DeepSeek")
         elif mode_choice == '3':
-            # kNN-ICL 增强模式
             c_thresh = 0.96
             c_thresh_irr = 0.80
             use_knn_icl = True
-            # 检查向量库是否存在
             if not os.path.exists(knn_datastore_path):
                 print(f"\n[警告] kNN 向量库不存在: {knn_datastore_path}")
                 print("请先运行: python 师哥的实验/run_knn_icl.py --step 1")
@@ -315,10 +283,6 @@ def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir
             if use_knn_icl:
                 print(f"\n>> 已启用【kNN-ICL 增强模式】：将检索 Top-{knn_k} 相似示例")
         else:
-            # 标准混合模式 - 【高阈值策略】
-            # 100%数据模型需要更高阈值以保证快速通道质量
-            # Irrelevant: 0.80 (保证高准确率)
-            # Content:    0.96 (严格筛选，让难样本走LLM+对话行为先验)
             c_thresh = 0.96
             c_thresh_irr = 0.80
             print(f"\n>> 已启用【标准混合模式】：高阈值策略 (Content>{c_thresh}, Irr>{c_thresh_irr})")
@@ -326,14 +290,11 @@ def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir
         c_thresh = 0.96
         c_thresh_irr = 0.80
 
-    # =========================================================
-    # 【策略B: 性能优先 - 自适应阈值调整】根据数据量调整
-    # =========================================================
     if model_dir and ('fewshot' in model_dir or '20pct' in model_dir or '40pct' in model_dir or 
                       '60pct' in model_dir or '80pct' in model_dir):
         print("\n>> 检测到少样本模型，应用策略B（性能优先）...")
         
-        # 从目录名提取数据量标识
+
         if '20pct' in model_dir:
             base_threshold = 0.75
             irr_threshold = 0.70
@@ -361,24 +322,19 @@ def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir
             data_pct = None
             print(f">> 少样本模式 (通用): 高阈值策略 (Content>{base_threshold}, Irr>{irr_threshold})")
         
-        # 应用调整后的阈值
         c_thresh = base_threshold
         c_thresh_irr = irr_threshold
         
         if data_pct:
             print(f"   预期 API 调用率: ~{100 - (data_pct * 0.3):.0f}% (性能优先策略)")
     elif model_dir and 'singletask' not in model_dir:
-        # 全量模型 - 使用标准高阈值
         c_thresh = 0.95
         c_thresh_irr = 0.85
         print(f"\n>> 全量模型: 标准高阈值策略 (Content>{c_thresh}, Irr>{c_thresh_irr})")
-
-    # 初始化分类器
     print("\n正在加载模型...")
     
-    # 【新增】根据命令行参数决定是否启用风险路由
+  
     if enable_risk_routing == 'auto':
-        # 自动检测：稍后由 HybridOpinionClassifier 根据模型类型决定
         final_enable_risk_routing = True  # 默认启用
         print(f">> 风险路由: 自动模式 (将根据模型类型决定)")
     elif enable_risk_routing == 'true':
@@ -394,21 +350,19 @@ def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir
         generative_model="deepseek-v3",
         cascade_threshold=c_thresh,
         cascade_threshold_irrelevant=c_thresh_irr,
-        decision_threshold=0.0,  # 【设为0.0】因为新的 make_decision 逻辑不再依赖此阈值进行反转
-        topk_threshold=0.0,  # 【设为0.0】同上，主要依赖策略逻辑
-        prefer_generative=True,  # 始终优先生成模型
+        decision_threshold=0.0,  
+        topk_threshold=0.0, 
+        prefer_generative=True,
         context_window=5,
-        use_knn_icl=use_knn_icl,  # 【新增】kNN-ICL 开关
-        knn_datastore_path=knn_datastore_path if use_knn_icl else None,  # 【新增】向量库路径
-        knn_k=knn_k,  # 【新增】Top-K 数量
-        enable_risk_routing=final_enable_risk_routing  # 【新增】风险路由开关
+        use_knn_icl=use_knn_icl,
+        knn_datastore_path=knn_datastore_path if use_knn_icl else None,
+        knn_k=knn_k, 
+        enable_risk_routing=final_enable_risk_routing
     )
 
-    # 保存子集到临时文件
     temp_csv = "../temp_subset.csv"
     df_subset.to_csv(temp_csv, index=False)
 
-    # 批量处理
     print(f"\n正在处理...")
     try:
         classifier.classify_file(
@@ -416,7 +370,7 @@ def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir
             output_csv=output_csv,
             text_column='Sentence',
             speaker_column='Speaker',
-            label_column='label',  # 你的数据列名是 label 还是 opinion-tag? 根据实际情况自动调整
+            label_column='label',
             context_window=5
         )
     except Exception as e:
@@ -424,7 +378,6 @@ def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir
         import traceback
         traceback.print_exc()
 
-    # 删除临时文件
     if os.path.exists(temp_csv):
         os.remove(temp_csv)
 
@@ -433,20 +386,15 @@ def batch_process(model_dir=None, data_dir='dataset_split_result_v4', output_dir
     print(f"  输出文件: {output_csv}")
     print(f"  处理样本数: {len(df_subset)}")
     print("=" * 80)
-
     return True
 
 
 def evaluate_performance(output_dir=None):
-    """评估性能（增强版：混淆矩阵、Macro-F1等）"""
     print("=" * 80)
     print("Step 4: 评估混合模型性能")
     print("=" * 80)
 
-    # 自动查找最新的结果文件（按修改时间排序）
     import glob
-
-    # 根据是否指定output_dir来搜索文件
     if output_dir:
         search_patterns = [
             f"{output_dir}/hybrid_predictions*.csv",
@@ -454,8 +402,8 @@ def evaluate_performance(output_dir=None):
         ]
     else:
         search_patterns = [
-            "../results_*/hybrid_predictions*.csv",  # 新格式
-            "../hybrid_predictions*.csv"  # 旧格式
+            "../results_*/hybrid_predictions*.csv",  
+            "../hybrid_predictions*.csv"  
         ]
 
     files = []
@@ -468,69 +416,51 @@ def evaluate_performance(output_dir=None):
         print("请先运行: python 师哥的实验/run_hybrid_model.py --mode batch")
         return False
 
-    # 选择最新的文件
     result_csv = max(files, key=os.path.getmtime)
 
-    print(f"\n📂 分析文件: {result_csv}")
+    print(f"\n分析文件: {result_csv}")
     print(f"   文件大小: {os.path.getsize(result_csv) / 1024:.1f} KB")
 
-    # 读取结果
+
     df = pd.read_csv(result_csv)
-    print(f"📊 数据集大小: {len(df)}")
+    print(f"数据集大小: {len(df)}")
 
     if 'true_label' not in df.columns or 'final_label' not in df.columns:
         print("[错误] 缺少必要的列: true_label 或 final_label")
         return False
-
-    # 导入sklearn用于计算指标
     from sklearn.metrics import (
         accuracy_score, precision_recall_fscore_support,
         confusion_matrix, classification_report, matthews_corrcoef
     )
     from sklearn.preprocessing import LabelEncoder
-
     y_true = df['true_label']
     y_pred = df['final_label']
-
-    # ========== 1. 整体性能 ==========
+ 
     print("\n" + "=" * 80)
-    print("📈 整体性能指标")
+    print("整体性能指标")
     print("=" * 80)
-
     accuracy = accuracy_score(y_true, y_pred)
 
-    # 计算 MCC (需要数值标签)
     label_encoder = LabelEncoder()
-    label_encoder.fit(list(y_true) + list(y_pred))  # 拟合所有可能的标签
+    label_encoder.fit(list(y_true) + list(y_pred)) 
     y_true_encoded = label_encoder.transform(y_true)
     y_pred_encoded = label_encoder.transform(y_pred)
     mcc = matthews_corrcoef(y_true_encoded, y_pred_encoded)
 
-    # 计算宏平均和微平均
     macro_precision, macro_recall, macro_f1, _ = precision_recall_fscore_support(
         y_true, y_pred, average='macro', zero_division=0
     )
-    # 注意: 在多分类问题中,微平均精确率=召回率=F1=准确率
     micro_precision, micro_recall, micro_f1, _ = precision_recall_fscore_support(
         y_true, y_pred, average='micro', zero_division=0
     )
-
     print(f"  准确率 (Accuracy):     {accuracy:.4f} ({accuracy * 100:.2f}%)")
     print(f"  MCC (Matthews相关系数): {mcc:.4f}")
     print(f"  宏平均精确率 (Macro Precision): {macro_precision:.4f}")
     print(f"  宏平均召回率 (Macro Recall):    {macro_recall:.4f}")
     print(f"  宏平均F1 (Macro F1):            {macro_f1:.4f}")
-    # 微平均在多分类中等于准确率,不单独显示以避免冗余
-    # print(f"  微平均精确率 (Micro Precision): {micro_precision:.4f}")
-    # print(f"  微平均召回率 (Micro Recall):    {micro_recall:.4f}")
-    # print(f"  微平均F1 (Micro F1):            {micro_f1:.4f}")
-
-    # ========== 2. 每类别详细指标 ==========
     print("\n" + "=" * 80)
-    print("📋 每类别性能指标")
+    print("每类别性能指标")
     print("=" * 80)
-
-    # 获取所有标签
     labels = ['Irrelevant', 'New', 'Strengthened', 'Weakened', 'Adopted', 'Refuted']
     present_labels = [l for l in labels if l in y_true.values or l in y_pred.values]
 
@@ -543,18 +473,15 @@ def evaluate_performance(output_dir=None):
 
     for i, label in enumerate(present_labels):
         print(f"{label:<15} {precision[i]:<10.4f} {recall[i]:<10.4f} {f1[i]:<10.4f} {support[i]:<8}")
-
     print("-" * 60)
     print(f"{'宏平均':<15} {precision.mean():<10.4f} {recall.mean():<10.4f} {f1.mean():<10.4f} {support.sum():<8}")
 
-    # ========== 3. 混淆矩阵 ==========
     print("\n" + "=" * 80)
-    print("🔢 混淆矩阵")
+    print("混淆矩阵")
     print("=" * 80)
 
     cm = confusion_matrix(y_true, y_pred, labels=present_labels)
 
-    # 打印混淆矩阵头部
     header = "真实\\预测"
     print(f"\n{header:<15}", end="")
     for label in present_labels:
@@ -562,18 +489,12 @@ def evaluate_performance(output_dir=None):
     print()
     print("-" * (15 + 12 * len(present_labels)))
 
-    # 打印混淆矩阵内容
     for i, label in enumerate(present_labels):
         print(f"{label:<15}", end="")
         for j in range(len(present_labels)):
             print(f"{cm[i][j]:<12}", end="")
         print()
 
-    # ========== 3.1 混淆矩阵可视化 ==========
-    # 保存混淆矩阵图片到结果目录
-    output_dir = os.path.dirname(result_csv)
-
-    # 绘制原始计数的混淆矩阵
     plt.figure(figsize=(12, 10))
     sns.heatmap(
         cm,
@@ -596,7 +517,6 @@ def evaluate_performance(output_dir=None):
     print(f"\n✓ 混淆矩阵(计数)已保存: {cm_count_path}")
     plt.close()
 
-    # 绘制归一化的混淆矩阵（按行归一化，显示召回率）
     cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
     plt.figure(figsize=(12, 10))
@@ -623,10 +543,9 @@ def evaluate_performance(output_dir=None):
     print(f"✓ 混淆矩阵(归一化)已保存: {cm_norm_path}")
     plt.close()
 
-    # ========== 4. 决策策略分析 ==========
     if 'strategy' in df.columns:
         print("\n" + "=" * 80)
-        print("🎯 决策策略分析")
+        print("决策策略分析")
         print("=" * 80)
 
         strategy_counts = df['strategy'].value_counts()
@@ -641,10 +560,9 @@ def evaluate_performance(output_dir=None):
             acc = (strategy_df['true_label'] == strategy_df['final_label']).mean()
             print(f"{strategy:<30} {count:<10} {pct:<10.1f}% {acc:<10.4f}")
 
-    # ========== 5. 判别模型置信度分析 ==========
     if 'disc_confidence' in df.columns:
         print("\n" + "=" * 80)
-        print("📊 判别模型置信度分析")
+        print("判别模型置信度分析")
         print("=" * 80)
 
         correct_mask = (df['true_label'] == df['final_label'])
@@ -658,7 +576,6 @@ def evaluate_performance(output_dir=None):
         print(f"\n  正确预测平均置信度: {df[correct_mask]['disc_confidence'].mean():.4f}")
         print(f"  错误预测平均置信度: {df[~correct_mask]['disc_confidence'].mean():.4f}")
 
-        # 按置信度区间统计
         print(f"\n  置信度区间分布:")
         bins = [0, 0.5, 0.7, 0.8, 0.9, 1.0]
         for i in range(len(bins) - 1):
@@ -668,85 +585,58 @@ def evaluate_performance(output_dir=None):
                 acc = (df[mask]['true_label'] == df[mask]['final_label']).mean()
                 print(f"    [{bins[i]:.1f}, {bins[i + 1]:.1f}): {count:>4} 样本, 准确率 {acc:.4f}")
 
-    # ========== 6. 判别 vs 生成模型对比 ==========
     if 'disc_label' in df.columns and 'gen_label' in df.columns:
         print("\n" + "=" * 80)
-        print("⚖️  判别模型 vs 生成模型对比")
+        print(" 判别模型 vs 生成模型对比")
         print("=" * 80)
 
-        # 计算判别模型单独的准确率
         disc_acc = (df['disc_label'] == df['true_label']).mean()
         print(f"\n  判别模型单独准确率: {disc_acc:.4f} ({disc_acc * 100:.2f}%)")
 
-        # 计算生成模型单独的准确率（排除NaN）
         gen_mask = df['gen_label'].notna()
         if gen_mask.sum() > 0:
             gen_acc = (df[gen_mask]['gen_label'] == df[gen_mask]['true_label']).mean()
             print(f"  生成模型单独准确率: {gen_acc:.4f} ({gen_acc * 100:.2f}%)")
 
-        # 混合模型准确率
         hybrid_acc = accuracy
         print(f"  混合模型准确率:     {hybrid_acc:.4f} ({hybrid_acc * 100:.2f}%)")
 
         improvement = (hybrid_acc - disc_acc) * 100
-        print(f"\n  ✨ 混合模型提升: {improvement:+.2f} 个百分点")
+        print(f"\n  混合模型提升: {improvement:+.2f} 个百分点")
 
     print("\n" + "=" * 80)
     print("✓ 评估完成!")
     print("=" * 80)
-
     return True
 
 
-
-
 def run_group_experiments(model_dir=None, data_dir='dataset_split_result_v4', base_output_dir='results_groups'):
-    """
-    运行三组对比实验以验证对话行为的辅助作用
-    
-    第一组 (Baseline): 单任务判别 + 纯混合
-      - 配置：单任务模型，不传 act_hint，不开启 Risk Routing
-      - 逻辑：模型只能看句子表面意思
-    
-    第二组 (Proposed): 双任务判别 + 风险路由
-      - 配置：多任务模型，不传 act_hint，开启 Risk Routing
-      - 逻辑：模型利用预测出的 DA 概率分布来拦截"疑似观点"，防止漏判。这是你的核心方法
-    
-    第三组 (Oracle): 双任务判别 + Oracle Prompt 注入
-      - 配置：多任务模型，传入真实标签给 act_hint，开启 Risk Routing
-      - 逻辑：上帝模式。我们直接把标准答案里的"意图"告诉 LLM
-    """
     print("=" * 80)
-    print("🔬 三组对比实验：验证对话行为对观点演化的辅助作用")
+    print("三组对比实验：验证对话行为对观点演化的辅助作用")
     print("=" * 80)
     
     from hybrid_opinion_classifier import HybridOpinionClassifier
     import time
     from datetime import datetime
     
-    # 创建基础输出目录
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     base_output_dir = f"{base_output_dir}_{timestamp}"
     os.makedirs(base_output_dir, exist_ok=True)
     
-    # 测试数据路径
     input_csv = f"{data_dir}/test.csv"
     if not os.path.exists(input_csv):
-        # 如果是已经处理好的完整数据集
+  
         input_csv = "../temp_subset.csv"
         if not os.path.exists(input_csv):
             print(f"[错误] 未找到测试数据: {input_csv}")
             return False
     
-    print(f"\n📂 数据路径: {input_csv}")
-    print(f"📁 输出目录: {base_output_dir}")
-    
-    # 读取数据统计
+    print(f"\n 数据路径: {input_csv}")
+    print(f" 输出目录: {base_output_dir}")
+
     df = pd.read_csv(input_csv)
     total_samples = len(df)
-    print(f"📊 总样本数: {total_samples}")
-    
-    # 确认是否继续
+    print(f" 总样本数: {total_samples}")
     print("\n" + "=" * 80)
     print("实验配置概览:")
     print("  Group 1 (Baseline):  单任务模型 + 不启用风险路由")
@@ -754,25 +644,21 @@ def run_group_experiments(model_dir=None, data_dir='dataset_split_result_v4', ba
     print("  Group 3 (Oracle):    多任务模型 + Oracle DA 注入 (上界)")
     print("=" * 80)
     
-    confirm = input(f"\n⚠️  将运行三组完整实验 ({total_samples} 样本 × 3 组)，确认? (yes/no): ").strip().lower()
+    confirm = input(f"\n 将运行三组完整实验 ({total_samples} 样本 × 3 组)，确认? (yes/no): ").strip().lower()
     if confirm != 'yes':
         print("已取消")
         return False
     
-    # =========================================================================
-    # 第一组实验：Baseline (单任务判别 + 纯混合)
-    # =========================================================================
     print("\n" + "=" * 80)
-    print("📌 第一组实验：Baseline (单任务判别 + 纯混合)")
+    print("第一组实验：Baseline (单任务判别 + 纯混合)")
     print("=" * 80)
     
     group1_dir = f"{base_output_dir}/group1_baseline"
     os.makedirs(group1_dir, exist_ok=True)
     
-    # 需要指定单任务模型路径
     single_task_model_dir = input("\n请输入单任务模型路径 (例如: ../discriminative_model_outputs_singletask): ").strip()
     if not os.path.exists(single_task_model_dir):
-        print(f"[错误] 模型路径不存在: {single_task_model_dir}")
+        print(f" 模型路径不存在: {single_task_model_dir}")
         print("跳过第一组实验")
         group1_success = False
     else:
@@ -787,37 +673,34 @@ def run_group_experiments(model_dir=None, data_dir='dataset_split_result_v4', ba
             cascade_threshold_irrelevant=0.80,
             prefer_generative=True,
             context_window=5,
-            enable_risk_routing=False  # 【关键】禁用风险路由
+            enable_risk_routing=False  
         )
         
         output_csv_g1 = f"{group1_dir}/predictions.csv"
-        print(f"\n🚀 开始运行 Group 1...")
+        print(f"\n 开始运行 Group 1...")
         try:
             classifier_g1.classify_file(
                 input_csv=input_csv,
                 output_csv=output_csv_g1,
-                use_oracle_da=False  # 不使用 Oracle
+                use_oracle_da=False  
             )
-            print("\n✅ Group 1 完成，开始评估...")
+            print("\n Group 1 完成，开始评估...")
             evaluate_performance(output_dir=group1_dir)
             group1_success = True
         except Exception as e:
-            print(f"\n❌ Group 1 失败: {e}")
+            print(f"\n Group 1 失败: {e}")
             import traceback
             traceback.print_exc()
             group1_success = False
     
-    # =========================================================================
-    # 第二组实验：Proposed (多任务判别 + 风险路由)
-    # =========================================================================
+   
     print("\n" + "=" * 80)
-    print("📌 第二组实验：Proposed (多任务判别 + 风险路由) - 核心方法")
+    print(" 第二组实验：Proposed (多任务判别 + 风险路由) - 核心方法")
     print("=" * 80)
     
     group2_dir = f"{base_output_dir}/group2_proposed"
     os.makedirs(group2_dir, exist_ok=True)
     
-    # 使用多任务模型
     if model_dir is None:
         multi_task_model_dir = input("\n请输入多任务模型路径 (例如: ../discriminative_model_outputs_multitask): ").strip()
     else:
@@ -839,37 +722,35 @@ def run_group_experiments(model_dir=None, data_dir='dataset_split_result_v4', ba
             cascade_threshold_irrelevant=0.80,
             prefer_generative=True,
             context_window=5,
-            enable_risk_routing=True  # 【关键】启用风险路由
+            enable_risk_routing=True  
         )
         
         output_csv_g2 = f"{group2_dir}/predictions.csv"
-        print(f"\n🚀 开始运行 Group 2...")
+        print(f"\n 开始运行 Group 2...")
         try:
             classifier_g2.classify_file(
                 input_csv=input_csv,
                 output_csv=output_csv_g2,
-                use_oracle_da=False  # 不使用 Oracle，依赖模型预测的 DA
+                use_oracle_da=False  
             )
-            print("\n✅ Group 2 完成，开始评估...")
+            print("\n Group 2 完成，开始评估...")
             evaluate_performance(output_dir=group2_dir)
             group2_success = True
         except Exception as e:
-            print(f"\n❌ Group 2 失败: {e}")
+            print(f"\n Group 2 失败: {e}")
             import traceback
             traceback.print_exc()
             group2_success = False
     
-    # =========================================================================
-    # 第三组实验：Oracle (多任务判别 + Oracle Prompt 注入)
-    # =========================================================================
+
     print("\n" + "=" * 80)
-    print("📌 第三组实验：Oracle (多任务判别 + Oracle DA 注入) - 性能上界")
+    print(" 第三组实验：Oracle (多任务判别 + Oracle DA 注入) - 性能上界")
     print("=" * 80)
     
     group3_dir = f"{base_output_dir}/group3_oracle"
     os.makedirs(group3_dir, exist_ok=True)
     
-    # 检查数据中是否有 Act Tag 列
+
     df_check = pd.read_csv(input_csv)
     if 'Act Tag' not in df_check.columns:
         print(f"[警告] 数据中未找到 'Act Tag' 列，无法运行 Oracle 实验")
@@ -894,56 +775,53 @@ def run_group_experiments(model_dir=None, data_dir='dataset_split_result_v4', ba
                 cascade_threshold_irrelevant=0.80,
                 prefer_generative=True,
                 context_window=5,
-                enable_risk_routing=True  # 启用风险路由
+                enable_risk_routing=True 
             )
             
             output_csv_g3 = f"{group3_dir}/predictions.csv"
-            print(f"\n🚀 开始运行 Group 3 (Oracle 模式)...")
+            print(f"\n 开始运行 Group 3 (Oracle 模式)...")
             try:
                 classifier_g3.classify_file(
                     input_csv=input_csv,
                     output_csv=output_csv_g3,
-                    use_oracle_da=True,  # 【关键】使用真实的 Act Tag
+                    use_oracle_da=True,  
                     act_tag_column='Act Tag'
                 )
-                print("\n✅ Group 3 完成，开始评估...")
+                print("\n Group 3 完成，开始评估...")
                 evaluate_performance(output_dir=group3_dir)
                 group3_success = True
             except Exception as e:
-                print(f"\n❌ Group 3 失败: {e}")
+                print(f"\n Group 3 失败: {e}")
                 import traceback
                 traceback.print_exc()
                 group3_success = False
     
-    # =========================================================================
-    # 汇总报告
-    # =========================================================================
     print("\n" + "=" * 80)
-    print("📊 三组实验汇总报告")
+    print(" 三组实验汇总报告")
     print("=" * 80)
     
     summary = []
     if group1_success:
-        summary.append("✅ Group 1 (Baseline):  完成")
+        summary.append("Group 1 (Baseline):  完成")
     else:
-        summary.append("❌ Group 1 (Baseline):  失败或跳过")
+        summary.append("Group 1 (Baseline):  失败或跳过")
     
     if group2_success:
-        summary.append("✅ Group 2 (Proposed): 完成")
+        summary.append("Group 2 (Proposed): 完成")
     else:
-        summary.append("❌ Group 2 (Proposed): 失败或跳过")
+        summary.append("Group 2 (Proposed): 失败或跳过")
     
     if group3_success:
-        summary.append("✅ Group 3 (Oracle):   完成")
+        summary.append("Group 3 (Oracle):   完成")
     else:
-        summary.append("❌ Group 3 (Oracle):   失败或跳过")
+        summary.append("Group 3 (Oracle):   失败或跳过")
     
     for line in summary:
         print(f"  {line}")
     
-    print(f"\n📁 所有结果保存在: {base_output_dir}/")
+    print(f"\n所有结果保存在: {base_output_dir}/")
     print("\n提示：可以使用以下命令对比结果：")
-    print(f"  python code3/compare_experiments.py --dir {base_output_dir}")
+    print(f"python code3/compare_experiments.py --dir {base_output_dir}")
     
     print("=" * 80)
     
@@ -951,18 +829,14 @@ def run_group_experiments(model_dir=None, data_dir='dataset_split_result_v4', ba
 
 
 def run_oracle_experiment(model_dir=None, data_dir='dataset_split_result_v4', output_dir='results_oracle_experiment'):
-    """
-    运行第三组实验：使用人工标注的对话行为 (Oracle DA)
-    """
     print("=" * 80)
     print("Step 3 (Special): 运行 Oracle DA 实验 (上帝视角)")
     print("=" * 80)
 
     from hybrid_opinion_classifier import HybridOpinionClassifier
 
-    # 默认模型路径
     if model_dir is None:
-        model_dir = "../discriminative_model_outputs_v4_fix"  # 请确认这是你的最佳判别模型路径
+        model_dir = "../discriminative_model_outputs_v4_fix" 
 
     input_csv = f"{data_dir}/test.csv"
     os.makedirs(output_dir, exist_ok=True)
@@ -972,29 +846,25 @@ def run_oracle_experiment(model_dir=None, data_dir='dataset_split_result_v4', ou
     print(f"数据路径: {input_csv}")
     print(f"输出路径: {output_csv}")
 
-    # 初始化分类器 (配置与你之前的实验保持一致)
     classifier = HybridOpinionClassifier(
         discriminative_model_dir=model_dir,
         use_generative=True,
         generative_model="deepseek-v3",
-        # 沿用你之前实验的阈值
         cascade_threshold=0.96,
         cascade_threshold_irrelevant=0.80,
         prefer_generative=True,
         context_window=5,
-        enable_risk_routing=True  # 【新增】Oracle 实验也启用风险路由
+        enable_risk_routing=True  
     )
 
-    # 运行分类，开启 use_oracle_da
-    print("\n🚀 开始运行 Oracle 模式...")
+    print("\n 开始运行 Oracle 模式...")
     classifier.classify_file(
         input_csv=input_csv,
         output_csv=output_csv,
-        use_oracle_da=True,  # <--- 开启上帝视角
-        act_tag_column='Act Tag'  # <--- 指定CSV中的列名
+        use_oracle_da=True,  
+        act_tag_column='Act Tag' 
     )
 
-    # 自动评估
     print("\n自动进行评估...")
     evaluate_performance(output_dir=output_dir)
 
@@ -1006,22 +876,6 @@ def main():
         description='混合模型快速启动脚本',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-示例:
-  # 训练判别模型
-  python3 run_hybrid_model.py --mode train
-
-  # 测试单句预测
-  python3 run_hybrid_model.py --mode test
-
-  # 批量处理CSV
-  python3 run_hybrid_model.py --mode batch
-
-  # 评估性能
-  python3 run_hybrid_model.py --mode eval
-
-  # 完整流程
-  python3 run_hybrid_model.py --mode all
-        """
     )
 
     parser.add_argument(
@@ -1096,7 +950,6 @@ def main():
             print("\n评估失败")
 
     if args.mode == 'oracle':
-        # 这里的 output_dir 如果用户没指定，给一个默认的带有日期的目录
         out_dir = args.output_dir if args.output_dir else "results_oracle_exp"
         run_oracle_experiment(model_dir=args.model_dir, data_dir=args.data_dir, output_dir=out_dir)
 
