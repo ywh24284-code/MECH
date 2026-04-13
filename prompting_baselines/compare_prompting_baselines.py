@@ -156,7 +156,6 @@ def main():
     for i, y in enumerate(df['准确率(%)']):
         axes[0].text(i, y + 1, f'{y:.2f}%', ha='center', fontsize=9)
     
-    # Macro-F1对比
     axes[1].bar(range(len(df)), df['F1值'], color=colors[:len(df)])
     axes[1].set_xticks(range(len(df)))
     axes[1].set_xticklabels(df['方法'], rotation=30, ha='right')
@@ -168,7 +167,7 @@ def main():
     for i, y in enumerate(df['F1值']):
         axes[1].text(i, y + 0.02, f'{y:.4f}', ha='center', fontsize=9)
     
-    # API调用率对比
+  
     axes[2].bar(range(len(df)), df['API率'] * 100, color=colors[:len(df)])
     axes[2].set_xticks(range(len(df)))
     axes[2].set_xticklabels(df['方法'], rotation=30, ha='right')
@@ -185,8 +184,7 @@ def main():
     plt.savefig(output_png, dpi=300, bbox_inches='tight')
     print(f"✓ 对比图已保存: {output_png}")
     plt.close()
-    
-    # 成本效益分析
+
     print("\n" + "=" * 80)
     print("成本效益分析")
     print("=" * 80)
@@ -216,7 +214,7 @@ def main():
         print("- API节省: 正值表示Prompting使用更多API（混合模型更省）")
         print("- 成本效益: 混合模型用更少API达到更高性能")
     
-    # 保存成本效益分析
+  
     cost_analysis_path = '../cost_efficiency_analysis.txt'
     with open(cost_analysis_path, 'w', encoding='utf-8') as f:
         f.write("成本效益分析\n")
@@ -244,17 +242,7 @@ def main():
     
     print(f"\n✓ 成本效益分析已保存: {cost_analysis_path}")
     
-    # 关键发现
-    print("\n" + "=" * 80)
-    print("关键发现")
-    print("=" * 80)
-    
-    print("""
-性能对比
-   - 混合模型 > 所有Prompting基线
-   - Few-shot > Zero-shot（提升约5个百分点）
-   - 但即使最优Prompting仍不及混合模型
-""")
+   )
     
     print("\n" + "=" * 80)
     print("分析完成！")
