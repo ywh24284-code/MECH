@@ -13,7 +13,6 @@ import re
 
 warnings.filterwarnings('ignore')
 
-# 导入多任务模型
 try:
     from multi_task_model import MultiTaskDialogueModel
 
@@ -33,7 +32,6 @@ try:
     api_key = os.getenv("OPENAI_API_KEY")
     base_url = os.getenv("OPENAI_BASE_URL")
 
-    # 初始化 OpenAI 客户端（v1.0+ 语法）
     if api_key:
         openai_client = OpenAI(
             api_key=api_key,
@@ -51,16 +49,8 @@ except ImportError as e:
     GENERATIVE_MODEL_AVAILABLE = False
     openai_client = None
 
-
-# =============================================================================
-# 1. 判别模型定义 (需要与训练时一致)
-# =============================================================================
-
 class DialogueAwareModel(nn.Module):
-    """
-    对话感知判别模型
-    需要与discriminative_model_training.py中的模型结构完全一致
-    """
+
 
     def __init__(self, model_path, num_classes=6, dropout=0.5):
         super().__init__()
@@ -69,7 +59,6 @@ class DialogueAwareModel(nn.Module):
         self.hidden_size = self.encoder.config.hidden_size
         self.num_classes = num_classes
 
-        # 分类头 - 与训练脚本保持一致
         self.classifier = nn.Sequential(
             nn.Dropout(dropout),
             nn.Linear(self.hidden_size, 256),
@@ -80,11 +69,9 @@ class DialogueAwareModel(nn.Module):
         )
 
     def forward(self, input_ids, attention_mask, return_confidence=False, return_embedding=False):
-        # 使用 encoder，并从 last_hidden_state 取 CLS token (第0位)
         outputs = self.encoder(input_ids=input_ids, attention_mask=attention_mask)
         cls_token_embedding = outputs.last_hidden_state[:, 0, :]
 
-        # 【新增】如果只需要 embedding（用于 kNN 检索），直接返回
         if return_embedding:
             return cls_token_embedding
 
@@ -107,9 +94,6 @@ class DialogueAwareModel(nn.Module):
         return logits
 
 
-# =============================================================================
-# 2. 判别模型推理器
-# =============================================================================
 
 class DiscriminativeInference:
     """判别模型推理类"""
@@ -134,7 +118,6 @@ class DiscriminativeInference:
         # 加载分词器（使用 AutoTokenizer 支持更多模型）
         self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, use_fast=False)
 
-        # 添加训练时使用的 special tokens（必须与训练时一致！）
         context_window = self.config.get('context_window', 5)
         special_tokens_list = [
             "[TEACHER]", "[CURRENT]", "[OTHER]", "Unknown"
@@ -144,7 +127,6 @@ class DiscriminativeInference:
         num_added = self.tokenizer.add_tokens(special_tokens_list)
         print(f"  添加 special tokens: {num_added} 个")
 
-        # 加载权重先检查模型类型
         checkpoint_path = os.path.join(model_dir, 'best_model.pth')
         if not os.path.exists(checkpoint_path):
             raise FileNotFoundError(f"模型文件不存在: {checkpoint_path}")
@@ -161,7 +143,6 @@ class DiscriminativeInference:
             print("  检测到: 多任务模型 (MultiTaskDialogueModel)")
             self.is_multi_task = True
 
-            # 检测是否有 feature_fusion 层（增强版本 vs 基线版本）
             has_feature_fusion = any('feature_fusion' in k for k in state_dict_keys)
 
             if has_feature_fusion:
@@ -180,14 +161,12 @@ class DiscriminativeInference:
             self.model.encoder.resize_token_embeddings(len(self.tokenizer))
             print(f"  模型 embedding 大小: {self.model.encoder.embeddings.word_embeddings.weight.shape[0]}")
 
-            # 加载权重（支持兼容性）
-            # 如果检测到 feature_fusion 或为了安全起见，直接使用兼容模式
+    
             if has_feature_fusion:
                 print(f"  使用兼容模式加载权重（跳过额外的层）...")
                 model_state = self.model.state_dict()
                 checkpoint_state = checkpoint['model_state_dict']
 
-                # 只加载当前模型中存在且形状匹配的参数
                 filtered_state = {}
                 skipped_keys = []
                 extra_keys = []
@@ -201,12 +180,10 @@ class DiscriminativeInference:
                     else:
                         skipped_keys.append(f"{key} (not in checkpoint)")
 
-                # 检查checkpoint中有但模型中没有的键
                 for key in checkpoint_state.keys():
                     if key not in model_state:
                         extra_keys.append(key)
 
-                # 加载过滤后的参数
                 self.model.load_state_dict(filtered_state, strict=False)
 
                 print(f"  ✓ 兼容性加载完成，加载了 {len(filtered_state)}/{len(model_state)} 个参数")
@@ -223,18 +200,17 @@ class DiscriminativeInference:
                     if len(skipped_keys) > 5:
                         print(f"    ... 还有 {len(skipped_keys) - 5} 个")
             else:
-                # 尝试严格加载
+              
                 try:
                     self.model.load_state_dict(checkpoint['model_state_dict'], strict=True)
                     print(f"  ✓ 模型权重加载成功")
                 except RuntimeError as e:
                     if 'size mismatch' in str(e) or 'Unexpected key' in str(e) or 'Missing key' in str(e):
                         print(f"  ⚠️ 严格加载失败，使用兼容模式...")
-                        # 过滤掉不匹配的键
+               
                         model_state = self.model.state_dict()
                         checkpoint_state = checkpoint['model_state_dict']
 
-                        # 只加载形状匹配的参数
                         filtered_state = {}
                         skipped_keys = []
                         for key in model_state.keys():
@@ -246,7 +222,6 @@ class DiscriminativeInference:
                             else:
                                 skipped_keys.append(f"{key} (not in checkpoint)")
 
-                        # 加载过滤后的参数
                         self.model.load_state_dict(filtered_state, strict=False)
 
                         print(f"  ✓ 兼容性加载完成，加载了 {len(filtered_state)}/{len(model_state)} 个参数")
@@ -258,7 +233,6 @@ class DiscriminativeInference:
                                 print(f"    ... 还有 {len(skipped_keys) - 5} 个")
                     else:
                         raise
-            # 与训练数据中的 act_label 含义保持一致
             self.dialogue_act_names = [
                 "None (Teacher)",
                 "Keeping Together",
@@ -302,7 +276,6 @@ class DiscriminativeInference:
             print(f"  验证集Macro-F1: {val_f1}")
 
     def _get_role_name(self, speaker_name, current_speaker_name):
-        """计算相对角色（与训练时保持一致）"""
         teacher_names = {'T', 'Teacher', 'Ms. G', 'Mrs. G'}
         s_name = str(speaker_name).strip()
 
@@ -314,7 +287,7 @@ class DiscriminativeInference:
 
     def predict_single(self, text: str, speaker: str = None, context_history: List[Dict] = None) -> Dict:
         """
-        预测单个样本（支持上下文，与训练时保持一致）
+        预测单个样本
 
         Args:
             text: 输入文本（目标句子）
@@ -356,8 +329,7 @@ class DiscriminativeInference:
 
             context_text = " ".join(context_parts)
 
-        # 分词（使用 text_pair 结构，与训练时一致）
-        # 注意：如果没有上下文，只传 target_text 作为 text 参数
+  
         if context_text:
             encoding = self.tokenizer(
                 text=context_text,
@@ -368,7 +340,7 @@ class DiscriminativeInference:
                 return_tensors='pt'
             )
         else:
-            # 没有上下文时，只用 target_text
+    
             encoding = self.tokenizer(
                 text=target_text,
                 max_length=self.config.get('max_length', 256),
@@ -439,11 +411,9 @@ class DiscriminativeInference:
             ]
         }
 
-        # 添加 CLS embedding 用于 kNN 检索
         if cls_embedding is not None:
             result['cls_embedding'] = cls_embedding
 
-        # 如果是多任务模型，添加对话行为信息
         if self.is_multi_task:
             result['dialogue_act'] = {
                 'predicted_label': self.dialogue_act_names[dialogue_act_pred],
@@ -458,11 +428,7 @@ class DiscriminativeInference:
         return result
 
 
-# =============================================================================
-# 3. 生成模型包装器 (基于 classify_opinions.py)
-# =============================================================================
 
-# 定义有效标签
 VALID_LABELS = {
     "Irrelevant", "New", "Strengthened",
     "Weakened", "Adopted", "Refuted"
@@ -471,16 +437,12 @@ VALID_LABELS = {
 
 def call_llm_api(messages: List[Dict[str, str]], model: str = "deepseek-v3",
                  max_retries: int = 2) -> str:
-    """
-    调用大模型API并处理基本错误
-    (更新为 OpenAI v1.0+ API)
-    """
+   
     if not GENERATIVE_MODEL_AVAILABLE or openai_client is None:
         return "Error:API_Not_Available"
 
     for attempt in range(max_retries):
         try:
-            # OpenAI v1.0+ 语法
             response = openai_client.chat.completions.create(
                 model=model,
                 messages=messages,
@@ -489,7 +451,6 @@ def call_llm_api(messages: List[Dict[str, str]], model: str = "deepseek-v3",
             )
             raw_label = response.choices[0].message.content.strip()
 
-            # 解析标签（处理多种格式）
             label = extract_label_from_response(raw_label)
 
             if label in VALID_LABELS:
@@ -510,11 +471,6 @@ def call_llm_api(messages: List[Dict[str, str]], model: str = "deepseek-v3",
 
 
 def extract_label_from_response(raw_text: str) -> str:
-    """
-    从LLM响应中提取标签（支持思维链格式）
-    处理多种格式: "New", "New (新观点)", "1. New" 等
-    以及思维链输出（标签在最后一行）
-    """
     raw_text = raw_text.strip()
 
     # 直接匹配
@@ -524,26 +480,22 @@ def extract_label_from_response(raw_text: str) -> str:
     # 标签名列表（按顺序）
     label_names = ['Irrelevant', 'New', 'Strengthened', 'Weakened', 'Adopted', 'Refuted']
 
-    # 策略1: 优先提取最后一行（如果是思维链输出，标签在最后）
     lines = raw_text.split('\n')
     last_line = lines[-1].strip() if lines else ""
 
-    # 检查最后一行是否是纯标签
     for label in label_names:
         if last_line.lower() == label.lower():
             return label
 
-    # 策略2: 在最后一行中查找标签
     for label in label_names:
         if label.lower() in last_line.lower():
             return label
 
-    # 策略3: 在整个响应中查找（向后兼容）
     for label in label_names:
         if label.lower() in raw_text.lower():
             return label
 
-    return "Irrelevant"  # 默认返回
+    return "Irrelevant" 
 
 
 def get_classification_prompt_v1(
@@ -719,7 +671,7 @@ def get_classification_prompt_with_icl(
     current_sentence: str,
     consistency: str,
     icl_examples: List[Dict],
-    act_hint: str = None,  # <--- [新增参数]
+    act_hint: str = None, 
     kb_hint: str = None
 ) -> List[Dict[str, str]]:
     """【新增】构建带 kNN-ICL 的分类 Prompt (Legacy Version)"""
@@ -762,7 +714,6 @@ def get_classification_prompt_with_icl(
 
     """
 
-    # [新增] 注入对话行为提示
     if act_hint:
         user_prompt += f"\n    - **已知对话行为 (Dialogue Act)**: {act_hint} (提示：请参考此意图进行判断)\n"
 
@@ -777,10 +728,6 @@ def get_classification_prompt_with_icl(
 
 
 class GenerativeInference:
-    """生成模型推理类 (基于 classify_opinions.py)
-
-    通过 prompt_version 控制使用 v1（软先验）还是 v2（强先验）模板。
-    """
 
     def __init__(self, model_name: str = "deepseek-v3", context_window: int = 5, use_knn_icl: bool = False):
         if not GENERATIVE_MODEL_AVAILABLE:
@@ -788,7 +735,7 @@ class GenerativeInference:
 
         self.model_name = model_name
         self.context_window = context_window
-        self.use_knn_icl = use_knn_icl  # 【新增】是否使用 kNN-ICL
+        self.use_knn_icl = use_knn_icl 
         print(f"✓ 生成模型初始化完成")
         print(f"  模型: {model_name}")
         print(f"  上下文窗口: {context_window}")
@@ -797,23 +744,11 @@ class GenerativeInference:
     def predict_single(self, sentence: str, speaker: str, context_history: List[Dict],
                        previous_speaker: Optional[str] = None,
                        icl_examples: Optional[List[Dict]] = None,
-                       oracle_da_label: str = None,  # <--- 新增
+                       oracle_da_label: str = None,  
                        kb_hint: Optional[str] = None,
-                       prompt_version: str = "v1"  # v1: 软先验 (默认，用于 Proposed)；v2: 强先验 (用于 Oracle)
+                       prompt_version: str = "v1"  
                        ) -> Dict:
-        """
-        使用生成模型预测
-
-        Args:
-            sentence: 当前句子
-            speaker: 说话者
-            context_history: 上下文历史 [{'speaker': 'T', 'sentence': '...', 'label': '...'}, ...]
-            previous_speaker: 前一个说话者 (用于确定consistency)
-            icl_examples: 【新增】检索到的 kNN 示例 [{'sentence': '...', 'label_name': 'New', 'similarity': 0.95}, ...]
-
-        Returns:
-            包含预测结果的字典
-        """
+ 
         # 1. 确定发言人一致性（与 classify_opinions1.py 保持一致）
         if previous_speaker is None:
             consistency = "switch"  # 第一句话
@@ -877,20 +812,15 @@ class GenerativeInference:
 
         return result
 
-
-# =============================================================================
-# 4. 联合决策策略
-# =============================================================================
-
 class HybridDecisionMaker:
     """混合模型联合决策器"""
 
     def __init__(
             self,
-            discriminative_threshold: float = 0.8,  # 提高到0.8，降低对判别模型的信任
+            discriminative_threshold: float = 0.8, 
             agreement_weight: float = 0.5,
-            topk_threshold: float = 0.2,  # 降低到0.2，更容易采纳生成模型
-            prefer_generative: bool = False  # 新增：是否优先采纳生成模型
+            topk_threshold: float = 0.2,  
+            prefer_generative: bool = False 
     ):
         """初始化联合决策器配置"""
         self.disc_threshold = discriminative_threshold
@@ -909,8 +839,6 @@ class HybridDecisionMaker:
         disc_label = disc_result['predicted_label']
         disc_confidence = disc_result['confidence_score']
 
-        # [关键修改] 安全获取 gen_label
-        # 如果 gen_result 是 None (走了快速通道)，则 gen_label 设为 None
         gen_label = gen_result['predicted_label'] if gen_result else None
 
         decision_info = {
@@ -919,27 +847,15 @@ class HybridDecisionMaker:
             'generative_label': gen_label,
         }
 
-        # =========================================================
-        # 保守版优先级规则：在进入复杂策略前，先保护
-        # "Irrelevant vs 内容类" 这两种最容易被误改的情况
-        # =========================================================
 
-        # 情况 A: 判别模型认为 Irrelevant，而 LLM 认为是内容类
-        # 保守策略：
-        #   - 对整体样本：当判别模型置信度达到中等及以上时（>=0.5），保护 Irrelevant，
-        #   - 但若该样本风险分较高（来自 DA 模型，例如 Press Accuracy / Claim / Evidence），
-        #     说明它更可能是“伪 Irrelevant”的内容类，此时提高阈值到 0.8，
-        #     只有 Disc 极高置信度时才强行压制 LLM，给高风险样本更多让路空间。
         if gen_label is not None and disc_label == 'Irrelevant' and gen_label != 'Irrelevant':
             guard_threshold = 0.5
-            # 若提供了风险分且风险较高，则提高 guard 阈值，降低对 Disc 的盲目信任
             if risk_score is not None and risk_score > 0.5:
                 guard_threshold = 0.8
 
             if disc_confidence >= guard_threshold:
                 final_decision = disc_label
                 decision_info['strategy'] = 'guard_irrelevant_from_llm'
-                # 在 reason 中附带当前阈值和风险分，便于后续分析
                 extra_risk_info = f", risk={risk_score:.4f}" if risk_score is not None else ""
                 decision_info['reason'] = (
                     f'Disc 预测 Irrelevant 且置信度较高 ({disc_confidence:.4f} >= {guard_threshold:.2f})，'
@@ -950,10 +866,6 @@ class HybridDecisionMaker:
                     return final_decision, decision_info
                 else:
                     return final_decision
-
-        # 情况 B: 判别模型认为是内容类，而 LLM 认为 Irrelevant
-        # 保守策略（弱化版）：仅当判别模型置信度非常高时（>=0.8），
-        # 才阻止 LLM 将其压成 Irrelevant，避免过度相信判别模型
         if gen_label == 'Irrelevant' and disc_label != 'Irrelevant':
             if disc_confidence >= 0.8:
                 final_decision = disc_label
@@ -968,60 +880,38 @@ class HybridDecisionMaker:
                 else:
                     return final_decision
 
-        # =========================================================
-        # 以下是原有的逻辑 (保留不动)
-        # =========================================================
-
-        # [原有的 _apply_dialogue_act_priors 调用可以保留，也可以注释掉，
-        # 因为上面的 Oracle 逻辑已经覆盖了大部分情况]
-        # [修复] 只有当生成模型真正运行了（gen_result 不为 None）时，才去应用先验规则
-        # 如果走了快速通道，gen_result 是 None，没法比较，直接跳过
         dialogue_act_decision = None
         if gen_result is not None:
             dialogue_act_decision = self._apply_dialogue_act_priors(disc_result, gen_result)
-        # ... (后续代码保持不变)
 
-        # 策略 1: 两人意见一致 (Agreement) - 最稳
         if disc_label == gen_label:
             final_decision = disc_label
             decision_info['strategy'] = 'agreement'
             decision_info['reason'] = '判别模型与生成模型一致'
 
-        # 策略 2: 意见不一致时，使用改进的投票策略（自适应阈值）
         elif gen_label not in ['Error:API_Failure', 'Error:API_Not_Available']:
-            # 【自适应阈值】根据整体置信度水平调整
-            # 如果 Disc 平均置信度很低（<0.6），说明是少样本模型，降低阈值
-            # [优化] 提高阈值要求，减少对低置信度判别结果的过度信任
-            adaptive_high_thresh = 0.70 if disc_confidence < 0.6 else 0.90  # 从0.55/0.85提高
-            adaptive_mid_thresh = 0.60 if disc_confidence < 0.6 else 0.80  # 从0.45/0.70提高
-            adaptive_low_thresh = 0.65 if disc_confidence < 0.6 else 0.85  # 从0.50/0.75提高
+            adaptive_high_thresh = 0.70 if disc_confidence < 0.6 else 0.90
+            adaptive_mid_thresh = 0.60 if disc_confidence < 0.6 else 0.80
+            adaptive_low_thresh = 0.65 if disc_confidence < 0.6 else 0.85
 
-            # 子策略 2.1: 如果 Disc 置信度很高，且预测的是 Irrelevant
-            # 说明这可能真的是无关发言，信任 Disc
             if disc_label == 'Irrelevant' and disc_confidence > adaptive_high_thresh:
                 final_decision = disc_label
                 decision_info['strategy'] = 'trust_discriminative_irrelevant'
                 decision_info['reason'] = f'Disc 高度确信是 Irrelevant ({disc_confidence:.4f})'
 
-            # 子策略 2.2: 如果 LLM 预测 Irrelevant，但 Disc 中等置信度预测观点类
-            # 这种情况下，Disc 可能更准（因为 LLM 容易过度预测 Irrelevant）
             elif gen_label == 'Irrelevant' and disc_label != 'Irrelevant' and disc_confidence > adaptive_mid_thresh:
                 final_decision = disc_label
                 decision_info['strategy'] = 'trust_discriminative_content'
                 decision_info['reason'] = f'Disc 认为是观点 ({disc_label}, {disc_confidence:.4f})，LLM 过于保守'
 
-            # 子策略 2.3: 如果 Disc 预测 Irrelevant，但置信度不高，LLM 预测观点类
-            # 信任 LLM（LLM 可能捕捉到了深层语义）
-            # [优化] 放宽条件，让生成模型更容易被采纳
-            elif disc_label == 'Irrelevant' and gen_label != 'Irrelevant' and disc_confidence < 0.75:  # 降低阈值
+    
+            elif disc_label == 'Irrelevant' and gen_label != 'Irrelevant' and disc_confidence < 0.75:  
                 final_decision = gen_label
                 decision_info['strategy'] = 'trust_generative_content'
                 decision_info['reason'] = f'LLM 发现了观点 ({gen_label})，Disc 不够确定 ({disc_confidence:.4f})'
 
-            # 子策略 2.4: 两者都预测观点类（New/Strengthened等），但类别不同
-            # 这种情况下，优先信任 Disc（因为它在观点细分上经过专门训练）
             elif disc_label != 'Irrelevant' and gen_label != 'Irrelevant':
-                # 如果 Disc 置信度够高，信任 Disc
+    
                 if disc_confidence > adaptive_low_thresh:
                     final_decision = disc_label
                     decision_info['strategy'] = 'trust_discriminative_opinion'
@@ -1032,13 +922,11 @@ class HybridDecisionMaker:
                     decision_info['strategy'] = 'trust_generative_opinion'
                     decision_info['reason'] = f'Disc 不确定，信任 LLM ({gen_label})'
 
-            # 子策略 2.5: 其他情况，默认信任 LLM
             else:
                 final_decision = gen_label
                 decision_info['strategy'] = 'trust_generative_default'
                 decision_info['reason'] = f'默认信任 LLM ({gen_label})'
 
-        # 策略 3: LLM 挂了，只能用 Disc 兜底
         else:
             final_decision = disc_label
             decision_info['strategy'] = 'fallback_discriminative'
@@ -1056,13 +944,6 @@ class HybridDecisionMaker:
             disc_result: Dict,
             gen_result: Dict
     ) -> Optional[Tuple[str, str, str]]:
-        """
-        应用对话行为先验规则
-
-        Returns:
-            (final_label, strategy, reason) 或 None（无先验约束）
-        """
-        # 检查是否有对话行为信息（多任务模型）
         if 'dialogue_act' not in disc_result:
             return None
 
@@ -1072,11 +953,8 @@ class HybridDecisionMaker:
         opinion_label = disc_result['predicted_label']
         gen_label = gen_result.get('predicted_label', None)
 
-        # =========================================================
-        # 强先验规则 (对话行为置信度 > 0.85)
-        # =========================================================
+
         if act_conf > 0.85:
-            # 规则1: Providing Evidence → Strengthened (85%+概率)
             if 'providing evidence' in act_label or 'reasoning' in act_label:
                 if opinion_label == 'Strengthened':
                     return (
@@ -1085,7 +963,6 @@ class HybridDecisionMaker:
                         f'对话行为"提供证据"强先验 → Strengthened (act_conf={act_conf:.3f})'
                     )
 
-            # 规则2: Relating to Another → Adopted (80%+概率)
             if 'relating to another' in act_label or 'relate' in act_label:
                 if opinion_label == 'Adopted':
                     return (
@@ -1093,7 +970,6 @@ class HybridDecisionMaker:
                         'dialogue_act_strong_prior_relate',
                         f'对话行为"关联他人"强先验 → Adopted (act_conf={act_conf:.3f})'
                     )
-                # 如果判别模型预测不是Adopted，但生成模型是，也信任
                 elif gen_label == 'Adopted':
                     return (
                         'Adopted',
@@ -1101,11 +977,8 @@ class HybridDecisionMaker:
                         f'对话行为"关联他人"强先验 + LLM确认 → Adopted (act_conf={act_conf:.3f})'
                     )
 
-            # 规则3: Making a Claim → 排除Adopted/Weakened，优先New/Strengthened
             if 'making a claim' in act_label or 'claim' in act_label:
-                # 如果判别模型预测Adopted或Weakened，很可能错误
                 if opinion_label in ['Adopted', 'Weakened']:
-                    # 检查生成模型是否给出了更合理的预测
                     if gen_label in ['New', 'Strengthened', 'Refuted']:
                         return (
                             gen_label,
@@ -1113,21 +986,16 @@ class HybridDecisionMaker:
                             f'对话行为"提出主张"排除{opinion_label}，信任LLM {gen_label} (act_conf={act_conf:.3f})'
                         )
 
-        # =========================================================
-        # 中等先验规则 (对话行为置信度 0.70 - 0.85)
-        # =========================================================
         elif act_conf > 0.70:
-            # 规则4: Providing Evidence → 倾向Strengthened（弱约束）
             if 'providing evidence' in act_label or 'reasoning' in act_label:
-                if opinion_label == 'Strengthened' and gen_label != 'Strengthened':
-                    # 判别模型和对话行为一致，生成模型不同意 → 信任判别模型
+                if opinion_label == 'Strengthened' and gen_label != 'Strengthened'
                     return (
                         'Strengthened',
                         'dialogue_act_medium_prior_evidence',
                         f'对话行为"提供证据"中等先验 + Disc一致 → Strengthened (act_conf={act_conf:.3f})'
                     )
 
-            # 规则5: Asking/Press for Accuracy → 不太可能是Strengthened
+    
             if 'asking' in act_label or 'press for' in act_label:
                 if opinion_label == 'Strengthened':
                     # 疑问/追问类对话行为，不太可能是强化观点
@@ -1137,14 +1005,7 @@ class HybridDecisionMaker:
                             'dialogue_act_filter_question',
                             f'对话行为"提问/追问"排除Strengthened → {gen_label} (act_conf={act_conf:.3f})'
                         )
-
-        # 无先验约束
         return None
-
-
-# =============================================================================
-# 5. 完整推理管道
-# =============================================================================
 
 class HybridOpinionClassifier:
     """混合观点分类器 - 判别模型 + 生成模型 (级联路由优化版)"""
@@ -1154,16 +1015,16 @@ class HybridOpinionClassifier:
             discriminative_model_dir: str,
             use_generative: bool = True,
             generative_model: str = "deepseek-v3",
-            decision_threshold: float = 0.7,  # 联合决策阈值 (用于难样本)
-            cascade_threshold: float = 0.65,  # 一般类别的级联截断阈值 [优化: 0.85→0.65]
-            cascade_threshold_irrelevant: float = 0.6,  # [新增] Irrelevant类别专用阈值（更低） [优化: 0.75→0.6]
+            decision_threshold: float = 0.7,
+            cascade_threshold: float = 0.65,  
+            cascade_threshold_irrelevant: float = 0.6,  
             topk_threshold: float = 0.2,
             prefer_generative: bool = False,
             context_window: int = 5,
-            use_knn_icl: bool = False,  # 【新增】是否使用 kNN-ICL
-            knn_datastore_path: str = None,  # 【新增】kNN 向量库路径
-            knn_k: int = 3,  # 【新增】kNN 检索数量
-            enable_risk_routing: bool = True  # 【新增】是否启用风险路由（对话行为辅助）
+            use_knn_icl: bool = False, 
+            knn_datastore_path: str = None,  
+            knn_k: int = 3,  
+            enable_risk_routing: bool = True  
     ):
         print("=" * 80)
         print("初始化混合观点分类器 (级联路由模式)")
@@ -1185,12 +1046,11 @@ class HybridOpinionClassifier:
         self.use_knn_icl = use_knn_icl
         self.knn_k = knn_k
 
-        # 知识库 (对话行为序列 -> 观点演化 统计规律)
         self.knowledge_base = None
         kb_dir = os.path.dirname(os.path.abspath(__file__))
         kb_candidates = [
-            os.path.join(kb_dir, 'knowledge_base.json'),                     # 与本文件同目录
-            os.path.normpath(os.path.join(kb_dir, '..', 'knowledge_base.json'))  # 项目根目录
+            os.path.join(kb_dir, 'knowledge_base.json'),                    
+            os.path.normpath(os.path.join(kb_dir, '..', 'knowledge_base.json'))  
         ]
 
         for kb_path in kb_candidates:
@@ -1208,11 +1068,9 @@ class HybridOpinionClassifier:
                     self.knowledge_base = None
                 break
 
-        # 知识库使用统计（按 classify_file 一次运行统计）
-        self.kb_hint_match_count = 0      # 匹配到任何知识库规则的样本数
-        self.kb_hint_llm_count = 0        # 实际带 Knowledge Hint 发送给 LLM 的样本数
+        self.kb_hint_match_count = 0      
+        self.kb_hint_llm_count = 0       
 
-        # 成本统计计数器
         self.api_calls_total = 0
         self.fast_pass_total = 0
         self.fast_pass_by_irrelevant = 0
@@ -1221,7 +1079,7 @@ class HybridOpinionClassifier:
         # 加载判别模型
         self.discriminative = DiscriminativeInference(discriminative_model_dir)
 
-        # 【新增】加载 kNN 检索器
+        # 加载 kNN 检索器
         self.knn_retriever = None
         if use_knn_icl:
             if knn_datastore_path is None or not os.path.exists(knn_datastore_path):
@@ -1244,7 +1102,7 @@ class HybridOpinionClassifier:
                 self.generative = GenerativeInference(
                     model_name=generative_model,
                     context_window=context_window,
-                    use_knn_icl=self.use_knn_icl  # 【新增】传递 kNN-ICL 标志
+                    use_knn_icl=self.use_knn_icl  
                 )
             except Exception as e:
                 print(f"[Warning] 生成模型初始化失败: {e}")
@@ -1275,10 +1133,7 @@ class HybridOpinionClassifier:
             oracle_da_info: Dict = None,
             kb_hint: Optional[str] = None
     ) -> Dict:
-        """
-        分类单个话语 (修复版：强制 Early Return，杜绝空值)
-        """
-        # 1. 判别模型推理
+       
         disc_result = self.discriminative.predict_single(sentence, speaker, context_history)
         disc_confidence = disc_result['confidence_score']
         disc_label = disc_result['predicted_label']
@@ -1303,17 +1158,17 @@ class HybridOpinionClassifier:
 
             # 基于实证统计的高风险 DA 清单（按 da_name 精确匹配）
             strong_high_risk = {
-                "Providing Evidence/Reasoning",  # 11
-                "Making a Claim",  # 10
-                "Relating to Another Student",  # 8
-                "Revoicing",  # 4
-                "Restating",  # 3
-                "Press Reasoning",  # 6
+                "Providing Evidence/Reasoning",  
+                "Making a Claim", 
+                "Relating to Another Student",  
+                "Revoicing",  
+                "Restating", 
+                "Press Reasoning",  
             }
 
             medium_high_risk = {
-                "Press Accuracy",  # 5
-                "Asking for Info",  # 9
+                "Press Accuracy",  
+                "Asking for Info",  
             }
 
             for act_name, prob in da_probs.items():
@@ -1321,31 +1176,26 @@ class HybridOpinionClassifier:
                     predicted_risk_score += prob * 1.0
                 elif act_name in medium_high_risk:
                     predicted_risk_score += prob * 0.6
-                # 其他 DA 视为低风险，贡献 0
+            
 
-        # 决定使用哪个风险分（只有启用 Risk Routing 才计算）
         if self.enable_risk_routing:
             final_risk_score = oracle_risk_score if oracle_da_info else predicted_risk_score
         else:
             final_risk_score = 0.0  # 禁用风险路由时，风险分恒为0（不会触发拦截）
 
-        # 3. 路由判断
         should_skip_llm = False
         skip_reason = ""
 
         if not self.use_generative:
             should_skip_llm = True
             skip_reason = "生成模型未启用"
-        # 【保守版新增】若启用了风险路由, 判别模型预测 Irrelevant 且风险分很低,
-        # 直接走快速通道，避免把明显的课堂管理/程序性话语送去 LLM
         elif self.enable_risk_routing and disc_label == 'Irrelevant' and final_risk_score <= 0.25:
             should_skip_llm = True
             skip_reason = f"Irrelevant 低风险快速通道 (Risk={final_risk_score:.2f})"
             self.fast_pass_by_irrelevant += 1
         elif disc_label == 'Irrelevant' and disc_confidence >= self.cascade_threshold_irrelevant:
-            # 这里的 0.25 是你想要的温和阈值
             if final_risk_score > 0.25:
-                should_skip_llm = False  # 有风险，不跳过
+                should_skip_llm = False  
             else:
                 should_skip_llm = True
                 skip_reason = f"Irrelevant 快速通道 (Risk={final_risk_score:.2f})"
@@ -1355,13 +1205,9 @@ class HybridOpinionClassifier:
             skip_reason = f"高置信度快速通道 ({disc_confidence:.4f})"
             self.fast_pass_by_high_conf += 1
 
-        # =========================================================
-        # 4. 执行路径分支 (核心修复点！！！)
-        # =========================================================
-
         # --- 分支 A: 快速通道 (Fast Pass) ---
         if should_skip_llm:
-            self.fast_pass_total += 1  # 更新计数器
+            self.fast_pass_total += 1  
 
             # 构造决策信息
             decision_info = {
@@ -1370,11 +1216,10 @@ class HybridOpinionClassifier:
                 'generative_label': None,
                 'strategy': 'cascade_fast_pass',
                 'reason': skip_reason,
-                'final_decision': disc_label,  # 【关键】最终结果直接信判别模型
-                'risk_score': final_risk_score  # 新增：记录风险分数
+                'final_decision': disc_label,  
+                'risk_score': final_risk_score 
             }
 
-            # 【绝对关键】直接 Return！不要往下走去调 make_decision！
             return {
                 'final_label': disc_label,
                 'discriminative_result': disc_result,
@@ -1383,15 +1228,10 @@ class HybridOpinionClassifier:
             }
 
         # --- 分支 B: 慢速通道 (Slow Path) ---
-        # 只有没 Return 的才会走到这里，此时一定调用 LLM
         self.api_calls_total += 1
 
-        # 若本样本有 kb_hint，且走到了 LLM，则计入“实际使用知识库”的样本数
         if kb_hint:
             self.kb_hint_llm_count += 1
-
-        # 为了恢复旧版 LLM Prompt 行为：统一使用 v1 模板（软提示），
-        # 仅向 LLM 传递对话行为 act_hint，不再注入知识库规则。
         if oracle_da_info:
             prompt_version = "v1"
             hint_to_pass = oracle_label_text
@@ -1409,12 +1249,10 @@ class HybridOpinionClassifier:
             prompt_version=prompt_version,
         )
 
-        # 联合决策 (gen_result 一定有值，放心调用)
         final_label, decision_info = self.decision_maker.make_decision(
             disc_result, gen_result, return_details=True, risk_score=final_risk_score
         )
 
-        # 在决策信息中添加风险分数
         decision_info['risk_score'] = final_risk_score
 
         return {
@@ -1431,8 +1269,8 @@ class HybridOpinionClassifier:
             text_column: str = 'Sentence',
             speaker_column: str = 'Speaker',
             label_column: str = 'label',
-            use_oracle_da: bool = False,  # <--- [新增参数]
-            act_tag_column: str = 'Act Tag',  # <--- [新增参数] 默认为 'Act Tag'
+            use_oracle_da: bool = False,  
+            act_tag_column: str = 'Act Tag',  
             context_window: int = 5
     ):
         """
@@ -1452,8 +1290,6 @@ class HybridOpinionClassifier:
         self.fast_pass_by_irrelevant = 0
         self.fast_pass_by_high_conf = 0
 
-        # 如果存在知识库且数据中有对话行为列，则预先构建用于匹配的 DA 序列特征
-        # ⚠️ 当前设计：仅在 Oracle 模式下真正启用知识库提示
         kb_available = (
             self.knowledge_base is not None
             and act_tag_column in df.columns
@@ -1463,14 +1299,13 @@ class HybridOpinionClassifier:
         self.kb_hint_match_count = 0
         self.kb_hint_llm_count = 0
 
-        # 【知识库使用策略】仅对高置信、对内容类有帮助的规则启用提示
-        # 可以根据后续实验调整阈值
+
         kb_target_labels = {"New", "Strengthened", "Weakened", "Adopted", "Refuted"}
-        kb_min_lift = 2.0   # 至少提升 2 倍
-        kb_min_prob = 0.5   # 条件概率至少 50%
+        kb_min_lift = 2.0  
+        kb_min_prob = 0.5  
 
         if kb_available:
-            # 清洗 Act Tag，保持与 mine_knowledge_base.py 一致
+
             df['ActTagClean'] = (
                 df[act_tag_column]
                 .astype(str)
@@ -1485,7 +1320,6 @@ class HybridOpinionClassifier:
                 df['KB_prev_prev_act'] = grp['ActTagClean'].shift(2)
                 df['KB_prev_speaker'] = grp[speaker_column].shift(1)
             else:
-                # 若没有 class 列，则退化为全局顺序
                 df['KB_prev_act'] = df['ActTagClean'].shift(1)
                 df['KB_prev_prev_act'] = df['ActTagClean'].shift(2)
                 df['KB_prev_speaker'] = df[speaker_column].shift(1)
@@ -1538,7 +1372,6 @@ class HybridOpinionClassifier:
                     return False
                 return True
 
-            # 1) 优先匹配 3-gram
             if isinstance(prev_act, str) and isinstance(prev_prev_act, str):
                 key3 = f"{prev_prev_act} -> {prev_act} -> {act_curr}"
                 entry3 = kb.get('sequence_3gram', {}).get(key3, None)
@@ -1546,7 +1379,6 @@ class HybridOpinionClassifier:
                     self.kb_hint_match_count += 1
                     return entry3.get('description', None)
 
-            # 2) 其次匹配 2-gram
             if isinstance(prev_act, str):
                 key2 = f"{prev_act} -> {act_curr}"
                 entry2 = kb.get('sequence_2gram', {}).get(key2, None)
@@ -1554,9 +1386,7 @@ class HybridOpinionClassifier:
                     self.kb_hint_match_count += 1
                     return entry2.get('description', None)
 
-            # 3) 再看交互模式
-            #    - Teacher -> Student: 使用键 "T->S:{prev_da}"
-            #    - Student -> Student: 使用键 "S->S:{prev_da}"
+   
             if isinstance(prev_act, str) and speaker != 'T' and isinstance(prev_speaker, str):
                 if prev_speaker == 'T':
                     interaction_key = f"T->S:{prev_act}"
@@ -1568,7 +1398,7 @@ class HybridOpinionClassifier:
                     self.kb_hint_match_count += 1
                     return entry_int.get('description', None)
 
-            # 4) 最后回退到单句先验
+
             entry_prior = kb.get('priors', {}).get(act_curr, None)
             if is_valid_entry(entry_prior):
                 self.kb_hint_match_count += 1
@@ -1584,20 +1414,13 @@ class HybridOpinionClassifier:
             sentence = row[text_column]
             speaker = row[speaker_column]
 
-            # =========================================================
-            # [新增] 读取人工标注数据
-            # =========================================================
+
             oracle_da_info = None
             if use_oracle_da:
-                # 读取 Act Tag (例如 "8 - press for accuracy")
                 raw_tag = str(row.get(act_tag_column, ""))
-                # 转小写以匹配规则 (规则库使用 'press', 'claim', 'evidence' 等小写词)
                 oracle_da_info = {'label': raw_tag.lower()}
-
-            # 知识库提示 (仅在 Oracle + KB 可用时启用)
             kb_hint = build_kb_hint(row) if kb_available else None
 
-            # 分类（计数器在classify_single内部自动更新）
             result = self.classify_single(
                 sentence, speaker, context_history, previous_speaker,
                 icl_examples=None,
@@ -1605,7 +1428,6 @@ class HybridOpinionClassifier:
                 kb_hint=kb_hint
             )
 
-            # 记录结果
             result_row = {
                 'index': idx,
                 'Speaker': speaker,
@@ -1613,12 +1435,10 @@ class HybridOpinionClassifier:
                 'final_label': result['final_label'],
                 'disc_label': result['discriminative_result']['predicted_label'],
                 'disc_confidence': result['discriminative_result']['confidence_score'],
-                # 记录一下是否用了 Oracle
                 'used_oracle_da': oracle_da_info['label'] if oracle_da_info else 'No',
                 'strategy': result['decision_info'].get('strategy', 'unknown')
             }
 
-            # 新增：提取 DA 预测信息
             disc_res = result['discriminative_result']
             if 'dialogue_act' in disc_res:
                 da_info = disc_res['dialogue_act']
@@ -1637,14 +1457,14 @@ class HybridOpinionClassifier:
                 result_row['da_confidence'] = 0.0
                 result_row['top3_das'] = 'N/A'
 
-            # 新增：记录风险分数
+
             result_row['risk_score'] = result['decision_info'].get('risk_score', 0.0)
 
-            # 安全处理生成模型结果 (可能为 None)
+
             if result.get('generative_result'):
                 result_row['gen_label'] = result['generative_result']['predicted_label']
             else:
-                result_row['gen_label'] = None  # 显式记录为空
+                result_row['gen_label'] = None 
 
             if result['decision_info']:
                 result_row['strategy'] = result['decision_info']['strategy']
@@ -1654,7 +1474,6 @@ class HybridOpinionClassifier:
                 true_label_id = row[label_column]
                 result_row['true_label_id'] = true_label_id
                 label_names = ['Irrelevant', 'New', 'Strengthened', 'Weakened', 'Adopted', 'Refuted']
-                # 处理可能的数字或字符串标签
                 try:
                     if pd.isna(true_label_id):
                         true_label_name = "Unknown"
@@ -1670,7 +1489,6 @@ class HybridOpinionClassifier:
 
             results.append(result_row)
 
-            # 更新上下文
             context_history.append({
                 'speaker': speaker,
                 'sentence': sentence,
@@ -1681,18 +1499,15 @@ class HybridOpinionClassifier:
                 context_history.pop(0)
             previous_speaker = speaker
 
-            # 进度显示 (包含实时成本统计)
             if (idx + 1) % 20 == 0:
                 savings_rate = (self.fast_pass_total / (idx + 1)) * 100 if (idx + 1) > 0 else 0
                 print(
                     f"  进度: {idx + 1}/{len(df)} | API调用: {self.api_calls_total} | 快速通道: {self.fast_pass_total} (Irrelevant: {self.fast_pass_by_irrelevant}) | 节省率: {savings_rate:.1f}%")
 
-        # 保存结果
         result_df = pd.DataFrame(results)
         result_df.to_csv(output_csv, index=False, encoding='utf-8-sig')
         print(f"\n结果已保存: {output_csv}")
 
-        # 打印详细的成本效益分析
         total_samples = len(df)
         savings_rate = (self.fast_pass_total / total_samples * 100) if total_samples > 0 else 0
 
@@ -1731,7 +1546,7 @@ class HybridOpinionClassifier:
             print(f"\n【分类性能】")
             print(f"  整体准确率: {accuracy:.4f}")
 
-            # 分别统计快速通道和慢速通道的准确率
+
             fast_pass_results = result_df[result_df['strategy'] == 'cascade_fast_pass']
             slow_path_results = result_df[result_df['strategy'] != 'cascade_fast_pass']
 
@@ -1747,68 +1562,3 @@ class HybridOpinionClassifier:
             strategy_counts = result_df['strategy'].value_counts()
             for strategy, count in strategy_counts.items():
                 print(f"  {strategy:30s}: {count:4d} ({count / total_samples * 100:5.1f}%)")
-
-
-# =============================================================================
-# 6. 示例用法
-# =============================================================================
-
-def demo():
-    """演示混合模型的使用"""
-
-    # 配置
-    model_dir = "../discriminative_model_outputs"  # 判别模型目录
-    test_csv = "../dataset_split_result_v2/test.csv"  # 测试数据
-    output_csv = "../hybrid_predictions.csv"  # 输出文件
-
-    # 初始化混合分类器
-    classifier = HybridOpinionClassifier(
-        discriminative_model_dir=model_dir,
-        use_generative=True,  # 启用生成模型
-        use_knn_icl=True,  # 启用kNN-ICL
-        decision_threshold=0.7  # 置信度阈值
-    )
-
-    # 示例1: 单句分类
-    print("\n" + "=" * 80)
-    print("示例1: 单句分类")
-    print("=" * 80)
-
-    sentence = "I would like someone to tell me where you would place one."
-    speaker = "T"
-    context = [
-        {'speaker': 'T', 'sentence': 'Today we are talking about fractions.', 'label': 'New'},
-        {'speaker': 'S', 'sentence': 'I think we should use the number line.', 'label': 'New'}
-    ]
-
-    result = classifier.classify_single(sentence, speaker, context)
-
-    print(f"\n输入: [{speaker}] {sentence}")
-    print(f"最终预测: {result['final_label']}")
-    print(f"判别模型: {result['discriminative_result']['predicted_label']} "
-          f"(置信度: {result['discriminative_result']['confidence_score']:.4f})")
-    if result['generative_result']:
-        print(f"生成模型: {result['generative_result']['predicted_label']}")
-    print(f"决策策略: {result['decision_info']['strategy']}")
-    print(f"决策理由: {result['decision_info']['reason']}")
-
-    # 示例2: 批量分类
-    print("\n" + "=" * 80)
-    print("示例2: 批量分类文件")
-    print("=" * 80)
-
-    if os.path.exists(test_csv):
-        classifier.classify_file(
-            input_csv=test_csv,
-            output_csv=output_csv,
-            text_column='Sentence',
-            speaker_column='Speaker',
-            label_column='label',
-            context_window=5
-        )
-    else:
-        print(f"测试文件不存在: {test_csv}")
-
-
-if __name__ == '__main__':
-    demo()
