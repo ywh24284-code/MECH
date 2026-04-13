@@ -506,7 +506,6 @@ def get_classification_prompt_v1(
     - **句子 (Sentence)**: {current_sentence}
     """
 
-    # 注入对话行为提示（软提示）
     if act_hint:
         user_prompt += (
             f"\n    - **已知对话行为 (Dialogue Act)**: {act_hint} "
@@ -648,7 +647,6 @@ def get_classification_prompt_with_icl(
     act_hint: str = None, 
     kb_hint: str = None
 ) -> List[Dict[str, str]]:
-    """【新增】构建带 kNN-ICL 的分类 Prompt (Legacy Version)"""
     system_prompt = f"""
     你是一个课堂对话分析专家。你的任务是根据"上下文"（前面的发言）和"当前发言"之间的关系，对"当前发言"进行分类。
     你必须从以下六个标签中选择一个：
@@ -776,7 +774,6 @@ class GenerativeInference:
             'consistency': consistency
         }
 
-        # 【新增】如果使用了 kNN-ICL，记录检索到的例子
         if self.use_knn_icl and icl_examples:
             result['icl_examples_used'] = len(icl_examples)
             result['icl_labels'] = [ex.get('label_name', 'Unknown') for ex in icl_examples]
@@ -1028,7 +1025,7 @@ class HybridOpinionClassifier:
                 try:
                     with open(kb_path, 'r', encoding='utf-8') as f:
                         self.knowledge_base = json.load(f)
-                    print(f"  ✓ 已加载知识库: {kb_path}")
+                    print(f"  已加载知识库: {kb_path}")
                     print(f"    - 3-gram 规则数: {len(self.knowledge_base.get('sequence_3gram', {}))}")
                     print(f"    - 2-gram 规则数: {len(self.knowledge_base.get('sequence_2gram', {}))}")
                     print(f"    - 交互规则数:   {len(self.knowledge_base.get('interaction', {}))}")
