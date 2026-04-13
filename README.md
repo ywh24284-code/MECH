@@ -1,5 +1,5 @@
 MECH: A Cost-Effective Multi-Task Cascade Framework for Classroom Opinion Evolution Recognition
-This is the official implementation of the paper: "MECH: A Cost-Effective Multi-Task Cascade Framework for Classroom Opinion Evolution Recognition", accepted by ACL 2026.
+This is the official implementation of the paper: "MECH: A Cost-Effective Multi-Task Cascade Framework for Classroom Opinion Evolution Recognition".
 
 🌟 Overview
 MECH is a hybrid cascade framework designed for classroom dialogue analysis. By integrating the Continuous Opinions and Discrete Actions (CODA) theory, it optimizes both recognition accuracy and API consumption.
