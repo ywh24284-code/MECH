@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 Prompting基线对比分析脚本
-
 对比 DeepSeek/GPT-4o (Zero-shot/Few-shot) 与混合模型的性能
 """
 
@@ -251,25 +250,10 @@ def main():
     print("=" * 80)
     
     print("""
-1. 性能对比
+性能对比
    - 混合模型 > 所有Prompting基线
    - Few-shot > Zero-shot（提升约5个百分点）
    - 但即使最优Prompting仍不及混合模型
-
-2. 成本对比
-   - Prompting基线100% API调用
-   - 混合模型仅55.6% API调用
-   - 混合模型节省约44%成本
-
-3. 成本效益
-   - 混合模型：更高性能 + 更低成本
-   - 判别模型成功筛选44.4%简单样本
-   - 验证混合策略的优越性
-
-4. LLM选择
-   - GPT-4o略优于DeepSeek
-   - 但成本更高（约5-10倍）
-   - 性价比不如混合模型
 """)
     
     print("\n" + "=" * 80)
