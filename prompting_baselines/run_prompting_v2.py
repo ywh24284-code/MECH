@@ -1,15 +1,4 @@
 #!/usr/bin/env python3
-"""
-改进版Prompting Baseline实验
-借鉴classify_opinions0.py的优秀设计，添加consistency、上下文标签等关键特征
-
-主要改进:
-1. 添加发言人一致性(speaker consistency)判断
-2. 上下文带标签格式 (Predicted_Label) Speaker: Sentence
-3. 更详细的Prompt描述
-4. 真实的Few-shot示例
-"""
-
 import os
 import json
 import argparse
@@ -24,20 +13,13 @@ from collections import Counter
 from openai import OpenAI
 from dotenv import load_dotenv
 
-
-# =============================================================================
-# 1. Prompt构建器
-# =============================================================================
-
 class ImprovedPromptBuilder:
-    """改进的Prompt构建器（基于classify_opinions0.py）"""
     
     def __init__(self, mode='zero-shot'):
         self.mode = mode
         self.label_names = ['Irrelevant', 'New', 'Strengthened', 'Weakened', 'Adopted', 'Refuted']
     
     def build_zero_shot_prompt(self, context, current_speaker, current_sentence, consistency):
-        """Zero-shot Prompt（完全借鉴classify_opinions0.py）"""
         
         system_prompt = """You are a classroom dialogue analysis expert. Your task is to classify the current utterance based on the relationship between the context (previous utterances) and the current utterance.
 
@@ -112,7 +94,6 @@ Classify:"""
 
 """
         
-        # 添加真实示例
         for i, ex in enumerate(examples[:6], 1):
             system_desc += f"Example {i}:\n"
             system_desc += f"Context: {ex['context']}\n"
@@ -144,12 +125,7 @@ Label:"""
             return self.build_few_shot_prompt(context, current_speaker, current_sentence, consistency, examples or [])
 
 
-# =============================================================================
-# 2. LLM客户端
-# =============================================================================
-
 class LLMClient:
-    """LLM API客户端"""
     
     def __init__(self, model_type='deepseek'):
         load_dotenv()
@@ -203,11 +179,6 @@ class LLMClient:
         
         print(f"⚠️  无法解析响应: {response_text}")
         return 0
-
-
-# =============================================================================
-# 3. 主推理流程
-# =============================================================================
 
 def load_few_shot_examples(train_csv_path, num_per_class=2):
     """从训练集加载Few-shot示例（分层采样）"""
@@ -271,7 +242,6 @@ def load_few_shot_examples(train_csv_path, num_per_class=2):
 
 
 def run_improved_prompting(test_csv_path, train_csv_path, model_type, mode, output_dir):
-    """运行改进的Prompting推理"""
     
     print("\n" + "=" * 80)
     print(f"改进版Prompting实验: {model_type.upper()} ({mode})")
@@ -417,11 +387,6 @@ def run_improved_prompting(test_csv_path, train_csv_path, model_type, mode, outp
     print(f"\n✓ 结果已保存到: {output_dir}")
     
     return metrics
-
-
-# =============================================================================
-# 4. 主函数
-# =============================================================================
 
 def main():
     parser = argparse.ArgumentParser(description='改进版Prompting Baseline实验')
