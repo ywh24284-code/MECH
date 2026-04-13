@@ -228,6 +228,5 @@ def print_error_stats(stats: Dict):
 
 
 if __name__ == "__main__":
-    # 示例用法
     print("错误分析工具已加载")
     print("请在训练脚本中调用 analyze_errors() 函数")
