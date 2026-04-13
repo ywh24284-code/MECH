@@ -88,7 +88,7 @@ class OpinionEvolutionLLMDatasetV2(Dataset):
                 samples_by_label[classifications[i]].append(sample)
     
         if use_resampling and 'train' in csv_file:
-            print("\n🔄 应用数据重采样策略...")
+            print("\n应用数据重采样策略...")
             self.samples = self._resample_data(samples_by_label)
         else:
    
