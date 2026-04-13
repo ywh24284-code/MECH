@@ -140,7 +140,6 @@ class LLMClient:
         self.label_names = ['Irrelevant', 'New', 'Strengthened', 'Weakened', 'Adopted', 'Refuted']
     
     def call_api(self, prompt, temperature=0.0, max_retries=3):
-        """调用API"""
         messages = [{"role": "user", "content": prompt}]
         
         for attempt in range(max_retries):
@@ -156,12 +155,11 @@ class LLMClient:
                 if attempt < max_retries - 1:
                     time.sleep(2 ** attempt)
                 else:
-                    print(f"❌ API调用失败: {e}")
+                    print(f"API调用失败: {e}")
                     return None
         return None
     
     def parse_response(self, response_text):
-        """解析响应"""
         if not response_text:
             return 0
         
@@ -177,11 +175,10 @@ class LLMClient:
             if label.lower() in text:
                 return i
         
-        print(f"⚠️  无法解析响应: {response_text}")
+        print(f"无法解析响应: {response_text}")
         return 0
 
 def load_few_shot_examples(train_csv_path, num_per_class=2):
-    """从训练集加载Few-shot示例（分层采样）"""
     print(f"\n加载Few-shot示例（每类{num_per_class}个）...")
     df = pd.read_csv(train_csv_path)
     
@@ -224,8 +221,7 @@ def load_few_shot_examples(train_csv_path, num_per_class=2):
             
             samples_by_label[labels[i]].append(sample)
             previous_speaker = current_speaker
-    
-    # 每类采样
+
     examples = []
     for label_id in range(6):
         if len(samples_by_label[label_id]) > 0:
