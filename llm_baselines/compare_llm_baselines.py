@@ -12,20 +12,17 @@ import json
 import os
 import re
 
-# 设置中文显示
 plt.rcParams['font.sans-serif'] = ['SimHei', 'Arial Unicode MS', 'DejaVu Sans']
 plt.rcParams['axes.unicode_minus'] = False
 
 
 def parse_test_report(report_file):
-    """解析测试报告文件"""
     if not os.path.exists(report_file):
         return None
     
     with open(report_file, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # 提取准确率和F1
     acc_match = re.search(r'准确率:\s*(\d+\.\d+)', content)
     f1_match = re.search(r'Macro-F1:\s*(\d+\.\d+)', content)
     
@@ -38,7 +35,6 @@ def parse_test_report(report_file):
 
 
 def parse_hybrid_metrics(metrics_file):
-    """解析混合模型的metrics.txt"""
     if not os.path.exists(metrics_file):
         return None
     
@@ -63,8 +59,7 @@ def main():
     print("\n" + "=" * 80)
     print("LLM基线对比分析")
     print("=" * 80)
-    
-    # 实验配置
+
     experiments = [
         {
             'name': 'Llama-3.1-8B (QLoRA)',
@@ -125,22 +120,21 @@ def main():
     
     df = pd.DataFrame(results)
     
-    # 显示表格
+
     print("\n" + "=" * 80)
     print("对比结果")
     print("=" * 80)
     display_df = df[['模型', '类型', '参数量', '准确率', 'Macro-F1']]
     print(display_df.to_string(index=False))
     
-    # 保存CSV
+
     output_csv = '../llm_baseline_comparison.csv'
     df.to_csv(output_csv, index=False, encoding='utf-8-sig')
     print(f"\n✓ 结果已保存: {output_csv}")
     
-    # 绘图
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
     
-    # 准确率对比
+
     colors = ['#e74c3c', '#f39c12', '#3498db', '#2ecc71']
     axes[0].bar(range(len(df)), df['准确率(%)'], color=colors[:len(df)])
     axes[0].set_xticks(range(len(df)))
@@ -150,11 +144,11 @@ def main():
     axes[0].set_ylim([0, 100])
     axes[0].grid(True, alpha=0.3, axis='y')
     
-    # 添加数值标签
+
     for i, y in enumerate(df['准确率(%)']):
         axes[0].text(i, y + 1, f'{y:.2f}%', ha='center', fontsize=10)
     
-    # Macro-F1对比
+
     axes[1].bar(range(len(df)), df['F1值'], color=colors[:len(df)])
     axes[1].set_xticks(range(len(df)))
     axes[1].set_xticklabels(df['模型'], rotation=20, ha='right')
@@ -163,7 +157,7 @@ def main():
     axes[1].set_ylim([0, 1.0])
     axes[1].grid(True, alpha=0.3, axis='y')
     
-    # 添加数值标签
+
     for i, y in enumerate(df['F1值']):
         axes[1].text(i, y + 0.02, f'{y:.4f}', ha='center', fontsize=10)
     
@@ -172,13 +166,12 @@ def main():
     plt.savefig(output_png, dpi=300, bbox_inches='tight')
     print(f"✓ 对比图已保存: {output_png}")
     
-    # 性能提升分析
     if len(df) >= 2:
         print("\n" + "=" * 80)
         print("性能提升分析")
         print("=" * 80)
         
-        # 找到混合模型
+
         hybrid = df[df['类型'] == 'Hybrid (Proposed)'].iloc[0] if any(df['类型'] == 'Hybrid (Proposed)') else None
         
         if hybrid is not None:
