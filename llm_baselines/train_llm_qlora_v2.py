@@ -1,15 +1,4 @@
 #!/usr/bin/env python3
-"""
-LLM QLoRA微调脚本 v2（改进版）
-
-主要改进：
-1. 数据重采样：过采样少数类 + 欠采样多数类
-2. Few-shot示例：在Prompt中添加分层采样的示例
-3. 调整超参数：降低学习率，增加warmup
-4. 改进评估：更鲁棒的标签解析
-
-解决v1的类别崩溃问题（只预测Irrelevant）
-"""
 
 import argparse
 import os
@@ -40,12 +29,8 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-# =============================================================================
-# 1. 数据集（改进版：支持重采样和Few-shot）
-# =============================================================================
-
 class OpinionEvolutionLLMDatasetV2(Dataset):
-    """改进的LLM微调数据集"""
+
     
     def __init__(
         self,
@@ -71,7 +56,7 @@ class OpinionEvolutionLLMDatasetV2(Dataset):
         print(f"正在加载数据: {csv_file} ...")
         df = pd.read_csv(csv_file)
         
-        # 按课堂分组处理
+
         grouped = df.groupby('class', sort=False)
         samples_by_label = {i: [] for i in range(6)}
         
@@ -101,13 +86,12 @@ class OpinionEvolutionLLMDatasetV2(Dataset):
                 }
                 
                 samples_by_label[classifications[i]].append(sample)
-        
-        # === 数据重采样策略 ===
+    
         if use_resampling and 'train' in csv_file:
             print("\n🔄 应用数据重采样策略...")
             self.samples = self._resample_data(samples_by_label)
         else:
-            # 验证集/测试集不重采样
+   
             self.samples = []
             for label_samples in samples_by_label.values():
                 self.samples.extend(label_samples)
@@ -122,20 +106,17 @@ class OpinionEvolutionLLMDatasetV2(Dataset):
             print(f"  {label} ({self.label_names[label]}): {count} 样本 ({100*count/len(self.samples):.1f}%)")
     
     def _resample_data(self, samples_by_label):
-        """重采样策略：平衡类别分布"""
-        
-        # 原始分布
+    
         original_counts = {i: len(samples) for i, samples in samples_by_label.items()}
         print(f"  原始分布: {dict(sorted(original_counts.items()))}")
-        
-        # 目标分布（降低不平衡比例从25:1到约3:1）
+      
         target_distribution = {
-            0: 3000,   # Irrelevant: 7649 → 3000（欠采样）
-            1: 1307,   # New: 保持
-            2: 1618,   # Strengthened: 保持
-            3: 1000,   # Weakened: 295 → 1000（过采样3.4倍）
-            4: 1000,   # Adopted: 739 → 1000（过采样1.4倍）
-            5: 800     # Refuted: 370 → 800（过采样2.2倍）
+            0: 3000,   
+            1: 1307,  
+            2: 1618,  
+            3: 1000,  
+            4: 1000,
+            5: 800  
         }
         
         resampled_samples = []
@@ -145,18 +126,16 @@ class OpinionEvolutionLLMDatasetV2(Dataset):
             target = target_distribution[label_id]
             
             if len(original) >= target:
-                # 欠采样：随机选择
                 selected = np.random.choice(len(original), target, replace=False)
                 resampled_samples.extend([original[i] for i in selected])
             else:
-                # 过采样：重复采样
                 selected = np.random.choice(len(original), target, replace=True)
                 resampled_samples.extend([original[i] for i in selected])
         
-        # 打乱顺序
+    
         np.random.shuffle(resampled_samples)
         
-        # 新分布
+ 
         new_counts = Counter([s['label_id'] for s in resampled_samples])
         print(f"  重采样后: {dict(sorted(new_counts.items()))}")
         print(f"  样本总数: {len(original_counts)} → {len(resampled_samples)}")
@@ -183,31 +162,28 @@ class OpinionEvolutionLLMDatasetV2(Dataset):
     
     def _build_prompt(self, current_sentence, current_speaker, 
                       context_sentences, context_speakers):
-        """构造Prompt（支持Few-shot）"""
+      
         
-        # Few-shot示例部分
-        few_shot_text = ""
+
         if self.use_few_shot and self.few_shot_examples:
             few_shot_text = "Here are some examples:\n\n"
-            for i, ex in enumerate(self.few_shot_examples[:6], 1):  # 最多6个示例
+            for i, ex in enumerate(self.few_shot_examples[:6], 1):  
                 few_shot_text += f"Example {i}:\n"
                 few_shot_text += f"Context: {ex['context']}\n"
                 few_shot_text += f"Current: {ex['current']}\n"
                 few_shot_text += f"Label: {ex['label']}\n\n"
             few_shot_text += "---\n\n"
         
-        # 对话历史
+
         dialogue = ""
         if context_sentences:
             for ctx_speaker, ctx_sentence in zip(context_speakers, context_sentences):
                 dialogue += f"{ctx_speaker}: {ctx_sentence}\n"
-        
-        # Switch/Same标记
+   
         switch_marker = ""
         if context_speakers:
             switch_marker = self._get_switch_marker(context_speakers[-1], current_speaker)
-        
-        # 完整prompt
+  
         prompt = f"""You are analyzing student opinion evolution in classroom dialogue.
 
 {few_shot_text}Dialogue History:
@@ -236,10 +212,8 @@ Opinion Evolution Type:"""
     def __getitem__(self, idx):
         sample = self.samples[idx]
         
-        # 完整文本
         full_text = sample['prompt'] + f" {sample['label']}"
         
-        # 分词
         encoding = self.tokenizer(
             full_text,
             max_length=self.max_length,
@@ -267,14 +241,10 @@ Opinion Evolution Type:"""
         }
 
 
-# =============================================================================
-# 2. Few-shot示例采样
-# =============================================================================
 
 def sample_few_shot_examples(train_csv_path, num_per_class=2):
-    """从训练集采样Few-shot示例（每类2个）"""
-    
-    print(f"\n📝 采样Few-shot示例（每类{num_per_class}个）...")
+ 
+    print(f"\n采样Few-shot示例（每类{num_per_class}个）...")
     
     df = pd.read_csv(train_csv_path)
     grouped = df.groupby('class', sort=False)
@@ -290,7 +260,6 @@ def sample_few_shot_examples(train_csv_path, num_per_class=2):
         labels = group['label'].tolist()
         
         for i in range(len(sentences)):
-            # 简化的上下文
             context = ""
             if i > 0:
                 context = f"{speakers[i-1]}: {sentences[i-1]}"
@@ -310,7 +279,6 @@ def sample_few_shot_examples(train_csv_path, num_per_class=2):
             
             samples_by_label[labels[i]].append(sample)
     
-    # 每类采样
     few_shot_examples = []
     for label_id in range(6):
         available = samples_by_label[label_id]
@@ -327,12 +295,8 @@ def sample_few_shot_examples(train_csv_path, num_per_class=2):
     return few_shot_examples
 
 
-# =============================================================================
-# 3. 评估函数（改进版）
-# =============================================================================
 
 def evaluate_model_v2(model, tokenizer, test_dataset, device, label_names):
-    """改进的评估函数"""
     model.eval()
     
     all_preds = []
@@ -350,19 +314,19 @@ def evaluate_model_v2(model, tokenizer, test_dataset, device, label_names):
                 max_length=1024
             ).to(device)
             
-            # 温度采样（增加多样性）
+           
             outputs = model.generate(
                 **inputs,
                 max_new_tokens=10,
                 do_sample=True,
-                temperature=0.3,  # 轻微随机性
+                temperature=0.3,  
                 top_p=0.9,
                 pad_token_id=tokenizer.pad_token_id
             )
             
             generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
             
-            # 改进的标签解析
+        
             pred_label_id = parse_label_robust(generated_text, sample['prompt'], label_names)
             
             all_preds.append(pred_label_id)
@@ -372,30 +336,23 @@ def evaluate_model_v2(model, tokenizer, test_dataset, device, label_names):
 
 
 def parse_label_robust(generated_text, prompt, label_names):
-    """鲁棒的标签解析"""
-    
-    # 提取prompt之后的部分
     if prompt in generated_text:
         response = generated_text[len(prompt):].strip()
     else:
         response = generated_text.strip()
     
-    # 提取第一行或第一个词
     response = response.split('\n')[0].strip()
     response = response.split('.')[0].strip()
     response_lower = response.lower()
-    
-    # 精确匹配
+
     for i, label in enumerate(label_names):
         if label.lower() == response_lower:
             return i
     
-    # 包含匹配
     for i, label in enumerate(label_names):
         if label.lower() in response_lower:
             return i
     
-    # 部分匹配
     label_keywords = {
         'irrelevant': 0,
         'new': 1,
@@ -409,13 +366,10 @@ def parse_label_robust(generated_text, prompt, label_names):
         if keyword in response_lower:
             return label_id
     
-    # 默认返回Irrelevant（避免崩溃）
+
     return 0
 
 
-# =============================================================================
-# 4. 主函数
-# =============================================================================
 
 def main():
     parser = argparse.ArgumentParser(description='LLM QLoRA微调（改进版）')
@@ -459,7 +413,7 @@ def main():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"\n使用设备: {device}")
     
-    # QLoRA配置
+
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_use_double_quant=True,
@@ -467,7 +421,7 @@ def main():
         bnb_4bit_compute_dtype=torch.bfloat16
     )
     
-    # 加载模型
+   
     print(f"\n加载模型: {args.model_path} (4-bit量化) ...")
     model = AutoModelForCausalLM.from_pretrained(
         args.model_path,
@@ -486,12 +440,9 @@ def main():
         tokenizer.pad_token = tokenizer.eos_token
         tokenizer.pad_token_id = tokenizer.eos_token_id
     
-    # 准备模型
+   
     model = prepare_model_for_kbit_training(model)
     
-
-    # LoRA配置
-    # 修改说明：Qwen2 和 Llama-3 都遵循相同的命名规范，且微调所有线性层(Linear Layers)效果通常更好
     target_modules = [
         "q_proj", "k_proj", "v_proj", "o_proj",
         "gate_proj", "up_proj", "down_proj"
@@ -512,13 +463,11 @@ def main():
     all_params = sum(p.numel() for p in model.parameters())
     print(f"\n可训练参数: {trainable_params:,} / {all_params:,} ({100 * trainable_params / all_params:.2f}%)")
     
-    # Few-shot示例采样
     few_shot_examples = []
     if args.use_few_shot:
         train_csv = os.path.join(args.data_dir, 'train.csv')
         few_shot_examples = sample_few_shot_examples(train_csv, num_per_class=2)
     
-    # 加载数据集
     print("\n加载数据集...")
     train_dataset = OpinionEvolutionLLMDatasetV2(
         os.path.join(args.data_dir, 'train.csv'),
@@ -550,7 +499,6 @@ def main():
         few_shot_examples=few_shot_examples
     )
     
-    # 训练参数
     training_args = TrainingArguments(
         output_dir=args.output_dir,
         num_train_epochs=args.num_epochs,
@@ -558,8 +506,8 @@ def main():
         per_device_eval_batch_size=args.batch_size,
         gradient_accumulation_steps=args.gradient_accumulation_steps,
         learning_rate=args.learning_rate,
-        warmup_ratio=0.1,  # 添加warmup
-        weight_decay=0.01,  # 正则化
+        warmup_ratio=0.1,  
+        weight_decay=0.01,
         logging_steps=100,
         evaluation_strategy="epoch",
         save_strategy="epoch",
@@ -573,7 +521,6 @@ def main():
         report_to="none"
     )
     
-    # Trainer
     data_collator = DataCollatorForLanguageModeling(
         tokenizer=tokenizer,
         mlm=False
@@ -587,15 +534,15 @@ def main():
         data_collator=data_collator
     )
     
-    # 训练
+   
     print("\n开始训练...")
     trainer.train()
     
-    # 保存模型
+   
     print("\n保存模型...")
     trainer.save_model(args.output_dir)
     
-    # 测试集评估
+   
     print("\n" + "=" * 80)
     print("测试集评估")
     print("=" * 80)
@@ -608,7 +555,7 @@ def main():
         train_dataset.label_names
     )
     
-    # 计算指标
+   
     accuracy = accuracy_score(all_labels, all_preds)
     macro_f1 = f1_score(all_labels, all_preds, average='macro')
     
@@ -624,7 +571,7 @@ def main():
         digits=4
     ))
     
-    # 保存结果
+
     metrics = {
         'accuracy': float(accuracy),
         'macro_f1': float(macro_f1),
@@ -639,7 +586,6 @@ def main():
 
 
 if __name__ == '__main__':
-    # 设置随机种子
     np.random.seed(42)
     torch.manual_seed(42)
     
