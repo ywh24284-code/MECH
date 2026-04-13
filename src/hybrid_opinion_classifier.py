@@ -21,13 +21,12 @@ except ImportError:
     MULTI_TASK_AVAILABLE = False
     print("[警告] 未找到 multi_task_model.py，多任务模型不可用")
 
-# 导入生成模型
 try:
     from openai import OpenAI
     from dotenv import load_dotenv
     import time
 
-    # 加载环境变量
+
     load_dotenv()
     api_key = os.getenv("OPENAI_API_KEY")
     base_url = os.getenv("OPENAI_BASE_URL")
@@ -96,13 +95,12 @@ class DialogueAwareModel(nn.Module):
 
 
 class DiscriminativeInference:
-    """判别模型推理类"""
 
     def __init__(self, model_dir: str, device=None):
         self.model_dir = model_dir
         self.device = device if device else torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-        # 加载配置
+ 
         config_path = os.path.join(model_dir, 'config.json')
         if not os.path.exists(config_path):
             raise FileNotFoundError(f"配置文件不存在: {config_path}")
@@ -110,12 +108,12 @@ class DiscriminativeInference:
         with open(config_path, 'r', encoding='utf-8') as f:
             self.config = json.load(f)
 
-        # 获取模型路径（从config读取，支持本地路径）
+    
         model_name_or_path = self.config.get('model_name', 'roberta-base')
 
         print(f"  模型路径: {model_name_or_path}")
 
-        # 加载分词器（使用 AutoTokenizer 支持更多模型）
+ 
         self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, use_fast=False)
 
         context_window = self.config.get('context_window', 5)
@@ -133,7 +131,7 @@ class DiscriminativeInference:
 
         checkpoint = torch.load(checkpoint_path, map_location=self.device)
 
-        # 检测是否为多任务模型
+  
         state_dict_keys = checkpoint['model_state_dict'].keys()
         is_multi_task = 'dialogue_act_head.0.weight' in state_dict_keys or 'shared_layer.1.weight' in state_dict_keys
 
@@ -146,7 +144,7 @@ class DiscriminativeInference:
             has_feature_fusion = any('feature_fusion' in k for k in state_dict_keys)
 
             if has_feature_fusion:
-                print("  ⚠️ 检测到增强版本模型（带feature_fusion），但当前代码仅支持基线版本")
+                print(" 检测到增强版本模型（带feature_fusion），但当前代码仅支持基线版本")
                 print("  尝试兼容性加载（跳过不匹配的层）...")
 
             # 加载多任务模型
@@ -186,15 +184,15 @@ class DiscriminativeInference:
 
                 self.model.load_state_dict(filtered_state, strict=False)
 
-                print(f"  ✓ 兼容性加载完成，加载了 {len(filtered_state)}/{len(model_state)} 个参数")
+                print(f"兼容性加载完成，加载了 {len(filtered_state)}/{len(model_state)} 个参数")
                 if extra_keys:
-                    print(f"  ℹ️ Checkpoint中有 {len(extra_keys)} 个额外的参数（已忽略）:")
+                    print(f"Checkpoint中有 {len(extra_keys)} 个额外的参数（已忽略）:")
                     for key in extra_keys[:5]:
                         print(f"    - {key}")
                     if len(extra_keys) > 5:
                         print(f"    ... 还有 {len(extra_keys) - 5} 个")
                 if skipped_keys:
-                    print(f"  ⚠️ 跳过了 {len(skipped_keys)} 个参数（将使用随机初始化）")
+                    print(f"  跳过了 {len(skipped_keys)} 个参数（将使用随机初始化）")
                     for key in skipped_keys[:5]:
                         print(f"    - {key}")
                     if len(skipped_keys) > 5:
@@ -203,10 +201,10 @@ class DiscriminativeInference:
               
                 try:
                     self.model.load_state_dict(checkpoint['model_state_dict'], strict=True)
-                    print(f"  ✓ 模型权重加载成功")
+                    print(f" 模型权重加载成功")
                 except RuntimeError as e:
                     if 'size mismatch' in str(e) or 'Unexpected key' in str(e) or 'Missing key' in str(e):
-                        print(f"  ⚠️ 严格加载失败，使用兼容模式...")
+                        print(f" 严格加载失败，使用兼容模式...")
                
                         model_state = self.model.state_dict()
                         checkpoint_state = checkpoint['model_state_dict']
@@ -224,9 +222,9 @@ class DiscriminativeInference:
 
                         self.model.load_state_dict(filtered_state, strict=False)
 
-                        print(f"  ✓ 兼容性加载完成，加载了 {len(filtered_state)}/{len(model_state)} 个参数")
+                        print(f"兼容性加载完成，加载了 {len(filtered_state)}/{len(model_state)} 个参数")
                         if skipped_keys:
-                            print(f"  ⚠️ 跳过了 {len(skipped_keys)} 个参数（将使用随机初始化）")
+                            print(f"跳过了 {len(skipped_keys)} 个参数（将使用随机初始化）")
                             for key in skipped_keys[:5]:
                                 print(f"    - {key}")
                             if len(skipped_keys) > 5:
@@ -248,18 +246,15 @@ class DiscriminativeInference:
                 "Providing Evidence/Reasoning"
             ]
         else:
-            print("  检测到: 单任务模型 (DialogueAwareModel)")
+            print("检测到: 单任务模型 (DialogueAwareModel)")
             self.is_multi_task = False
-            # 加载单任务模型
             self.model = DialogueAwareModel(
                 model_path=model_name_or_path,
                 num_classes=self.config.get('num_classes', 6),
                 dropout=self.config.get('dropout', 0.6)
             )
-            # 调整 embedding
             self.model.encoder.resize_token_embeddings(len(self.tokenizer))
             print(f"  模型 embedding 大小: {self.model.encoder.embeddings.word_embeddings.weight.shape[0]}")
-            # 加载权重
             self.model.load_state_dict(checkpoint['model_state_dict'])
 
         self.model.to(self.device)
@@ -267,13 +262,13 @@ class DiscriminativeInference:
 
         self.label_names = ['Irrelevant', 'New', 'Strengthened', 'Weakened', 'Adopted', 'Refuted']
 
-        print(f"✓ 判别模型加载成功")
-        print(f"  设备: {self.device}")
+        print(f"判别模型加载成功")
+        print(f"设备: {self.device}")
         val_f1 = checkpoint.get('val_macro_f1', 0)
         if isinstance(val_f1, (int, float)):
-            print(f"  验证集Macro-F1: {val_f1:.4f}")
+            print(f"验证集Macro-F1: {val_f1:.4f}")
         else:
-            print(f"  验证集Macro-F1: {val_f1}")
+            print(f"验证集Macro-F1: {val_f1}")
 
     def _get_role_name(self, speaker_name, current_speaker_name):
         teacher_names = {'T', 'Teacher', 'Ms. G', 'Mrs. G'}
@@ -286,30 +281,18 @@ class DiscriminativeInference:
         return "[OTHER]"
 
     def predict_single(self, text: str, speaker: str = None, context_history: List[Dict] = None) -> Dict:
-        """
-        预测单个样本
-
-        Args:
-            text: 输入文本（目标句子）
-            speaker: 当前说话者
-            context_history: 上下文历史 [{'speaker': 'T', 'sentence': '...', 'label': '...'}, ...]
-
-        Returns:
-            包含预测结果、置信度和 CLS embedding 的字典
-        """
-        # 构造与训练时一致的输入格式
         use_context = self.config.get('use_context', True)
         context_window = self.config.get('context_window', 5)
         use_turn_indicators = self.config.get('use_turn_indicators', True)
 
-        # Target text: [CURRENT] 当前句子
+     
         target_text = f"[CURRENT] {text}"
 
-        # Context text: 构造上下文（如果提供）
+
         context_text = ""
         if use_context and context_history:
             context_parts = []
-            # 只取最近的 context_window 条
+
             recent_context = context_history[-context_window:] if len(
                 context_history) > context_window else context_history
 
@@ -317,10 +300,9 @@ class DiscriminativeInference:
                 ctx_speaker = ctx.get('speaker', 'Unknown')
                 ctx_sentence = ctx.get('sentence', '')
 
-                # 获取角色标记
+              
                 role = self._get_role_name(ctx_speaker, speaker)
 
-                # 添加轮次标记（如果启用）
                 if use_turn_indicators:
                     turn_marker = f"[TURN_{turn_idx}]"
                     context_parts.append(f"{turn_marker} {role} {ctx_sentence}")
@@ -352,13 +334,10 @@ class DiscriminativeInference:
         input_ids = encoding['input_ids'].to(self.device)
         attention_mask = encoding['attention_mask'].to(self.device)
 
-        # 推理
         with torch.no_grad():
             if self.is_multi_task:
-                # 多任务模型返回多个输出
                 outputs = self.model(input_ids, attention_mask, return_confidence=True, return_embedding=True)
 
-                # 提取观点演化结果
                 opinion_info = outputs['opinion_confidence']
                 cls_embedding = outputs.get('cls_embedding', None)
                 if cls_embedding is not None:
@@ -370,13 +349,11 @@ class DiscriminativeInference:
                 top_k_probs = opinion_info['top_k_probs'][0].cpu().numpy()
                 top_k_indices = opinion_info['top_k_indices'][0].cpu().numpy()
 
-                # 提取对话行为结果（用于后续决策）
                 dialogue_act_info = outputs['dialogue_act_confidence']
                 dialogue_act_pred = dialogue_act_info['predicted_classes'][0].item()
                 dialogue_act_conf = dialogue_act_info['confidence_scores'][0].item()
                 dialogue_act_probs = dialogue_act_info['probabilities'][0].cpu().numpy()
             else:
-                # 单任务模型
                 logits, confidence_info = self.model(input_ids, attention_mask, return_confidence=True)
 
                 cls_embedding = confidence_info.get('cls_embedding', None)
@@ -473,11 +450,9 @@ def call_llm_api(messages: List[Dict[str, str]], model: str = "deepseek-v3",
 def extract_label_from_response(raw_text: str) -> str:
     raw_text = raw_text.strip()
 
-    # 直接匹配
     if raw_text in VALID_LABELS:
         return raw_text
 
-    # 标签名列表（按顺序）
     label_names = ['Irrelevant', 'New', 'Strengthened', 'Weakened', 'Adopted', 'Refuted']
 
     lines = raw_text.split('\n')
@@ -553,7 +528,7 @@ def get_classification_prompt(
     current_speaker: str,
     current_sentence: str,
     consistency: str,
-    act_hint: str = None,  # <--- 新增参数
+    act_hint: str = None, 
     kb_hint: str = None
 
 ) -> List[Dict[str, str]]:
@@ -625,7 +600,6 @@ def get_classification_prompt_with_icl_v1(
     以下是一些相似句子的分类示例，供你参考：
     """
 
-    # 构建 ICL 示例部分
     icl_examples_str = "\n"
     for i, example in enumerate(icl_examples, 1):
         sentence = example.get('sentence', '')
@@ -648,7 +622,7 @@ def get_classification_prompt_with_icl_v1(
 
     """
 
-    # 注入对话行为提示（软提示）
+
     if act_hint:
         user_prompt += (
             f"\n    - **已知对话行为 (Dialogue Act)**: {act_hint} "
@@ -717,7 +691,6 @@ def get_classification_prompt_with_icl(
     if act_hint:
         user_prompt += f"\n    - **已知对话行为 (Dialogue Act)**: {act_hint} (提示：请参考此意图进行判断)\n"
 
-    # Legacy prompt 忽略 kb_hint
 
     user_prompt += "\n    请参考上述示例，先简要分析（1-2句话），然后在最后一行输出标签（仅一个词）。"
 
@@ -749,7 +722,7 @@ class GenerativeInference:
                        prompt_version: str = "v1"  
                        ) -> Dict:
  
-        # 1. 确定发言人一致性（与 classify_opinions1.py 保持一致）
+    
         if previous_speaker is None:
             consistency = "switch"  # 第一句话
         elif speaker == previous_speaker:
@@ -757,7 +730,7 @@ class GenerativeInference:
         else:
             consistency = "switch"
 
-        # 2. 构建上下文字符串 (只取最近的context_window条)
+   
         recent_context = context_history[-self.context_window:] if context_history else []
         context_lines = []
         for ctx in recent_context:
@@ -767,7 +740,6 @@ class GenerativeInference:
                 context_lines.append(f"{ctx_speaker}: {ctx_sentence}")
         context_str = "\n".join(context_lines)
 
-        # 3. 构建 Prompt
         if self.use_knn_icl and icl_examples:
             if prompt_version == "v2":
                 messages = get_classification_prompt_with_icl(
@@ -795,7 +767,6 @@ class GenerativeInference:
                     kb_hint=kb_hint,
                 )
 
-        # 4. 调用LLM
         predicted_label = call_llm_api(messages, model=self.model_name)
 
         result = {
@@ -813,7 +784,7 @@ class GenerativeInference:
         return result
 
 class HybridDecisionMaker:
-    """混合模型联合决策器"""
+ 
 
     def __init__(
             self,
@@ -822,7 +793,7 @@ class HybridDecisionMaker:
             topk_threshold: float = 0.2,  
             prefer_generative: bool = False 
     ):
-        """初始化联合决策器配置"""
+
         self.disc_threshold = discriminative_threshold
         self.agreement_weight = agreement_weight
         self.topk_threshold = topk_threshold
@@ -998,7 +969,6 @@ class HybridDecisionMaker:
     
             if 'asking' in act_label or 'press for' in act_label:
                 if opinion_label == 'Strengthened':
-                    # 疑问/追问类对话行为，不太可能是强化观点
                     if gen_label in ['New', 'Weakened', 'Irrelevant']:
                         return (
                             gen_label,
@@ -1076,10 +1046,9 @@ class HybridOpinionClassifier:
         self.fast_pass_by_irrelevant = 0
         self.fast_pass_by_high_conf = 0
 
-        # 加载判别模型
         self.discriminative = DiscriminativeInference(discriminative_model_dir)
 
-        # 加载 kNN 检索器
+
         self.knn_retriever = None
         if use_knn_icl:
             if knn_datastore_path is None or not os.path.exists(knn_datastore_path):
@@ -1095,7 +1064,6 @@ class HybridOpinionClassifier:
                     print("将禁用 kNN-ICL")
                     self.use_knn_icl = False
 
-        # 加载生成模型
         self.use_generative = use_generative and GENERATIVE_MODEL_AVAILABLE
         if self.use_generative:
             try:
@@ -1112,7 +1080,6 @@ class HybridOpinionClassifier:
             self.generative = None
             print("仅使用判别模型 (生成模型未启用)")
 
-        # 决策器
         self.decision_maker = HybridDecisionMaker(
             discriminative_threshold=decision_threshold,
             topk_threshold=topk_threshold,
@@ -1138,8 +1105,6 @@ class HybridOpinionClassifier:
         disc_confidence = disc_result['confidence_score']
         disc_label = disc_result['predicted_label']
 
-        # 2. 路由逻辑准备
-        # A. Oracle 风险分
         oracle_risk_score = 0.0
         oracle_label_text = None
         if oracle_da_info:
@@ -1151,12 +1116,12 @@ class HybridOpinionClassifier:
             if any(k in oracle_label_text.lower() for k in critical_keywords):
                 oracle_risk_score = 1.0
 
-        # B. 预测风险分
+    
         predicted_risk_score = 0.0
         if 'dialogue_act' in disc_result and 'all_probabilities' in disc_result['dialogue_act']:
             da_probs = disc_result['dialogue_act']['all_probabilities']
 
-            # 基于实证统计的高风险 DA 清单（按 da_name 精确匹配）
+
             strong_high_risk = {
                 "Providing Evidence/Reasoning",  
                 "Making a Claim", 
@@ -1181,7 +1146,7 @@ class HybridOpinionClassifier:
         if self.enable_risk_routing:
             final_risk_score = oracle_risk_score if oracle_da_info else predicted_risk_score
         else:
-            final_risk_score = 0.0  # 禁用风险路由时，风险分恒为0（不会触发拦截）
+            final_risk_score = 0.0  
 
         should_skip_llm = False
         skip_reason = ""
@@ -1209,7 +1174,6 @@ class HybridOpinionClassifier:
         if should_skip_llm:
             self.fast_pass_total += 1  
 
-            # 构造决策信息
             decision_info = {
                 'discriminative_label': disc_label,
                 'discriminative_confidence': disc_confidence,
@@ -1273,18 +1237,15 @@ class HybridOpinionClassifier:
             act_tag_column: str = 'Act Tag',  
             context_window: int = 5
     ):
-        """
-        批量分类CSV文件 (带成本统计)
-        """
+      
         print(f"\n读取数据: {input_csv}")
         df = pd.read_csv(input_csv)
         print(f"样本数: {len(df)}")
 
         if use_oracle_da and act_tag_column not in df.columns:
-            print(f"⚠️ [警告] 数据中未找到列 '{act_tag_column}'，无法使用 Oracle 模式！")
+            print(f"数据中未找到列 '{act_tag_column}'，无法使用 Oracle 模式！")
             use_oracle_da = False
 
-        # 重置计数器
         self.api_calls_total = 0
         self.fast_pass_total = 0
         self.fast_pass_by_irrelevant = 0
@@ -1295,7 +1256,7 @@ class HybridOpinionClassifier:
             and act_tag_column in df.columns
             and use_oracle_da
         )
-        # 每次运行前重置知识库使用计数
+    
         self.kb_hint_match_count = 0
         self.kb_hint_llm_count = 0
 
@@ -1512,12 +1473,12 @@ class HybridOpinionClassifier:
         savings_rate = (self.fast_pass_total / total_samples * 100) if total_samples > 0 else 0
 
         print("\n" + "=" * 80)
-        print("💰 级联路由成本效益分析 (Cascade Routing Cost Analysis)")
+        print("级联路由成本效益分析 (Cascade Routing Cost Analysis)")
         print("=" * 80)
         print(f"\n【总体统计】")
         print(f"  总样本数:              {total_samples}")
-        print(f"  API调用次数 (花钱💸):  {self.api_calls_total:4d} ({self.api_calls_total / total_samples * 100:5.1f}%)")
-        print(f"  快速通道次数 (省钱💰): {self.fast_pass_total:4d} ({savings_rate:5.1f}%)")
+        print(f"  API调用次数 (花钱):  {self.api_calls_total:4d} ({self.api_calls_total / total_samples * 100:5.1f}%)")
+        print(f"  快速通道次数 (省钱): {self.fast_pass_total:4d} ({savings_rate:5.1f}%)")
 
         print(f"\n【快速通道细分】")
         print(
