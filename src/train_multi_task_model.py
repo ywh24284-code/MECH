@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-多任务模型训练脚本
-同时训练对话行为识别和观点演化分类
+Multi-task model training script
+Jointly train DA recognition and OE classification
 """
 
 import argparse
@@ -29,7 +29,7 @@ transformers.logging.disable_progress_bar()
 plt.rcParams['font.sans-serif'] = ['SimHei', 'Arial Unicode MS', 'DejaVu Sans']
 plt.rcParams['axes.unicode_minus'] = False
 
-torch.backends.cudnn.enabled = False
+torch.backends.cudnn.enabled = False  # Disabled for deterministic reproducibility
 
 from multi_task_model import MultiTaskDialogueModel, MultiTaskLoss
 
@@ -38,7 +38,7 @@ from error_analysis import analyze_errors, print_error_stats
 
 class MultiTaskDialogueDataset(Dataset):
     """
-    多任务数据集: 同时提供对话行为标签和观点演化标签
+    Multi-task dataset: provides both dialogue act labels and opinion evolution labels
     """
     
     def __init__(
@@ -58,17 +58,17 @@ class MultiTaskDialogueDataset(Dataset):
         
         self.teacher_names = {'T', 'Teacher', 'Ms. G', 'Mrs. G'}
         
-        print(f"正在加载增强数据: {csv_file} ...")
-        print(f"配置: Window={context_window}, TurnIndicators={use_turn_indicators}")
+        print(f"Loading data: {csv_file} ...")
+        print(f"Config: Window={context_window}, TurnIndicators={use_turn_indicators}")
         
         df = pd.read_csv(csv_file)
 
         required_cols = ['Sentence', 'Speaker', 'act_label', 'label']
         missing_cols = [col for col in required_cols if col not in df.columns]
         if missing_cols:
-            raise ValueError(f"CSV缺少必要的列: {missing_cols}。当前列: {df.columns.tolist()}")
+            raise ValueError(f"Missing required columns: {missing_cols}. Current columns: {df.columns.tolist()}")
         
-        # 按课堂分组
+        # Group by classroom
         grouped = df.groupby('class', sort=False)
         
         self.samples = []
@@ -100,17 +100,17 @@ class MultiTaskDialogueDataset(Dataset):
                 self.all_dialogue_act_labels.append(dialogue_act_tags[i])
                 self.all_opinion_labels.append(classifications[i])
         
-        print(f"加载完成。有效样本数: {len(self.samples)}")
-        
-        print(f"\n对话行为标签分布:")
+        print(f"Loaded. Valid samples: {len(self.samples)}")
+
+        print(f"\nDialogue act label distribution:")
         unique_acts, counts_acts = np.unique(self.all_dialogue_act_labels, return_counts=True)
         for act, count in zip(unique_acts, counts_acts):
-            print(f"  标签 {act}: {count} 样本")
-        
-        print(f"\n观点演化标签分布:")
+            print(f"  Label {act}: {count} samples")
+
+        print(f"\nOpinion evolution label distribution:")
         unique_opinions, counts_opinions = np.unique(self.all_opinion_labels, return_counts=True)
         for opinion, count in zip(unique_opinions, counts_opinions):
-            print(f"  标签 {opinion}: {count} 样本")
+            print(f"  Label {opinion}: {count} samples")
     
     def _get_role_name(self, speaker_name, current_speaker_name):
         s_name = str(speaker_name).strip()
@@ -332,70 +332,40 @@ def evaluate(model, dataloader, device, criterion, is_multi_task=True):
         'opinion_labels': opinion_labels
     }
 
-class EarlyStopping:
-    def __init__(self, patience=3, min_delta=0.001, mode='max'):
-        self.patience = patience
-        self.min_delta = min_delta
-        self.mode = mode
-        self.counter = 0
-        self.best_score = None
-        self.early_stop = False
-    
-    def __call__(self, score):
-        if self.best_score is None:
-            self.best_score = score
-            return False
-        
-        if self.mode == 'max':
-            improved = score > (self.best_score + self.min_delta)
-        else:
-            improved = score < (self.best_score - self.min_delta)
-        
-        if improved:
-            self.best_score = score
-            self.counter = 0
-            return False
-        else:
-            self.counter += 1
-            if self.counter >= self.patience:
-                print(f"早停计数器: {self.counter}/{self.patience}")
-                return True
-            else:
-                print(f"早停计数器: {self.counter}/{self.patience}")
-                return False
+from utils import EarlyStopping  # noqa: E402
 
 
 def main():
-    parser = argparse.ArgumentParser(description='多任务对话模型训练')
+    parser = argparse.ArgumentParser(description='Multi-task model training')
     parser.add_argument('--task_type', type=str, default='multi',
                         choices=['single', 'multi'],
-                        help='任务类型: single(单任务-仅OE) / multi(多任务-DA+OE)')
-    parser.add_argument('--data_dir', type=str, default='dataset_split_result_v4',
-                        help='数据目录')
+                        help='Task type: single(single-task OE only) / multi(multi-task DA+OE)')
+    parser.add_argument('--data_dir', type=str, default='data',
+                        help='Data directory')
     parser.add_argument('--model_type', type=str, default='deberta',
                         choices=['deberta', 'roberta', 'bert', 'llama', 'qwen'],
-                        help='预训练模型类型')
+                        help='Pretrained model type')
     parser.add_argument('--model_path', type=str, default=None,
-                        help='预训练模型路径（如果不指定，使用默认路径）')
+                        help='Pretrained model path (uses default if not specified)')
     parser.add_argument('--num_dialogue_acts', type=int, default=12,
-                        help='对话行为类别数')
+                        help='Number of dialogue act classes')
     parser.add_argument('--num_opinion_classes', type=int, default=6,
-                        help='观点演化类别数')
+                        help='Number of opinion classes')
     parser.add_argument('--batch_size', type=int, default=16)
     parser.add_argument('--num_epochs', type=int, default=15)
     parser.add_argument('--learning_rate', type=float, default=2e-5)
     parser.add_argument('--dropout', type=float, default=None,
-                        help='Dropout比例(默认根据sample_ratio自适应)')
+                        help='Dropout ratio (auto-adaptive based on sample_ratio by default)')
     parser.add_argument('--use_class_balance', action='store_true',
-                        help='启用类别平衡采样(过采样少数类)')
+                        help='Enable class-balanced sampling (oversample minority classes)')
     parser.add_argument('--balance_target', type=str, default='opinion',
                         choices=['opinion', 'dialogue_act', 'both'],
-                        help='平衡目标:opinion(观点演化)/dialogue_act/both')
+                        help='Balance target: opinion/dialogue_act/both')
     parser.add_argument('--sample_ratio', type=float, default=1.0,
-                        help='训练数据采样比例 (0.0-1.0)')
+                        help='Training data sample ratio (0.0-1.0)')
     parser.add_argument('--random_seed', type=int, default=42)
     parser.add_argument('--output_dir', type=str, default=None,
-                        help='输出目录(默认自动生成)')
+                        help='Output directory (auto-generated by default)')
     
     args = parser.parse_args()
     
@@ -422,15 +392,15 @@ def main():
     
     if args.model_path is None:
         args.model_path = model_configs[args.model_type]['path']
-        print(f"使用默认模型路径: {args.model_path}")
+        print(f"Using default model path: {args.model_path}")
 
     if args.learning_rate == 2e-5 and args.model_type == 'roberta':
         args.learning_rate = model_configs['roberta']['learning_rate']
-        print(f"RoBERTa模型自动调整学习率: {args.learning_rate}")
-    
+        print(f"RoBERTa auto-adjusting learning rate: {args.learning_rate}")
+
     if args.batch_size == 16 and args.model_type == 'roberta':
         args.batch_size = model_configs['roberta']['batch_size']
-        print(f"RoBERTa模型自动调整batch_size: {args.batch_size}")
+        print(f"RoBERTa auto-adjusting batch_size: {args.batch_size}")
     
     model_name = args.model_path
     
@@ -438,7 +408,7 @@ def main():
     if args.output_dir is None:
         task_suffix = 'multitask' if is_multi_task else 'singletask'
         args.output_dir = f"../discriminative_model_{task_suffix}"
-        print(f"输出目录: {args.output_dir}")
+        print(f"Output directory: {args.output_dir}")
     
 
     if args.sample_ratio >= 0.8:  
@@ -451,22 +421,16 @@ def main():
         recommended_epochs = 15
     if args.learning_rate == 2e-5 and args.sample_ratio >= 0.8:
         args.learning_rate = recommended_lr
-        print(f"检测到全量数据训练,自动调整学习率: {args.learning_rate}")
+        print(f"Full data training detected, auto-adjusting learning rate: {args.learning_rate}")
     
     if args.dropout is None:
         args.dropout = recommended_dropout
-        print(f"自动设置Dropout: {args.dropout} (sample_ratio={args.sample_ratio})")
+        print(f"Auto-setting dropout: {args.dropout} (sample_ratio={args.sample_ratio})")
     
     if args.num_epochs == 15 and args.sample_ratio >= 0.8:
         args.num_epochs = recommended_epochs
-        print(f"检测到全量数据训练,自动调整训练轮数: {args.num_epochs}")
+        print(f"Full data training detected, auto-adjusting epoch count: {args.num_epochs}")
     
-    if args.output_dir is None:
-        if args.sample_ratio < 1.0:
-            args.output_dir = f'../multi_task_model_outputs_fewshot_{int(args.sample_ratio*100)}pct'
-        else:
-            args.output_dir = '../multi_task_model_outputs'
-
     config = {
         'data_dir': args.data_dir,
         'model_type': args.model_type,
@@ -491,9 +455,9 @@ def main():
         'use_act_logits_in_opinion': False
     }
     
-    task_name = "多任务" if is_multi_task else "单任务"
+    task_name = "Multi-task" if is_multi_task else "Single-task"
     print("=" * 80)
-    print(f"{task_name}模型训练 - {int(args.sample_ratio*100)}% 训练数据")
+    print(f"{task_name} model training - {int(args.sample_ratio*100)}% training data")
     print("=" * 80)
     print(json.dumps(config, indent=2, ensure_ascii=False))
     
@@ -510,19 +474,19 @@ def main():
         torch.backends.cudnn.benchmark = False
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f"\n使用设备: {device}")
-    
-    # 加载tokenizer
-    print(f"\n加载 Tokenizer: {config['model_type'].upper()} ({config['model_name']}) ...")
+    print(f"\nUsing device: {device}")
+
+    # Load tokenizer
+    print(f"\nLoading Tokenizer: {config['model_type'].upper()} ({config['model_name']}) ...")
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
     
-    # 添加special tokens
+    # Add special tokens
     special_tokens = ['[TEACHER]', '[CURRENT]', '[OTHER]', 'Unknown']
     special_tokens += [f'[TURN_{i}]' for i in range(config['context_window'] + 2)]
     num_added = tokenizer.add_tokens(special_tokens)
-    print(f"已注册 {num_added} 个新 Token")
+    print(f"Registered {num_added} new tokens")
     
-    # 加载数据集
+    # Load datasets
     train_dataset = MultiTaskDialogueDataset(
         os.path.join(config['data_dir'], 'train.csv'),
         tokenizer,
@@ -548,7 +512,7 @@ def main():
     )
     
     if config['sample_ratio'] < 1.0:
-        print(f"少样本采样: 使用 {int(config['sample_ratio']*100)}% 训练数据")
+        print(f"Few-shot sampling: using {int(config['sample_ratio']*100)}% training data")
         from sklearn.model_selection import train_test_split
         
         original_size = len(train_dataset.samples)
@@ -565,18 +529,18 @@ def main():
         train_dataset.all_dialogue_act_labels = [train_dataset.all_dialogue_act_labels[i] for i in selected_indices]
         train_dataset.all_opinion_labels = [train_dataset.all_opinion_labels[i] for i in selected_indices]
         
-        print(f"  原始样本数: {original_size}")
-        print(f"  采样后样本数: {len(train_dataset.samples)}")
-        print(f"  采样后标签分布:")
+        print(f"  Original samples: {original_size}")
+        print(f"  Sampled samples: {len(train_dataset.samples)}")
+        print(f"  Post-sampling label distribution:")
         unique_labels, counts = np.unique(train_dataset.all_opinion_labels, return_counts=True)
         for label, count in zip(unique_labels, counts):
-            print(f"    标签 {label}: {count} 样本 ({count/len(train_dataset.samples)*100:.1f}%)")
+            print(f"    Label {label}: {count} samples ({count/len(train_dataset.samples)*100:.1f}%)")
     
     train_sampler = None
     if config['use_class_balance']:
         from torch.utils.data import WeightedRandomSampler
         
-        print(f"\n启用类别平衡采样 (目标: {config['balance_target']})")
+        print(f"\nEnable class-balanced sampling (target: {config['balance_target']})")
         
  
         if config['balance_target'] == 'opinion':
@@ -610,9 +574,9 @@ def main():
             replacement=True
         )
         
-        print(f"  类别权重: {dict(sorted(class_weights.items()))}")
-        print(f"  平衡前分布: {dict(sorted(label_counts.items()))}")
-        print(f"  采样器已创建: {len(sample_weights)} 个样本")
+        print(f"  Class weights: {dict(sorted(class_weights.items()))}")
+        print(f"  Pre-balance distribution: {dict(sorted(label_counts.items()))}")
+        print(f"  Sampler created: {len(sample_weights)} samples")
     
     train_loader = DataLoader(
         train_dataset, 
@@ -627,7 +591,7 @@ def main():
     is_multi_task = config.get('is_multi_task', True)
     
     if is_multi_task:
-        print(f"\n初始化多任务模型 (DA + OE)...")
+        print(f"\nInitializing multi-task model (DA + OE)...")
         model = MultiTaskDialogueModel(
             model_path=config['model_name'],
             num_dialogue_acts=config['num_dialogue_acts'],
@@ -636,7 +600,7 @@ def main():
             use_act_logits_in_opinion=config.get('use_act_logits_in_opinion', False)
         )
     else:
-        print(f"\n初始化单任务模型 (仅 OE)...")
+        print(f"\nInitializing single-task model (OE only)...")
         from hybrid_opinion_classifier import DialogueAwareModel
         model = DialogueAwareModel(
             model_path=config['model_name'],
@@ -662,7 +626,7 @@ def main():
     )
     
     early_stopping = EarlyStopping(patience=5, min_delta=0.005, mode='max')
-    print("\n开始训练...")
+    print("\nStarting training...")
     best_val_opinion_f1 = 0
     
     for epoch in range(config['num_epochs']):
@@ -692,15 +656,15 @@ def main():
                 'config': config
             }
             torch.save(checkpoint, os.path.join(config['output_dir'], 'best_model.pth'))
-            print(f"✓ 保存最佳模型 (Val Opinion-F1: {val_results['opinion_macro_f1']:.4f})")
+            print(f"✓ Saved best model (Val Opinion-F1: {val_results['opinion_macro_f1']:.4f})")
         
         if early_stopping(val_results['opinion_macro_f1']):
-            print(f"早停触发！最佳 Opinion F1: {early_stopping.best_score:.4f}")
+            print(f"Early stopping triggered! Best Opinion F1: {early_stopping.best_score:.4f}")
             break
     
 
     print("\n" + "=" * 80)
-    print("测试集评估")
+    print("Test Set Evaluation")
     print("=" * 80)
     
     checkpoint = torch.load(os.path.join(config['output_dir'], 'best_model.pth'))
@@ -708,17 +672,17 @@ def main():
     
     test_results = evaluate(model, test_loader, device, criterion, is_multi_task=config['is_multi_task'])
     
-    print(f"\n测试集结果:")
-    print(f"  对话行为 - Acc: {test_results['dialogue_act_accuracy']:.4f}, Macro-F1: {test_results['dialogue_act_macro_f1']:.4f}")
-    print(f"  观点演化 - Acc: {test_results['opinion_accuracy']:.4f}, Macro-F1: {test_results['opinion_macro_f1']:.4f}")
+    print(f"\nTest results:")
+    print(f"  Dialogue act - Acc: {test_results['dialogue_act_accuracy']:.4f}, Macro-F1: {test_results['dialogue_act_macro_f1']:.4f}")
+    print(f"  Opinion evolution - Acc: {test_results['opinion_accuracy']:.4f}, Macro-F1: {test_results['opinion_macro_f1']:.4f}")
     
    
     print("\n" + "=" * 80)
-    print("生成混淆矩阵可视化")
+    print("Generating Confusion Matrix Visualization")
     print("=" * 80)
     
 
-    opinion_labels = ['不相关', '新观点', '加强', '削弱', '采纳', '反驳']
+    opinion_labels = ['Irrelevant', 'New', 'Strengthened', 'Weakened', 'Adopted', 'Refuted']
     opinion_cm = confusion_matrix(test_results['opinion_labels'], test_results['opinion_predictions'])
     
 
@@ -730,18 +694,18 @@ def main():
         cmap='Blues', 
         xticklabels=opinion_labels,
         yticklabels=opinion_labels,
-        cbar_kws={'label': '样本数量'},
+        cbar_kws={'label': 'Count'},
         linewidths=0.5,
         linecolor='gray'
     )
-    plt.title('观点演化混淆矩阵 (绝对数量)', fontsize=16, pad=20)
-    plt.xlabel('预测标签', fontsize=12)
-    plt.ylabel('真实标签', fontsize=12)
+    plt.title('Opinion Evolution Confusion Matrix (Absolute Counts)', fontsize=16, pad=20)
+    plt.xlabel('Predicted Label', fontsize=12)
+    plt.ylabel('True Label', fontsize=12)
     plt.tight_layout()
     
     cm_count_path = os.path.join(config['output_dir'], 'confusion_matrix_opinion_count.png')
     plt.savefig(cm_count_path, dpi=300, bbox_inches='tight')
-    print(f"\n✓ 观点演化混淆矩阵(计数)已保存: {cm_count_path}")
+    print(f"\n✓ Opinion evolution confusion matrix (counts) saved: {cm_count_path}")
     plt.close()
     
     opinion_cm_normalized = opinion_cm.astype('float') / opinion_cm.sum(axis=1)[:, np.newaxis]
@@ -754,20 +718,20 @@ def main():
         cmap='YlOrRd', 
         xticklabels=opinion_labels,
         yticklabels=opinion_labels,
-        cbar_kws={'label': '比例'},
+        cbar_kws={'label': 'Proportion'},
         vmin=0,
         vmax=1,
         linewidths=0.5,
         linecolor='gray'
     )
-    plt.title('观点演化混淆矩阵 (归一化)', fontsize=16, pad=20)
-    plt.xlabel('预测标签', fontsize=12)
-    plt.ylabel('真实标签', fontsize=12)
+    plt.title('Opinion Evolution Confusion Matrix (Normalized)', fontsize=16, pad=20)
+    plt.xlabel('Predicted Label', fontsize=12)
+    plt.ylabel('True Label', fontsize=12)
     plt.tight_layout()
     
     cm_norm_path = os.path.join(config['output_dir'], 'confusion_matrix_opinion_normalized.png')
     plt.savefig(cm_norm_path, dpi=300, bbox_inches='tight')
-    print(f"✓ 观点演化混淆矩阵(归一化)已保存: {cm_norm_path}")
+    print(f"✓ Opinion evolution confusion matrix (normalized) saved: {cm_norm_path}")
     plt.close()
     
     dialogue_act_labels = [
@@ -794,20 +758,20 @@ def main():
         cmap='Greens', 
         xticklabels=dialogue_act_labels,
         yticklabels=dialogue_act_labels,
-        cbar_kws={'label': '样本数量'},
+        cbar_kws={'label': 'Count'},
         linewidths=0.5,
         linecolor='gray'
     )
-    plt.title('对话行为混淆矩阵 (绝对数量)', fontsize=16, pad=20)
-    plt.xlabel('预测标签', fontsize=12)
-    plt.ylabel('真实标签', fontsize=12)
+    plt.title('Dialogue Act Confusion Matrix (Absolute Counts)', fontsize=16, pad=20)
+    plt.xlabel('Predicted Label', fontsize=12)
+    plt.ylabel('True Label', fontsize=12)
     plt.xticks(rotation=45, ha='right')
     plt.yticks(rotation=0)
     plt.tight_layout()
     
     cm_act_count_path = os.path.join(config['output_dir'], 'confusion_matrix_dialogue_act_count.png')
     plt.savefig(cm_act_count_path, dpi=300, bbox_inches='tight')
-    print(f"✓ 对话行为混淆矩阵(计数)已保存: {cm_act_count_path}")
+    print(f"✓ Dialogue act confusion matrix (counts) saved: {cm_act_count_path}")
     plt.close()
     
     dialogue_act_cm_normalized = dialogue_act_cm.astype('float') / dialogue_act_cm.sum(axis=1)[:, np.newaxis]
@@ -820,26 +784,26 @@ def main():
         cmap='YlGn', 
         xticklabels=dialogue_act_labels,
         yticklabels=dialogue_act_labels,
-        cbar_kws={'label': '比例'},
+        cbar_kws={'label': 'Proportion'},
         vmin=0,
         vmax=1,
         linewidths=0.5,
         linecolor='gray'
     )
-    plt.title('对话行为混淆矩阵 (归一化)', fontsize=16, pad=20)
-    plt.xlabel('预测标签', fontsize=12)
-    plt.ylabel('真实标签', fontsize=12)
+    plt.title('Dialogue Act Confusion Matrix (Normalized)', fontsize=16, pad=20)
+    plt.xlabel('Predicted Label', fontsize=12)
+    plt.ylabel('True Label', fontsize=12)
     plt.xticks(rotation=45, ha='right')
     plt.yticks(rotation=0)
     plt.tight_layout()
     
     cm_act_norm_path = os.path.join(config['output_dir'], 'confusion_matrix_dialogue_act_normalized.png')
     plt.savefig(cm_act_norm_path, dpi=300, bbox_inches='tight')
-    print(f"✓ 对话行为混淆矩阵(归一化)已保存: {cm_act_norm_path}")
+    print(f"✓ Dialogue act confusion matrix (normalized) saved: {cm_act_norm_path}")
     plt.close()
     
     print("\n" + "=" * 80)
-    print("生成错误分析报告")
+    print("Generating Error Analysis Report")
     print("=" * 80)
     
 
@@ -859,10 +823,10 @@ def main():
     )
     
     print_error_stats(error_stats)
-    print(f"\n✓ 错误分析报告已保存: {error_csv_path}")
+    print(f"\n✓ Error analysis report saved: {error_csv_path}")
     
-    print("\n训练完成！")
-    print(f"模型保存位置: {config['output_dir']}")
+    print("\nTraining complete!")
+    print(f"Model saved at: {config['output_dir']}")
 
 
 if __name__ == '__main__':

@@ -53,7 +53,7 @@ class OpinionEvolutionLLMDatasetV2(Dataset):
         self.teacher_names = {'T', 'Teacher', 'Ms. G', 'Mrs. G'}
         self.label_names = ['Irrelevant', 'New', 'Strengthened', 'Weakened', 'Adopted', 'Refuted']
         
-        print(f"正在加载数据: {csv_file} ...")
+        print(f"Loading data: {csv_file} ...")
         df = pd.read_csv(csv_file)
         
 
@@ -88,7 +88,7 @@ class OpinionEvolutionLLMDatasetV2(Dataset):
                 samples_by_label[classifications[i]].append(sample)
     
         if use_resampling and 'train' in csv_file:
-            print("\n应用数据重采样策略...")
+            print("\nApplying data resampling strategy...")
             self.samples = self._resample_data(samples_by_label)
         else:
    
@@ -96,19 +96,19 @@ class OpinionEvolutionLLMDatasetV2(Dataset):
             for label_samples in samples_by_label.values():
                 self.samples.extend(label_samples)
         
-        print(f"加载完成。有效样本数: {len(self.samples)}")
+        print(f"Loaded. Valid samples: {len(self.samples)}")
         
-        # 统计标签分布
+        # Label distribution statistics
         label_ids = [s['label_id'] for s in self.samples]
-        print(f"\n观点演化标签分布:")
+        print(f"\nOpinion evolution label distribution:")
         unique_labels, counts = np.unique(label_ids, return_counts=True)
         for label, count in zip(unique_labels, counts):
-            print(f"  {label} ({self.label_names[label]}): {count} 样本 ({100*count/len(self.samples):.1f}%)")
+            print(f"  {label} ({self.label_names[label]}): {count} samples ({100*count/len(self.samples):.1f}%)")
     
     def _resample_data(self, samples_by_label):
     
         original_counts = {i: len(samples) for i, samples in samples_by_label.items()}
-        print(f"  原始分布: {dict(sorted(original_counts.items()))}")
+        print(f"  Original distribution: {dict(sorted(original_counts.items()))}")
       
         target_distribution = {
             0: 3000,   
@@ -137,13 +137,13 @@ class OpinionEvolutionLLMDatasetV2(Dataset):
         
  
         new_counts = Counter([s['label_id'] for s in resampled_samples])
-        print(f"  重采样后: {dict(sorted(new_counts.items()))}")
-        print(f"  样本总数: {len(original_counts)} → {len(resampled_samples)}")
+        print(f"  After resampling: {dict(sorted(new_counts.items()))}")
+        print(f"  Total samples: {len(original_counts)} → {len(resampled_samples)}")
         
         return resampled_samples
     
     def _get_switch_marker(self, prev_speaker, current_speaker):
-        """Switch/Same标记"""
+        """Switch/Same marker"""
         if not prev_speaker:
             return ""
         
@@ -225,7 +225,7 @@ Opinion Evolution Type:"""
         input_ids = encoding['input_ids'].squeeze(0)
         labels = input_ids.clone()
         
-        # Mask prompt部分
+        # Mask prompt portion
         prompt_encoding = self.tokenizer(
             sample['prompt'],
             truncation=True,
@@ -244,7 +244,7 @@ Opinion Evolution Type:"""
 
 def sample_few_shot_examples(train_csv_path, num_per_class=2):
  
-    print(f"\n采样Few-shot示例（每类{num_per_class}个）...")
+    print(f"\nSampling few-shot examples ({num_per_class} per class)...")
     
     df = pd.read_csv(train_csv_path)
     grouped = df.groupby('class', sort=False)
@@ -264,7 +264,7 @@ def sample_few_shot_examples(train_csv_path, num_per_class=2):
             if i > 0:
                 context = f"{speakers[i-1]}: {sentences[i-1]}"
             
-            # Switch标记
+            # Switch marker
             switch = ""
             if i > 0:
                 prev_is_t = speakers[i-1] in teacher_names or str(speakers[i-1]).startswith('T')
@@ -291,7 +291,7 @@ def sample_few_shot_examples(train_csv_path, num_per_class=2):
             for idx in selected_indices:
                 few_shot_examples.append(available[idx])
     
-    print(f"  已采样 {len(few_shot_examples)} 个示例")
+    print(f"  Sampled {len(few_shot_examples)} examples")
     return few_shot_examples
 
 
@@ -302,7 +302,7 @@ def evaluate_model_v2(model, tokenizer, test_dataset, device, label_names):
     all_preds = []
     all_labels = []
     
-    print("\n正在评估模型...")
+    print("\nEvaluating model...")
     with torch.no_grad():
         for i in tqdm(range(len(test_dataset)), desc="Evaluating"):
             sample = test_dataset.samples[i]
@@ -372,13 +372,13 @@ def parse_label_robust(generated_text, prompt, label_names):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='LLM QLoRA微调（改进版）')
+    parser = argparse.ArgumentParser(description='LLM QLoRA Fine-tuning (Improved)')
     parser.add_argument('--model_type', type=str, required=True,
                         choices=['llama', 'qwen'],
-                        help='模型类型')
+                        help='Model type')
     parser.add_argument('--model_path', type=str, required=True,
-                        help='预训练模型路径')
-    parser.add_argument('--data_dir', type=str, default='dataset_split_result_v4')
+                        help='Pretrained model path')
+    parser.add_argument('--data_dir', type=str, default='data')
     parser.add_argument('--output_dir', type=str, default=None)
     parser.add_argument('--batch_size', type=int, default=4)
     parser.add_argument('--gradient_accumulation_steps', type=int, default=4)
@@ -388,9 +388,9 @@ def main():
     parser.add_argument('--lora_rank', type=int, default=16)
     parser.add_argument('--lora_alpha', type=int, default=32)
     parser.add_argument('--use_resampling', action='store_true',
-                        help='启用数据重采样')
+                        help='Enable data resampling')
     parser.add_argument('--use_few_shot', action='store_true',
-                        help='启用Few-shot示例')
+                        help='Enable few-shot examples')
     
     args = parser.parse_args()
     
@@ -401,7 +401,7 @@ def main():
     config = vars(args)
     
     print("=" * 80)
-    print(f"LLM QLoRA微调 v2 - {args.model_type.upper()}")
+    print(f"LLM QLoRA Fine-tuning v2 - {args.model_type.upper()}")
     print("=" * 80)
     print(json.dumps(config, indent=2, ensure_ascii=False))
     
@@ -411,7 +411,7 @@ def main():
         json.dump(config, f, indent=2, ensure_ascii=False)
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f"\n使用设备: {device}")
+    print(f"\nUsing device: {device}")
     
 
     bnb_config = BitsAndBytesConfig(
@@ -422,7 +422,7 @@ def main():
     )
     
    
-    print(f"\n加载模型: {args.model_path} (4-bit量化) ...")
+    print(f"\nLoading model: {args.model_path} (4-bit quantization) ...")
     model = AutoModelForCausalLM.from_pretrained(
         args.model_path,
         quantization_config=bnb_config,
@@ -430,7 +430,7 @@ def main():
         trust_remote_code=True
     )
     
-    print("加载 Tokenizer ...")
+    print("Loading Tokenizer ...")
     tokenizer = AutoTokenizer.from_pretrained(
         args.model_path,
         trust_remote_code=True
@@ -461,14 +461,14 @@ def main():
     
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     all_params = sum(p.numel() for p in model.parameters())
-    print(f"\n可训练参数: {trainable_params:,} / {all_params:,} ({100 * trainable_params / all_params:.2f}%)")
+    print(f"\nTrainable params: {trainable_params:,} / {all_params:,} ({100 * trainable_params / all_params:.2f}%)")
     
     few_shot_examples = []
     if args.use_few_shot:
         train_csv = os.path.join(args.data_dir, 'train.csv')
         few_shot_examples = sample_few_shot_examples(train_csv, num_per_class=2)
     
-    print("\n加载数据集...")
+    print("\nLoading datasets...")
     train_dataset = OpinionEvolutionLLMDatasetV2(
         os.path.join(args.data_dir, 'train.csv'),
         tokenizer,
@@ -535,16 +535,16 @@ def main():
     )
     
    
-    print("\n开始训练...")
+    print("\nStarting training...")
     trainer.train()
     
    
-    print("\n保存模型...")
+    print("\nSaving model...")
     trainer.save_model(args.output_dir)
     
    
     print("\n" + "=" * 80)
-    print("测试集评估")
+    print("Test Set Evaluation")
     print("=" * 80)
     
     all_preds, all_labels = evaluate_model_v2(
@@ -559,11 +559,11 @@ def main():
     accuracy = accuracy_score(all_labels, all_preds)
     macro_f1 = f1_score(all_labels, all_preds, average='macro')
     
-    print(f"\n测试集结果:")
-    print(f"  准确率: {accuracy:.4f}")
+    print(f"\nTest set results:")
+    print(f"  Accuracy: {accuracy:.4f}")
     print(f"  Macro-F1: {macro_f1:.4f}")
     
-    print("\n详细分类报告:")
+    print("\nDetailed classification report:")
     print(classification_report(
         all_labels,
         all_preds,
@@ -582,7 +582,7 @@ def main():
     with open(os.path.join(args.output_dir, 'test_metrics.json'), 'w') as f:
         json.dump(metrics, f, indent=2)
     
-    print(f"\n训练完成！模型保存位置: {args.output_dir}")
+    print(f"\nTraining complete! Model saved to: {args.output_dir}")
 
 
 if __name__ == '__main__':

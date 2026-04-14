@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-LLM基线对比分析脚本
+LLM Baseline Comparison Script
 
-对比 Llama-3.1-8B, Qwen2-7B 与混合模型的性能
+Compare Llama-3.1-8B, Qwen2-7B and Hybrid model performance
 """
 
 import pandas as pd
@@ -23,7 +23,7 @@ def parse_test_report(report_file):
     with open(report_file, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    acc_match = re.search(r'准确率:\s*(\d+\.\d+)', content)
+    acc_match = re.search(r'Accuracy:\s*(\d+\.\d+)', content)
     f1_match = re.search(r'Macro-F1:\s*(\d+\.\d+)', content)
     
     if acc_match and f1_match:
@@ -43,7 +43,7 @@ def parse_hybrid_metrics(metrics_file):
     
     metrics = {}
     for line in lines:
-        if 'Accuracy:' in line or '准确率:' in line:
+        if 'Accuracy:' in line:
             match = re.search(r'(\d+\.\d+)%', line)
             if match:
                 metrics['accuracy'] = float(match.group(1)) / 100
@@ -57,7 +57,7 @@ def parse_hybrid_metrics(metrics_file):
 
 def main():
     print("\n" + "=" * 80)
-    print("LLM基线对比分析")
+    print("LLM Baseline Comparison")
     print("=" * 80)
 
     experiments = [
@@ -74,13 +74,13 @@ def main():
             'type': 'LLM Fine-tuning'
         },
         {
-            'name': 'DeBERTa-v3 (单任务)',
+            'name': 'DeBERTa-v3 (Single-task)',
             'report': '../baseline_deberta/test_report.txt',
             'params': '184M',
             'type': 'PLM Baseline'
         },
         {
-            'name': '混合模型 (多任务)',
+            'name': 'Hybrid (Multi-task)',
             'report': '../results_group2_proposed/metrics.txt',
             'params': '184M + API',
             'type': 'Hybrid (Proposed)',
@@ -91,7 +91,7 @@ def main():
     results = []
     
     for exp in experiments:
-        print(f"\n解析: {exp['name']}")
+        print(f"\nParsing: {exp['name']}")
         
         is_hybrid = exp.get('is_hybrid', False)
         
@@ -102,90 +102,90 @@ def main():
         
         if metrics:
             results.append({
-                '模型': exp['name'],
-                '类型': exp['type'],
-                '参数量': exp['params'],
-                '准确率': f"{metrics['accuracy']:.4f}",
+                'Model': exp['name'],
+                'Type': exp['type'],
+                'Params': exp['params'],
+                'Accuracy': f"{metrics['accuracy']:.4f}",
                 'Macro-F1': f"{metrics['macro_f1']:.4f}",
-                '准确率(%)': metrics['accuracy'] * 100,
-                'F1值': metrics['macro_f1']
+                'Accuracy(%)': metrics['accuracy'] * 100,
+                'F1': metrics['macro_f1']
             })
-            print(f"  ✓ 准确率: {metrics['accuracy']:.4f}, Macro-F1: {metrics['macro_f1']:.4f}")
+            print(f"  > Accuracy: {metrics['accuracy']:.4f}, Macro-F1: {metrics['macro_f1']:.4f}")
         else:
-            print(f"  ✗ 文件不存在或解析失败: {exp['report']}")
+            print(f"  x File not found or parsing failed: {exp['report']}")
     
     if not results:
-        print("\n[错误] 没有找到任何有效的实验结果")
+        print("\n[Error] No valid experiment results found")
         return
     
     df = pd.DataFrame(results)
     
 
     print("\n" + "=" * 80)
-    print("对比结果")
+    print("Comparison Results")
     print("=" * 80)
-    display_df = df[['模型', '类型', '参数量', '准确率', 'Macro-F1']]
+    display_df = df[['Model', 'Type', 'Params', 'Accuracy', 'Macro-F1']]
     print(display_df.to_string(index=False))
     
 
     output_csv = '../llm_baseline_comparison.csv'
     df.to_csv(output_csv, index=False, encoding='utf-8-sig')
-    print(f"\n✓ 结果已保存: {output_csv}")
+    print(f"\n> Results saved: {output_csv}")
     
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
     
 
     colors = ['#e74c3c', '#f39c12', '#3498db', '#2ecc71']
-    axes[0].bar(range(len(df)), df['准确率(%)'], color=colors[:len(df)])
+    axes[0].bar(range(len(df)), df['Accuracy(%)'], color=colors[:len(df)])
     axes[0].set_xticks(range(len(df)))
-    axes[0].set_xticklabels(df['模型'], rotation=20, ha='right')
-    axes[0].set_ylabel('准确率 (%)', fontsize=12)
-    axes[0].set_title('准确率对比', fontsize=14, fontweight='bold')
+    axes[0].set_xticklabels(df['Model'], rotation=20, ha='right')
+    axes[0].set_ylabel('Accuracy (%)', fontsize=12)
+    axes[0].set_title('Accuracy Comparison', fontsize=14, fontweight='bold')
     axes[0].set_ylim([0, 100])
     axes[0].grid(True, alpha=0.3, axis='y')
     
 
-    for i, y in enumerate(df['准确率(%)']):
+    for i, y in enumerate(df['Accuracy(%)']):
         axes[0].text(i, y + 1, f'{y:.2f}%', ha='center', fontsize=10)
     
 
-    axes[1].bar(range(len(df)), df['F1值'], color=colors[:len(df)])
+    axes[1].bar(range(len(df)), df['F1'], color=colors[:len(df)])
     axes[1].set_xticks(range(len(df)))
-    axes[1].set_xticklabels(df['模型'], rotation=20, ha='right')
+    axes[1].set_xticklabels(df['Model'], rotation=20, ha='right')
     axes[1].set_ylabel('Macro-F1', fontsize=12)
-    axes[1].set_title('Macro-F1对比', fontsize=14, fontweight='bold')
+    axes[1].set_title('Macro-F1 Comparison', fontsize=14, fontweight='bold')
     axes[1].set_ylim([0, 1.0])
     axes[1].grid(True, alpha=0.3, axis='y')
     
 
-    for i, y in enumerate(df['F1值']):
+    for i, y in enumerate(df['F1']):
         axes[1].text(i, y + 0.02, f'{y:.4f}', ha='center', fontsize=10)
     
     plt.tight_layout()
     output_png = '../llm_baseline_comparison.png'
     plt.savefig(output_png, dpi=300, bbox_inches='tight')
-    print(f"✓ 对比图已保存: {output_png}")
+    print(f"> Comparison chart saved: {output_png}")
     
     if len(df) >= 2:
         print("\n" + "=" * 80)
-        print("性能提升分析")
+        print("Performance Improvement Analysis")
         print("=" * 80)
         
 
-        hybrid = df[df['类型'] == 'Hybrid (Proposed)'].iloc[0] if any(df['类型'] == 'Hybrid (Proposed)') else None
+        hybrid = df[df['Type'] == 'Hybrid (Proposed)'].iloc[0] if any(df['Type'] == 'Hybrid (Proposed)') else None
         
         if hybrid is not None:
-            print(f"\n混合模型 vs LLM基线:")
-            
+            print(f"\nHybrid model vs LLM baselines:")
+
             for i, row in df.iterrows():
-                if 'LLM Fine-tuning' in row['类型']:
-                    acc_diff = hybrid['准确率(%)'] - row['准确率(%)']
-                    f1_diff = hybrid['F1值'] - row['F1值']
-                    
-                    print(f"\nvs {row['模型']}:")
-                    print(f"  准确率提升: {acc_diff:+.2f} 个百分点")
-                    print(f"  Macro-F1提升: {f1_diff:+.4f}")
-                    print(f"  相对提升: {acc_diff/row['准确率(%)']*100:+.1f}%")
+                if 'LLM Fine-tuning' in row['Type']:
+                    acc_diff = hybrid['Accuracy(%)'] - row['Accuracy(%)']
+                    f1_diff = hybrid['F1'] - row['F1']
+
+                    print(f"\nvs {row['Model']}:")
+                    print(f"  Accuracy improvement: {acc_diff:+.2f} percentage points")
+                    print(f"  Macro-F1 improvement: {f1_diff:+.4f}")
+                    print(f"  Relative improvement: {acc_diff/row['Accuracy(%)']*100:+.1f}%")
 
 
 if __name__ == '__main__':

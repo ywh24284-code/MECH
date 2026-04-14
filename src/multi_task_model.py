@@ -1,5 +1,5 @@
 """
-多任务对话模型: 同时预测对话行为(Dialogue Act)和观点演化(Opinion Evolution)
+Multi-task Dialogue Model: Jointly predict Dialogue Act (DA) and Opinion Evolution (OE).
 """
 
 import torch
@@ -8,27 +8,13 @@ import torch.nn.functional as F
 from transformers import AutoModel, AutoConfig
 
 
-class FocalLoss(nn.Module):
-    def __init__(self, alpha=None, gamma=2.0, reduction='mean'):
-        super(FocalLoss, self).__init__()
-        self.gamma = gamma
-        self.alpha = alpha  # 类别权重
-        self.reduction = reduction
-
-    def forward(self, inputs, targets):
-        ce_loss = F.cross_entropy(inputs, targets, weight=self.alpha, reduction="none")
-        pt = torch.exp(-ce_loss)  
-        focal_loss = ((1 - pt) ** self.gamma) * ce_loss
-        if self.reduction == 'mean':
-            return focal_loss.mean()
-        else:
-            return focal_loss.sum()
 class MultiTaskDialogueModel(nn.Module):
     """
-    多任务学习模型    
-    架构:
-      共享编码器(DeBERTa) → 共享层 → 分支1: 对话行为分类
-                                      → 分支2: 观点演化分类
+    Multi-task learning model.
+
+    Architecture:
+      Shared Encoder (DeBERTa) -> Shared Layer -> Branch 1: Dialogue Act Classification
+                                                -> Branch 2: Opinion Evolution Classification
     """
     
     def __init__(
@@ -43,7 +29,7 @@ class MultiTaskDialogueModel(nn.Module):
     ):
         super().__init__()
         
-        # 加载预训练编码器
+        # Load pretrained encoder
         self.encoder = AutoModel.from_pretrained(model_path)
         encoder_hidden_size = self.encoder.config.hidden_size
         
@@ -52,7 +38,7 @@ class MultiTaskDialogueModel(nn.Module):
         self.use_task_specific_layers = use_task_specific_layers
         self.use_act_logits_in_opinion = use_act_logits_in_opinion
         
-        # 共享特征提取层
+        # Shared feature extraction layer
         self.shared_layer = nn.Sequential(
             nn.Dropout(dropout),
             nn.Linear(encoder_hidden_size, hidden_size),
@@ -61,7 +47,7 @@ class MultiTaskDialogueModel(nn.Module):
             nn.Dropout(dropout / 2)
         )
         
-        # 任务1: 对话行为分类头
+        # Task 1: Dialogue Act classification head
         if use_task_specific_layers:
             self.dialogue_act_head = nn.Sequential(
                 nn.Linear(hidden_size, 512), 
@@ -77,7 +63,7 @@ class MultiTaskDialogueModel(nn.Module):
         else:
             self.dialogue_act_head = nn.Linear(hidden_size, num_dialogue_acts)
         
-        # 任务2: 观点演化分类头
+        # Task 2: Opinion Evolution classification head
         opinion_input_dim = hidden_size + (num_dialogue_acts if use_act_logits_in_opinion else 0)
         if use_task_specific_layers:
             self.opinion_head = nn.Sequential(
@@ -159,7 +145,7 @@ class MultiTaskDialogueModel(nn.Module):
 
 class MultiTaskLoss(nn.Module):
     """
-    多任务联合损失函数
+    Multi-task joint loss function.
     """
 
     def __init__(
@@ -194,7 +180,7 @@ class MultiTaskLoss(nn.Module):
             dialogue_act_labels: torch.Tensor,
             opinion_labels: torch.Tensor
     ):
-        """计算联合损失"""
+        """Compute joint loss."""
         device = dialogue_act_logits.device
 
         da_weight = None
@@ -232,46 +218,3 @@ class MultiTaskLoss(nn.Module):
         }
 
 
-def test_model():
-    print("测试多任务模型...")
-    model = MultiTaskDialogueModel(
-        model_path='microsoft/deberta-v3-base',
-        num_dialogue_acts=9,
-        num_opinion_classes=6
-    )
-    
-    batch_size = 4
-    seq_length = 128
-    input_ids = torch.randint(0, 1000, (batch_size, seq_length))
-    attention_mask = torch.ones(batch_size, seq_length)
-    
-    outputs = model(input_ids, attention_mask, return_confidence=True, return_embedding=True)
-    
-    print(f"✓ 对话行为logits shape: {outputs['dialogue_act_logits'].shape}")
-    print(f"✓ 观点演化logits shape: {outputs['opinion_logits'].shape}")
-    print(f"✓ 共享embedding shape: {outputs['shared_embedding'].shape}")
-    
-    loss_fn = MultiTaskLoss(dialogue_act_weight=0.3, opinion_weight=0.7)
-    dialogue_act_labels = torch.randint(0, 9, (batch_size,))
-    opinion_labels = torch.randint(0, 6, (batch_size,))
-    
-    loss_dict = loss_fn(
-        outputs['dialogue_act_logits'],
-        outputs['opinion_logits'],
-        dialogue_act_labels,
-        opinion_labels
-    )
-    
-    print(f"✓ Total loss: {loss_dict['total_loss'].item():.4f}")
-    print(f"✓ Dialogue act loss: {loss_dict['dialogue_act_loss'].item():.4f}")
-    print(f"✓ Opinion loss: {loss_dict['opinion_loss'].item():.4f}")
-    
-    print("\n模型参数统计:")
-    total_params = sum(p.numel() for p in model.parameters())
-    trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    print(f"  总参数: {total_params:,}")
-    print(f"  可训练参数: {trainable_params:,}")
-
-
-if __name__ == '__main__':
-    test_model()

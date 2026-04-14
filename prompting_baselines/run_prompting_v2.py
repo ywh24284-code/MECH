@@ -118,7 +118,7 @@ Label:"""
         return system_desc + user_prompt
     
     def build_prompt(self, context, current_speaker, current_sentence, consistency, examples=None):
-        """统一接口"""
+        """Unified interface"""
         if self.mode == 'zero-shot':
             return self.build_zero_shot_prompt(context, current_speaker, current_sentence, consistency)
         else:
@@ -155,7 +155,7 @@ class LLMClient:
                 if attempt < max_retries - 1:
                     time.sleep(2 ** attempt)
                 else:
-                    print(f"API调用失败: {e}")
+                    print(f"API call failed: {e}")
                     return None
         return None
     
@@ -165,21 +165,21 @@ class LLMClient:
         
         text = response_text.lower().strip()
         
-        # 精确匹配
+        # Exact match
         for i, label in enumerate(self.label_names):
             if label.lower() == text:
                 return i
         
-        # 包含匹配
+        # Contains match
         for i, label in enumerate(self.label_names):
             if label.lower() in text:
                 return i
         
-        print(f"无法解析响应: {response_text}")
+        print(f"Cannot parse response: {response_text}")
         return 0
 
 def load_few_shot_examples(train_csv_path, num_per_class=2):
-    print(f"\n加载Few-shot示例（每类{num_per_class}个）...")
+    print(f"\nLoading few-shot examples ({num_per_class} per class)...")
     df = pd.read_csv(train_csv_path)
     
     grouped = df.groupby('class', sort=False)
@@ -195,15 +195,15 @@ def load_few_shot_examples(train_csv_path, num_per_class=2):
         for i in range(len(sentences)):
             current_speaker = speakers[i]
             
-            # 判断consistency
+            # Determine consistency
             if (previous_speaker is None) or \
                (current_speaker == 'T' and previous_speaker == 'T') or \
                (current_speaker == previous_speaker):
                 consistency = "same speaker"
             else:
                 consistency = "speaker switch"
-            
-            # 上下文
+
+            # Context
             context = []
             start_idx = max(0, i - 5)
             for j in range(start_idx, i):
@@ -233,26 +233,26 @@ def load_few_shot_examples(train_csv_path, num_per_class=2):
             for idx in selected_indices:
                 examples.append(samples_by_label[label_id][idx])
     
-    print(f"已加载 {len(examples)} 个Few-shot示例")
+    print(f"Loaded {len(examples)} few-shot examples")
     return examples
 
 
 def run_improved_prompting(test_csv_path, train_csv_path, model_type, mode, output_dir):
     
     print("\n" + "=" * 80)
-    print(f"改进版Prompting实验: {model_type.upper()} ({mode})")
+    print(f"Prompting Experiment: {model_type.upper()} ({mode})")
     print("=" * 80)
     
-    # 初始化
+    # Initialize
     prompt_builder = ImprovedPromptBuilder(mode=mode)
     llm_client = LLMClient(model_type=model_type)
     
-    # 加载Few-shot示例
+    # Load few-shot examples
     few_shot_examples = []
     if mode == 'few-shot':
         few_shot_examples = load_few_shot_examples(train_csv_path, num_per_class=2)
     
-    # 读取测试集
+    # Read test set
     test_df = pd.read_csv(test_csv_path)
     grouped = test_df.groupby('class', sort=False)
     
@@ -261,10 +261,10 @@ def run_improved_prompting(test_csv_path, train_csv_path, model_type, mode, outp
     results = []
     
     total_samples = len(test_df)
-    print(f"\n测试样本数: {total_samples}")
-    print(f"预计API调用: {total_samples} 次")
+    print(f"\nTest samples: {total_samples}")
+    print(f"Expected API calls: {total_samples}")
     
-    pbar = tqdm(total=total_samples, desc="Prompting推理")
+    pbar = tqdm(total=total_samples, desc="Prompting inference")
     
     for class_id, group in grouped:
         sentences = group['Sentence'].tolist()
@@ -272,24 +272,24 @@ def run_improved_prompting(test_csv_path, train_csv_path, model_type, mode, outp
         labels = group['label'].tolist()
         
         previous_speaker = None
-        context_history = []  # 保存带标签的上下文
+        context_history = []  # Save context with predicted labels
         
         for i in range(len(sentences)):
             current_speaker = speakers[i]
             current_sentence = sentences[i]
             
-            # 判断consistency
+            # Determine consistency
             if (previous_speaker is None) or \
                (current_speaker == 'T' and previous_speaker == 'T') or \
                (current_speaker == previous_speaker):
                 consistency = "same speaker"
             else:
                 consistency = "speaker switch"
-            
-            # 构建上下文（带预测标签）
+
+            # Build context (with predicted labels)
             context_text = "\n".join(context_history[-5:]) if context_history else "(This is the first utterance)"
             
-            # 构建Prompt
+            # Build prompt
             prompt = prompt_builder.build_prompt(
                 context_text,
                 current_speaker,
@@ -298,7 +298,7 @@ def run_improved_prompting(test_csv_path, train_csv_path, model_type, mode, outp
                 few_shot_examples
             )
             
-            # 调用LLM
+            # Call LLM
             response = llm_client.call_api(prompt)
             pred_label = llm_client.parse_response(response)
             
@@ -315,33 +315,33 @@ def run_improved_prompting(test_csv_path, train_csv_path, model_type, mode, outp
                 'llm_response': response
             })
             
-            # 更新上下文历史（使用预测标签）
+            # Update context history (using predicted labels)
             pred_label_name = llm_client.label_names[pred_label]
             context_history.append(f"({pred_label_name}) {current_speaker}: {current_sentence}")
             
             previous_speaker = current_speaker
             pbar.update(1)
-            time.sleep(0.1)  # 速率限制
+            time.sleep(0.1)  # Rate limiting
     
     pbar.close()
     
-    # 保存结果
+    # Save results
     os.makedirs(output_dir, exist_ok=True)
     
     results_df = pd.DataFrame(results)
     results_df.to_csv(os.path.join(output_dir, 'predictions_v2.csv'), index=False)
     
-    # 评估
+    # Evaluate
     accuracy = accuracy_score(true_labels, predictions)
     macro_f1 = f1_score(true_labels, predictions, average='macro')
     
     print("\n" + "=" * 80)
-    print("评估结果 (改进版)")
+    print("Evaluation Results")
     print("=" * 80)
-    print(f"准确率: {accuracy:.4f}")
+    print(f"Accuracy: {accuracy:.4f}")
     print(f"Macro-F1: {macro_f1:.4f}")
-    
-    print("\n详细分类报告:")
+
+    print("\nDetailed classification report:")
     print(classification_report(
         true_labels,
         predictions,
@@ -349,7 +349,7 @@ def run_improved_prompting(test_csv_path, train_csv_path, model_type, mode, outp
         digits=4
     ))
     
-    # 混淆矩阵
+    # Confusion matrix
     cm = confusion_matrix(true_labels, predictions)
     
     plt.figure(figsize=(10, 8))
@@ -368,7 +368,7 @@ def run_improved_prompting(test_csv_path, train_csv_path, model_type, mode, outp
     plt.savefig(os.path.join(output_dir, 'confusion_matrix_v2.png'), dpi=300)
     plt.close()
     
-    # 保存指标
+    # Save metrics
     metrics = {
         'model_type': model_type,
         'mode': mode,
@@ -380,34 +380,34 @@ def run_improved_prompting(test_csv_path, train_csv_path, model_type, mode, outp
     with open(os.path.join(output_dir, 'metrics_v2.json'), 'w') as f:
         json.dump(metrics, f, indent=2)
     
-    print(f"\n✓ 结果已保存到: {output_dir}")
+    print(f"\n✓ Results saved to: {output_dir}")
     
     return metrics
 
 def main():
-    parser = argparse.ArgumentParser(description='改进版Prompting Baseline实验')
+    parser = argparse.ArgumentParser(description='Prompting Baseline Experiment')
     parser.add_argument('--model_type', type=str, default='deepseek',
                         choices=['deepseek', 'gpt4o'],
-                        help='LLM模型类型')
+                        help='LLM model type')
     parser.add_argument('--mode', type=str, default='zero-shot',
                         choices=['zero-shot', 'few-shot'],
-                        help='Prompting模式')
-    parser.add_argument('--data_dir', type=str, default='dataset_split_result_v4',
-                        help='数据目录')
+                        help='Prompting mode')
+    parser.add_argument('--data_dir', type=str, default='data',
+                        help='Data directory')
     parser.add_argument('--output_dir', type=str, default=None,
-                        help='输出目录')
+                        help='Output directory')
     
     args = parser.parse_args()
     
-    # 设置输出目录
+    # Set output directory
     if args.output_dir is None:
         args.output_dir = f"../prompting_{args.model_type}_{args.mode}_v2"
     
-    # 数据路径
+    # Data paths
     test_csv = os.path.join(args.data_dir, 'test.csv')
     train_csv = os.path.join(args.data_dir, 'train.csv')
     
-    # 运行实验
+    # Run experiment
     metrics = run_improved_prompting(
         test_csv,
         train_csv,
@@ -417,9 +417,9 @@ def main():
     )
     
     print("\n" + "=" * 80)
-    print("实验完成！")
+    print("Experiment complete!")
     print("=" * 80)
-    print(f"准确率: {metrics['accuracy']:.4f}")
+    print(f"Accuracy: {metrics['accuracy']:.4f}")
     print(f"Macro-F1: {metrics['macro_f1']:.4f}")
 
 

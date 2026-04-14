@@ -1,16 +1,33 @@
-﻿# Python caches
+# Python caches
 __pycache__/
 *.py[cod]
+*.egg-info/
 
 # Virtual environment
 .venv/
 venv/
+env/
 
-# OS/editor
+# OS / editor
 .DS_Store
 Thumbs.db
 *.log
+.idea/
+.vscode/
+*.swp
 
-# Runtime artifacts
+# Environment variables (contains API keys)
+.env
+
+# Model checkpoints and outputs
+*.pth
 outputs/
 checkpoints/
+wandb/
+
+# Temporary files
+*.tmp
+temp_*.csv
+
+# Local project notes
+代码全景.md

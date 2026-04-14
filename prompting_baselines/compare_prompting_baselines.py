@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Prompting基线对比分析脚本
-对比 DeepSeek/GPT-4o (Zero-shot/Few-shot) 与混合模型的性能
+Prompting Baseline Comparison script
+Compare DeepSeek/GPT-4o (Zero-shot/Few-shot) with hybrid model performance
 """
 
 import pandas as pd
@@ -13,7 +13,7 @@ import re
 
 
 def parse_metrics(metrics_file):
-    """解析metrics.json"""
+    """Parse metrics.json"""
     if not os.path.exists(metrics_file):
         return None
     
@@ -22,7 +22,7 @@ def parse_metrics(metrics_file):
 
 
 def parse_hybrid_metrics(metrics_file):
-    """解析混合模型的metrics.txt"""
+    """Parse hybrid model metrics.txt"""
     if not os.path.exists(metrics_file):
         return None
     
@@ -31,7 +31,7 @@ def parse_hybrid_metrics(metrics_file):
     
     metrics = {}
     for line in lines:
-        if 'Accuracy:' in line or '准确率:' in line:
+        if 'Accuracy:' in line:
             match = re.search(r'(\d+\.\d+)%', line)
             if match:
                 metrics['accuracy'] = float(match.group(1)) / 100
@@ -39,7 +39,7 @@ def parse_hybrid_metrics(metrics_file):
             match = re.search(r'(\d+\.\d+)', line)
             if match:
                 metrics['macro_f1'] = float(match.group(1))
-        elif 'API调用率:' in line or 'API' in line and '%' in line:
+        elif 'API Call Rate:' in line or 'API' in line and '%' in line:
             match = re.search(r'(\d+\.\d+)%', line)
             if match:
                 metrics['api_call_rate'] = float(match.group(1)) / 100
@@ -49,10 +49,10 @@ def parse_hybrid_metrics(metrics_file):
 
 def main():
     print("\n" + "=" * 80)
-    print("Prompting基线对比分析")
+    print("Prompting Baseline Comparison")
     print("=" * 80)
     
-    # 实验配置
+    # Experiment configuration
     experiments = [
         {
             'name': 'DeepSeek Zero-shot',
@@ -83,7 +83,7 @@ def main():
             'mode': 'Few-shot'
         },
         {
-            'name': '混合模型',
+            'name': 'Hybrid Model',
             'metrics': '../results_group2_proposed/metrics.txt',
             'type': 'Hybrid',
             'model': 'DeBERTa + DeepSeek',
@@ -95,7 +95,7 @@ def main():
     results = []
     
     for exp in experiments:
-        print(f"\n解析: {exp['name']}")
+        print(f"\nParsing: {exp['name']}")
         
         is_hybrid = exp.get('is_hybrid', False)
         
@@ -106,146 +106,144 @@ def main():
         
         if metrics:
             results.append({
-                '方法': exp['name'],
-                '类型': exp['type'],
-                '模型': exp['model'],
-                '模式': exp['mode'],
-                '准确率': f"{metrics['accuracy']:.4f}",
+                'Method': exp['name'],
+                'Type': exp['type'],
+                'Model': exp['model'],
+                'Mode': exp['mode'],
+                'Accuracy': f"{metrics['accuracy']:.4f}",
                 'Macro-F1': f"{metrics['macro_f1']:.4f}",
-                'API调用率': f"{metrics.get('api_call_rate', 1.0)*100:.1f}%",
-                '准确率(%)': metrics['accuracy'] * 100,
-                'F1值': metrics['macro_f1'],
-                'API率': metrics.get('api_call_rate', 1.0)
+                'API Call Rate': f"{metrics.get('api_call_rate', 1.0)*100:.1f}%",
+                'Accuracy(%)': metrics['accuracy'] * 100,
+                'F1': metrics['macro_f1'],
+                'API Rate': metrics.get('api_call_rate', 1.0)
             })
-            print(f"  ✓ 准确率: {metrics['accuracy']:.4f}, Macro-F1: {metrics['macro_f1']:.4f}, API: {metrics.get('api_call_rate', 1.0)*100:.1f}%")
+            print(f"  ✓ Accuracy: {metrics['accuracy']:.4f}, Macro-F1: {metrics['macro_f1']:.4f}, API: {metrics.get('api_call_rate', 1.0)*100:.1f}%")
         else:
-            print(f"  ✗ 文件不存在或解析失败: {exp['metrics']}")
+            print(f"  ✗ File not found or parse failed: {exp['metrics']}")
     
     if not results:
-        print("\n[错误] 没有找到任何有效的实验结果")
+        print("\n[Error] No valid experiment results found")
         return
     
     df = pd.DataFrame(results)
     
-    # 显示表格
+    # Display table
     print("\n" + "=" * 80)
-    print("对比结果")
+    print("Comparison Results")
     print("=" * 80)
-    display_df = df[['方法', '模型', '模式', '准确率', 'Macro-F1', 'API调用率']]
+    display_df = df[['Method', 'Model', 'Mode', 'Accuracy', 'Macro-F1', 'API Call Rate']]
     print(display_df.to_string(index=False))
     
-    # 保存CSV
+    # Save CSV
     output_csv = '../prompting_comparison.csv'
     df.to_csv(output_csv, index=False, encoding='utf-8-sig')
-    print(f"\n✓ 结果已保存: {output_csv}")
+    print(f"\n✓ Results saved: {output_csv}")
     
-    # 绘图 - 性能对比
+    # Plot - performance comparison
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
     
     colors = ['#3498db', '#e74c3c', '#9b59b6', '#f39c12', '#2ecc71']
     
-    # 准确率对比
-    axes[0].bar(range(len(df)), df['准确率(%)'], color=colors[:len(df)])
+    # Accuracy comparison
+    axes[0].bar(range(len(df)), df['Accuracy(%)'], color=colors[:len(df)])
     axes[0].set_xticks(range(len(df)))
-    axes[0].set_xticklabels(df['方法'], rotation=30, ha='right')
-    axes[0].set_ylabel('准确率 (%)', fontsize=12)
-    axes[0].set_title('准确率对比', fontsize=14, fontweight='bold')
+    axes[0].set_xticklabels(df['Method'], rotation=30, ha='right')
+    axes[0].set_ylabel('Accuracy (%)', fontsize=12)
+    axes[0].set_title('Accuracy Comparison', fontsize=14, fontweight='bold')
     axes[0].set_ylim([0, 100])
     axes[0].grid(True, alpha=0.3, axis='y')
     
-    for i, y in enumerate(df['准确率(%)']):
+    for i, y in enumerate(df['Accuracy(%)']):
         axes[0].text(i, y + 1, f'{y:.2f}%', ha='center', fontsize=9)
     
-    axes[1].bar(range(len(df)), df['F1值'], color=colors[:len(df)])
+    axes[1].bar(range(len(df)), df['F1'], color=colors[:len(df)])
     axes[1].set_xticks(range(len(df)))
-    axes[1].set_xticklabels(df['方法'], rotation=30, ha='right')
+    axes[1].set_xticklabels(df['Method'], rotation=30, ha='right')
     axes[1].set_ylabel('Macro-F1', fontsize=12)
-    axes[1].set_title('Macro-F1对比', fontsize=14, fontweight='bold')
+    axes[1].set_title('Macro-F1 Comparison', fontsize=14, fontweight='bold')
     axes[1].set_ylim([0, 1.0])
     axes[1].grid(True, alpha=0.3, axis='y')
     
-    for i, y in enumerate(df['F1值']):
+    for i, y in enumerate(df['F1']):
         axes[1].text(i, y + 0.02, f'{y:.4f}', ha='center', fontsize=9)
     
   
-    axes[2].bar(range(len(df)), df['API率'] * 100, color=colors[:len(df)])
+    axes[2].bar(range(len(df)), df['API Rate'] * 100, color=colors[:len(df)])
     axes[2].set_xticks(range(len(df)))
-    axes[2].set_xticklabels(df['方法'], rotation=30, ha='right')
-    axes[2].set_ylabel('API调用率 (%)', fontsize=12)
-    axes[2].set_title('API调用率对比', fontsize=14, fontweight='bold')
+    axes[2].set_xticklabels(df['Method'], rotation=30, ha='right')
+    axes[2].set_ylabel('API Call Rate (%)', fontsize=12)
+    axes[2].set_title('API Call Rate Comparison', fontsize=14, fontweight='bold')
     axes[2].set_ylim([0, 110])
     axes[2].grid(True, alpha=0.3, axis='y')
     
-    for i, y in enumerate(df['API率'] * 100):
+    for i, y in enumerate(df['API Rate'] * 100):
         axes[2].text(i, y + 2, f'{y:.1f}%', ha='center', fontsize=9)
     
     plt.tight_layout()
     output_png = '../prompting_comparison.png'
     plt.savefig(output_png, dpi=300, bbox_inches='tight')
-    print(f"✓ 对比图已保存: {output_png}")
+    print(f"✓ Comparison chart saved: {output_png}")
     plt.close()
 
     print("\n" + "=" * 80)
-    print("成本效益分析")
+    print("Cost-Efficiency Analysis")
     print("=" * 80)
     
-    hybrid = df[df['类型'] == 'Hybrid'].iloc[0] if any(df['类型'] == 'Hybrid') else None
+    hybrid = df[df['Type'] == 'Hybrid'].iloc[0] if any(df['Type'] == 'Hybrid') else None
     
     if hybrid is not None:
-        print(f"\n混合模型 vs Prompting基线:")
-        print(f"\n{'方法':<20} {'准确率提升':<12} {'API节省':<12} {'成本效益'}")
+        print(f"\nHybrid Model vs Prompting Baselines:")
+        print(f"\n{'Method':<20} {'Acc. Gain':<12} {'API Saved':<12} {'Efficiency'}")
         print("-" * 70)
         
         for i, row in df.iterrows():
-            if row['类型'] == 'Prompting':
-                acc_diff = hybrid['准确率(%)'] - row['准确率(%)']
-                api_save = row['API率'] - hybrid['API率']
+            if row['Type'] == 'Prompting':
+                acc_diff = hybrid['Accuracy(%)'] - row['Accuracy(%)']
+                api_save = row['API Rate'] - hybrid['API Rate']
                 
-                # 成本效益 = 性能提升 / API增加（越大越好）
+                # Efficiency = performance gain / API increase (higher is better)
                 if api_save > 0:
                     efficiency = acc_diff / (api_save * 100)
                 else:
                     efficiency = float('inf') if acc_diff > 0 else 0
                 
-                print(f"{row['方法']:<20} {acc_diff:+6.2f}%      {api_save*100:+6.1f}%      {efficiency:+.4f}")
+                print(f"{row['Method']:<20} {acc_diff:+6.2f}%      {api_save*100:+6.1f}%      {efficiency:+.4f}")
         
-        print("\n解读:")
-        print("- 准确率提升: 正值表示混合模型更优")
-        print("- API节省: 正值表示Prompting使用更多API（混合模型更省）")
-        print("- 成本效益: 混合模型用更少API达到更高性能")
+        print("\nInterpretation:")
+        print("- Acc. gain: positive means hybrid model is better")
+        print("- API saved: positive means Prompting uses more API")
+        print("- Efficiency: hybrid model achieves higher performance with fewer API calls")
     
   
     cost_analysis_path = '../cost_efficiency_analysis.txt'
     with open(cost_analysis_path, 'w', encoding='utf-8') as f:
-        f.write("成本效益分析\n")
+        f.write("Cost-Efficiency Analysis\n")
         f.write("=" * 80 + "\n\n")
         
         if hybrid is not None:
-            f.write(f"基准: 混合模型\n")
-            f.write(f"  准确率: {hybrid['准确率(%)']:.2f}%\n")
-            f.write(f"  Macro-F1: {hybrid['F1值']:.4f}\n")
-            f.write(f"  API调用率: {hybrid['API率']*100:.1f}%\n\n")
-            
-            f.write("对比Prompting基线:\n\n")
+            f.write(f"Baseline: Hybrid Model\n")
+            f.write(f"  Accuracy: {hybrid['Accuracy(%)']:.2f}%\n")
+            f.write(f"  Macro-F1: {hybrid['F1']:.4f}\n")
+            f.write(f"  API Call Rate: {hybrid['API Rate']*100:.1f}%\n\n")
+
+            f.write("Comparison with Prompting Baselines:\n\n")
             
             for i, row in df.iterrows():
-                if row['类型'] == 'Prompting':
-                    acc_diff = hybrid['准确率(%)'] - row['准确率(%)']
-                    f1_diff = hybrid['F1值'] - row['F1值']
-                    api_save = row['API率'] - hybrid['API率']
+                if row['Type'] == 'Prompting':
+                    acc_diff = hybrid['Accuracy(%)'] - row['Accuracy(%)']
+                    f1_diff = hybrid['F1'] - row['F1']
+                    api_save = row['API Rate'] - hybrid['API Rate']
                     
-                    f.write(f"{row['方法']}:\n")
-                    f.write(f"  准确率差距: {acc_diff:+.2f} 个百分点\n")
-                    f.write(f"  Macro-F1差距: {f1_diff:+.4f}\n")
-                    f.write(f"  API调用差距: {api_save*100:+.1f}% (正=Prompting更多)\n")
-                    f.write(f"  成本比: {row['API率']/hybrid['API率']:.2f}× (Prompting/混合)\n\n")
+                    f.write(f"{row['Method']}:\n")
+                    f.write(f"  Accuracy gap: {acc_diff:+.2f} percentage points\n")
+                    f.write(f"  Macro-F1 gap: {f1_diff:+.4f}\n")
+                    f.write(f"  API call gap: {api_save*100:+.1f}% (positive = Prompting uses more)\n")
+                    f.write(f"  Cost ratio: {row['API Rate']/hybrid['API Rate']:.2f}x (Prompting/Hybrid)\n\n")
     
-    print(f"\n✓ 成本效益分析已保存: {cost_analysis_path}")
-    
-   )
-    
+    print(f"\n✓ Cost-efficiency analysis saved: {cost_analysis_path}")
+
     print("\n" + "=" * 80)
-    print("分析完成！")
+    print("Analysis complete!")
     print("=" * 80)
 
 
